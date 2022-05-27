@@ -4,9 +4,7 @@
 	import Person from './components/Person.svelte'
 	import Particles from './components/Particles.svelte'
 
-
 	darkMode.subscribe (enabled => document.documentElement.classList.toggle('dark', enabled));
-		
 </script>
 
 <div class="flex flex-col h-full">
@@ -14,7 +12,6 @@
 
 	<div class="wrapper flex flex-col flex-grow items-center">
 		<main class="p-6 w-full sm:w-2/3 dark:text-white">
-
 			<Person img="assets/dries.jpg">
 				<div class="text-black">
 				</div>

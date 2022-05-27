@@ -29,7 +29,6 @@
     "tailwindcss": "^3.0.24"
   },
   "dependencies": {
-    "particle.js": "^1.0.7",
     "particles.js": "github:DriesMeerman/particles.js",
     "sirv-cli": "^2.0.0"
   }
