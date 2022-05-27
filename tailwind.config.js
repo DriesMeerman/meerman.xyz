@@ -8,7 +8,7 @@ module.exports = {
   plugins: [
   ],
   content: [
-    "./public/*.html",
+    "./static/*.html",
     "./src/App.svelte",
     "./src/**/*.svelte"
    ],

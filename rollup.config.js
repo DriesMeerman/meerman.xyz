@@ -4,6 +4,8 @@ import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
+import image from 'svelte-image'
+import copy from 'rollup-plugin-copy'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -34,15 +36,27 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: 'public/build/bundle.js'
+		file: 'static/build/bundle.js'
 	},
 	plugins: [
 		svelte({
+			preprocess: {
+				...image({
+					compressionLevel: 8, // png quality level
+					quality: 80, 
+					webpOptions: {
+						quality: 90,
+						lossless: false,
+						force: true
+					  },
+				})
+			},
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production
 			}
 		}),
+
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
 		css({ output: 'bundle.css' }),
@@ -62,9 +76,9 @@ export default {
 		// the bundle has been generated
 		!production && serve(),
 
-		// Watch the `public` directory and refresh the
+		// Watch the `static` directory and refresh the
 		// browser on changes when not in production
-		!production && livereload('public'),
+		!production && livereload('static'),
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
