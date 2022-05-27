@@ -1,9 +1,9 @@
 import { writable } from 'svelte/store'
 
+let storedTheme = localStorage.theme
+let defaultMode = storedTheme ? storedTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-let defaultMode = localStorage.theme !== 'light'
 const darkMode = writable(defaultMode)
-console.log('intialized', defaultMode)
 
 function toggleDarkMode() {
 	darkMode.update(c => {

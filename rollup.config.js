@@ -5,7 +5,9 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import image from 'svelte-image'
-import copy from 'rollup-plugin-copy'
+import { scss } from 'svelte-preprocess';
+
+import json from '@rollup/plugin-json';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -39,9 +41,11 @@ export default {
 		file: 'static/build/bundle.js'
 	},
 	plugins: [
+		json(),
 		svelte({
-			preprocess: {
-				...image({
+			preprocess: [
+				scss(),
+				image({
 					compressionLevel: 8, // png quality level
 					quality: 80, 
 					webpOptions: {
@@ -50,7 +54,7 @@ export default {
 						force: true
 					  },
 				})
-			},
+			],
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production

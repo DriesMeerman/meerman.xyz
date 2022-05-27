@@ -12,7 +12,7 @@
     })
 </script>
 
-<nav class="bg-blue-300 dark:bg-zinc-700 flex items-center justify-between flex-wrap p-3 transition5">
+<nav class="border-b-2 border-teal-500 dark:border-sky-600 dark:bg-zinc-700 flex items-center justify-between flex-wrap p-3 transition5">
     <div class="flex items-center flex-shrink-0 dark:text-white mr-6">
       <span class="font-semibold text-xl tracking-tight">Meerman</span>
     </div>
@@ -20,7 +20,7 @@
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
       <div class="text-sm lg:flex-grow">
         {#each menuItems as item}
-            <a href="{item.link}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-900 dark:text-sky-200 dark:hover:text-white mr-4">
+            <a href="{item.link}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-900 dark:text-white dark:hover:text-sky-600 mr-4 hover:text-teal-600">
           {item.text}
         </a>
         {/each}
