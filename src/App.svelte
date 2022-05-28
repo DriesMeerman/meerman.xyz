@@ -13,7 +13,12 @@
 	<div class="wrapper flex flex-col flex-grow items-center">
 		<main class="p-6 w-full sm:w-2/3 dark:text-white">
 			<Person img="assets/dries.jpg">
-				<div class="text-black">
+				<div class="max-w-3/4">
+					I'm a software engineer interested in solving complex problems.
+					Frameworks and programming languages and other techniques are tools not goals in themselves.
+					When solving problems I like to be involved, I don't enjoy simply writing code that I'm told to.
+					Outside of professional environments I've got interests in technology from gadgets to hardware and software.
+					I also enjoy longboarding going to the gym and video games.
 				</div>
 			</Person>
 		</main>
