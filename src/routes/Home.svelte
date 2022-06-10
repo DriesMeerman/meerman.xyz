@@ -1,5 +1,6 @@
 <script>
     import Person from '../components/Person.svelte'
+    import Socials from "../components/Socials.svelte";
 </script>
 
 
@@ -12,7 +13,10 @@
         I also enjoy longboarding, video games and going to the gym.
         Due to my wide interest I've got experience with quite a few technologies.
     </div>
+
 </Person>
 
-
+<div class="mt-24">
+    <Socials class="pt-4"></Socials>
+</div>
 
