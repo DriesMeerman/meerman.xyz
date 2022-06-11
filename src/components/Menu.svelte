@@ -4,8 +4,8 @@
     let darkModeIconFill;
     let menuItems = [
         {link: "#/skills", text: "Skills"},
-        {link: "#/experience", text: "Experience"},
-        {link: "#/education", text: "Education"}
+        // {link: "#/experience", text: "Experience"},
+        // {link: "#/education", text: "Education"}
     ]
 
     darkMode.subscribe(enabled => {
@@ -29,7 +29,7 @@
             {/each}
         </div>
         <div>
-            <div class="mt-4" on:click={toggleDarkMode} title={$darkMode ? 'Dark' : 'Light'}>
+            <div class="mt-4 cursor-pointer" on:click={toggleDarkMode} title={$darkMode ? 'Dark' : 'Light'}>
                 <svg class="transition5" width="24px" height="24px" viewBox="0 0 24 24" fill="{darkModeIconFill}"
                      xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8V16Z"/>
