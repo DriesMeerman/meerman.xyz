@@ -1,0 +1,2 @@
+FROM nginx
+COPY meerman-xyz-website /usr/share/nginx/html

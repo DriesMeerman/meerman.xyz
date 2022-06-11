@@ -9,16 +9,10 @@ on:
 
 jobs:
 
-  publish-container:
-
-    runs-on: node:18-alpine
+  build-website:
+    runs-on: node:alpine
 
     steps:
-    - name: Login to docker registry
-      env:
-        DOCKER_USER: ${{secrets.DOCKER_USER}}
-        DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
-      run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN
 
     - uses: actions/checkout@v3
 
@@ -28,11 +22,34 @@ jobs:
     - name: Build website
       run: npm run build
 
+    - uses: actions/upload-artifact@v2
+      with:
+        name: meerman-xyz-website
+        path: static/
+
+  publish-container:
+
+    runs-on: ubuntu:latest
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Login to docker registry
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
+      run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: meerman-xyz-website
+
     - name: Debug
-      run: ls static
+      run: ls; ls meerman-xyz-website
 
     - name: Build the Docker image
-      run: docker build --file Dockerfile --tag meerman.xyz:latest .
+      run: docker build --file Dockerfile.artifact --tag meerman.xyz:latest .
 
     - name: Tag docker image
       run: docker tag meerman.xyz:latest ${{secrets.DOCKER_USER}}/meerman.xyz:latest
