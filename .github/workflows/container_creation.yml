@@ -8,53 +8,48 @@ on:
       - main
 
 jobs:
-
   build-website:
-    runs-on: node:alpine
-
+    runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+            node-version: '16'
 
-    - uses: actions/checkout@v3
+      - name: Npm install
+        run: npm i
 
-    - name: Npm install
-      run: npm i
+      - name: Build website
+        run: npm run build
 
-    - name: Build website
-      run: npm run build
-
-    - uses: actions/upload-artifact@v2
-      with:
-        name: meerman-xyz-website
-        path: static/
+      - uses: actions/upload-artifact@v2
+        with:
+          name: meerman-xyz-website
+          path: static/
 
   publish-container:
-
-    runs-on: ubuntu:latest
-
+    runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
 
-    - uses: actions/checkout@v3
+      - name: Login to docker registry
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
+        run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN
 
-    - name: Login to docker registry
-      env:
-        DOCKER_USER: ${{secrets.DOCKER_USER}}
-        DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
-      run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN
+      - uses: actions/download-artifact@v2
+        with:
+          name: meerman-xyz-website
 
-    - uses: actions/download-artifact@v2
-      with:
-        name: meerman-xyz-website
+      - name: Debug
+        run: ls; ls meerman-xyz-website
 
-    - name: Debug
-      run: ls; ls meerman-xyz-website
+      - name: Build the Docker image
+        run: docker build --file Dockerfile.artifact --tag meerman.xyz:latest .
 
-    - name: Build the Docker image
-      run: docker build --file Dockerfile.artifact --tag meerman.xyz:latest .
+      - name: Tag docker image
+        run: docker tag meerman.xyz:latest ${{secrets.DOCKER_USER}}/meerman.xyz:latest
 
-    - name: Tag docker image
-      run: docker tag meerman.xyz:latest ${{secrets.DOCKER_USER}}/meerman.xyz:latest
-
-    - name: Publish the docker image
-      run: docker push ${{secrets.DOCKER_USER}}/meerman.xyz:latest
-
-
+      - name: Publish the docker image
+        run: docker push ${{secrets.DOCKER_USER}}/meerman.xyz:latest
