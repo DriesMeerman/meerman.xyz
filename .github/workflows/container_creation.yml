@@ -28,6 +28,9 @@ jobs:
     - name: Build website
     - run: npm run build
 
+    - name: Debug
+    - run: ls static
+
     - name: Build the Docker image
       run: docker build --file Dockerfile --tag meerman.xyz:latest .
 
