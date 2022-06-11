@@ -23,8 +23,8 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Debug stuff
-			run: ls
-			run: cat Dockerfile
+      run: ls
+      run: cat Dockerfile
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag meerman.xyz:$(date +%s)
