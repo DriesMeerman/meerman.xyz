@@ -1,0 +1,31 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+      
+jobs:
+
+  publish-container:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Login to docker registry
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
+      run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN
+    
+    - uses: actions/checkout@v3
+    
+    - name: Build the Docker image    
+      run: docker build . --file Dockerfile --tag meerman.xyz:$(date +%s)
+      
+    - name: Publish the docker image
+      run: docker push ${{secrets.DOCKER_USER}}/meerman.xyz
+      
+    
