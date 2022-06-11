@@ -11,7 +11,7 @@ jobs:
 
   publish-container:
 
-    runs-on: ubuntu-latest
+    runs-on: node:18-alpine
 
     steps:
     - name: Login to docker registry
@@ -22,8 +22,13 @@ jobs:
 
     - uses: actions/checkout@v3
 
+    - name: Npm install
+
     - name: Build the Docker image
       run: docker build --file Dockerfile --tag meerman.xyz:latest .
+
+    - name: Tag docker image
+      run: docker tag meerman.xyz:latest ${{secrets.DOCKER_USER}}/meerman.xyz:latest
 
     - name: Publish the docker image
       run: docker push ${{secrets.DOCKER_USER}}/meerman.xyz:latest
