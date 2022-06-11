@@ -39,12 +39,15 @@ jobs:
           DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
         run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN
 
+      - name: debug pre downloadartifact
+        run: ls -r
+
       - uses: actions/download-artifact@v2
         with:
           name: meerman-xyz-website
 
-      - name: Debug
-        run: ls; ls meerman-xyz-website
+      - name: Debug downloadartifact
+        run: ls -r
 
       - name: Build the Docker image
         run: docker build --file Dockerfile.artifact --tag meerman.xyz:latest .
