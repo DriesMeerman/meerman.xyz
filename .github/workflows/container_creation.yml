@@ -26,6 +26,7 @@ jobs:
       run: docker build . --file Dockerfile --tag meerman.xyz:$(date +%s)
 
     - name: Publish the docker image
+      if: github.ref == 'refs/heads/main'
       run: docker push ${{secrets.DOCKER_USER}}/meerman.xyz
 
 
