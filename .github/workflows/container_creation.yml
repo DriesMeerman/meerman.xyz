@@ -42,9 +42,10 @@ jobs:
       - name: debug pre downloadartifact
         run: ls -r
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: meerman-xyz-website
+          path: dist
 
       - name: Debug downloadartifact
         run: ls -r
