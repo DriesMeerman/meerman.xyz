@@ -58,3 +58,28 @@ jobs:
 
       - name: Publish the docker image
         run: docker push ${{secrets.DOCKER_USER}}/meerman.xyz:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: publish-container
+    steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            containerName="meerman.xyz"
+            docker pull chrozera/meerman.xyz:latest
+            containerId=$(docker ps -a -q --filter="name=$containerName")
+            if [ -z "$containerId" ]
+            then
+            echo "No container running"
+            else
+            echo "Stopping container and removing old image"
+            docker rm $(docker stop $containerId)
+            fi
+            echo "Starting container"
+            docker run --name $containerName -d -p 4337:80 chrozera/meerman.xyz
