@@ -5,7 +5,7 @@
     let menuItems = [
         {link: "#/skills", text: "Skills"},
         // {link: "#/experience", text: "Experience"},
-        // {link: "#/education", text: "Education"}
+        {link: "#/education", text: "Education"}
     ]
 
     darkMode.subscribe(enabled => {
