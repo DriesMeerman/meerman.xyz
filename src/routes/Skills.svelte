@@ -60,7 +60,7 @@
     {#each Object.entries(skills) as [skill, content]}
         <div class="pt-3">
             <h2 class="text-xl leading-tight mb-2 font-thin">{skill}</h2>
-            <ul class="list-inside list-disc">
+            <ul class="list-inside list-disc text-sm">
                 {#each content as {name, items}}
                     <li>{name}</li>
                     {#if items.length > 0}

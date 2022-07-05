@@ -39,9 +39,9 @@
                                 {/if}
                             </div>
                             <div class="mx-1  max-w-[80%]">
-                                <div class="text-xs">{item.description}</div>
+                                <div class="text-sm">{item.description}</div>
                                 {#if item.bullets && item.bullets.length > 0 }
-                                    <ul class="list list-disc text-left ml-4 mt-1 text-xs">
+                                    <ul class="list list-disc text-left ml-4 mt-1 text-sm">
                                         {#each item.bullets as bullet}
                                             <li>{bullet}</li>
                                         {/each }
