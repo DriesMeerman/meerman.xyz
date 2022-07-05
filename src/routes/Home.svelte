@@ -4,7 +4,7 @@
 </script>
 
 
-<Person img="assets/dries.jpg" class="my-8">
+<Person class="my-8">
     <div class="max-w-3/4 p-2">
         I'm a software engineer interested in solving complex problems.
         Frameworks and programming languages and other techniques are tools not goals in themselves.

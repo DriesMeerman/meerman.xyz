@@ -44,21 +44,24 @@ export default {
 		json(),
 		svelte({
 			preprocess: [
-				scss(),
 				image({
+					sizes: [400],
+					processFolders: ['assets'],
+					processFoldersSizes: true,
 					compressionLevel: 8, // png quality level
-					quality: 80, 
+					quality: 80,
 					webpOptions: {
 						quality: 90,
 						lossless: false,
 						force: true
-					  },
-				})
+					},
+				}),
+				scss()
 			],
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production
-			}
+			},
 		}),
 
 		// we'll extract any component CSS out into

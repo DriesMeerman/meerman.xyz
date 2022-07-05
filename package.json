@@ -32,6 +32,7 @@
   "dependencies": {
     "particles.js": "github:DriesMeerman/particles.js",
     "sirv-cli": "^2.0.0",
-    "svelte-spa-router": "^3.2.0"
+    "svelte-spa-router": "^3.2.0",
+    "svelte-vertical-timeline": "^0.0.2"
   }
 }
