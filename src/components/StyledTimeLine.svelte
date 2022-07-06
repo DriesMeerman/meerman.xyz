@@ -31,13 +31,20 @@
                 </TimelineSeparator>
                 <TimelineContent>
                     <div>
-                        <h3>{item.title}</h3>
                         <div class="flex">
-                            <div class="m-2 relative thumbnail-holder">
-                                {#if item.image}
-                                <img class="h-full w-full object-cover absolute" src="{item.image}"/>
-                                {/if}
+                            {#if item.image}
+                            <div class="mx-2 relative thumbnail-holder self-center">
+                                    <img class="h-full w-full object-cover absolute" src="{item.image}"/>
                             </div>
+                            {/if}
+                            <div class="mb-2">
+                                <h1 >{item.title}</h1>
+                                <h1 class="text-sm">{item.subtitle || ''}</h1>
+                            </div>
+                        </div>
+
+                        <div class="flex">
+
                             <div class="mx-1  max-w-[80%]">
                                 <div class="text-sm">{item.description}</div>
                                 {#if item.bullets && item.bullets.length > 0 }
@@ -59,10 +66,10 @@
 <style>
 
     .thumbnail-holder {
-        width: 3rem;
-        height: 3rem;
-        min-width: 3rem;
-        min-height: 3rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        min-width: 1.5rem;
+        min-height: 1.5rem;
     }
 
     /* workaround with global because rollup removes the css as it,
