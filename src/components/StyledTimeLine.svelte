@@ -23,7 +23,7 @@
         {#each timeLineItems as item}
             <TimelineItem>
                 <TimelineOppositeContent slot="opposite-content">
-                    {item.date}
+                    {item.date || ''}
                 </TimelineOppositeContent>
                 <TimelineSeparator>
                     <TimelineDot />
@@ -46,7 +46,7 @@
                         <div class="flex">
 
                             <div class="mx-1  max-w-[80%]">
-                                <div class="text-sm">{item.description}</div>
+                                <div class="text-sm">{item.description || ''}</div>
                                 {#if item.bullets && item.bullets.length > 0 }
                                     <ul class="list list-disc text-left ml-4 mt-1 text-sm">
                                         {#each item.bullets as bullet}
@@ -54,6 +54,19 @@
                                         {/each }
                                     </ul>
                                 {/if }
+                                <div class="flex">
+                                    {#each item.attachments || [] as file}
+                                        <div>
+                                            <a href="{file.url}" target="_blank" rel="noopener noreferrer">
+                                                <div class="h-11 m-4 flex flex-row content-center flex-col">
+                                                    <img class="h-full" src="{file.image}" alt="">
+                                                    <p class="text-xs">{file.title}</p>
+                                                </div>
+                                            </a>
+
+                                        </div>
+                                    {/each}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -64,6 +77,9 @@
 {/if}
 
 <style>
+    .no-event {
+        pointer-events: none;
+    }
 
     .thumbnail-holder {
         width: 1.5rem;
