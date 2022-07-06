@@ -15,33 +15,33 @@
                 'Embedded software and Systems',
                 'DevOps and cloud based software'
             ],
-            date: 'May 2022',
+            date: '2022 May',
             image: getImage('uva_logo')
         },
         {
             title: 'UvA pre-master',
             description: '',
             bullets: ['Compiler construction', 'Operating systems', 'Automata and formal languages'],
-            date: 'August 2019',
+            date: '2019 Aug',
             image: getImage('uva_logo')
         },
         {
             title: 'HvA BSc Informatica',
             description: '',
             bullets: ['Major Software Engineering', 'Minor Digital Forensics'],
-            date: 'June 2018',
+            date: '2018 Jun',
             image: getImage('hva_logo')
         },
         {
             title: 'Mid Sweden University',
             description: 'International summer school with a focus on sustainability.',
-            date: 'July 2016',
+            date: '2016 Jul',
             image: getImage('miun_logo')
         },
         {
             title: 'Gerrit van der Veen College',
             description: 'HAVO high school with Nature and Technology profile.',
-            date: 'June 2013',
+            date: '2013 Jun',
         },
     ]
 </script>
