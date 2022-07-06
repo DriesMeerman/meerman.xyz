@@ -3,9 +3,9 @@
 
     let darkModeIconFill;
     let menuItems = [
-        {link: "#/skills", text: "Skills"},
         // {link: "#/experience", text: "Experience"},
-        {link: "#/education", text: "Education"}
+        {link: "#/education", text: "Education"},
+        {link: "#/skills", text: "Skills"},
     ]
 
     darkMode.subscribe(enabled => {
@@ -19,17 +19,17 @@
         <a href="/#/" class="font-semibold text-xl tracking-tight">Meerman</a>
     </div>
 
-    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto lg:h-7">
         <div class="text-sm lg:flex-grow">
             {#each menuItems as item}
                 <a href="{item.link}"
-                   class="block mt-4 lg:inline-block lg:mt-0 text-teal-900 dark:text-white dark:hover:text-sky-600 mr-4 hover:text-teal-600">
+                   class="block mtop-6 mt-4 lg:inline-block lg:mt-0 text-teal-900 dark:text-white dark:hover:text-sky-600 mr-4 hover:text-teal-600">
                     {item.text}
                 </a>
             {/each}
         </div>
         <div>
-            <div class="mt-4 cursor-pointer" on:click={toggleDarkMode} title={$darkMode ? 'Dark' : 'Light'}>
+            <div class="cursor-pointer mtop-6" on:click={toggleDarkMode} title={$darkMode ? 'Dark' : 'Light'}>
                 <svg class="transition5" width="24px" height="24px" viewBox="0 0 24 24" fill="{darkModeIconFill}"
                      xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8V16Z"/>
@@ -44,5 +44,9 @@
 <style>
     .transition5 {
         transition: all 0.5s;
+    }
+
+    .mtop-6 {
+        margin-top: 6px;
     }
 </style>
