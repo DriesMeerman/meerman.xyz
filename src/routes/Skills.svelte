@@ -55,8 +55,8 @@
     Some information has been omitted due to relevancy. <br>
     Overall I would describe my skill set as that of a Fullstack Engineer with DevOps knowledge.
 </Card>
-
-<Card class="my-8 grid grid-cols-1 md:grid-cols-2 px-6 pb-6 backdrop-blur-md">
+<!--backdrop-blur-md-->
+<Card class="my-8 grid grid-cols-1 md:grid-cols-2 px-6 pb-6">
     {#each Object.entries(skills) as [skill, content]}
         <div class="pt-3">
             <h2 class="text-xl leading-tight mb-2 font-thin">{skill}</h2>
