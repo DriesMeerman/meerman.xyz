@@ -3,24 +3,24 @@
     import Card from "../components/Card.svelte";
     import {getImage} from "../imageHelper";
 
-    let app4mationLogo = null;
-    let plat4mationLogo = null;
+    let app4mationLogo = getImage('app4mation', 'png');
+    let plat4mationLogo = getImage('plat4mation', 'png');;
 
 
     let work = [
-        {
-            title: 'App4mation',
-            subtitle: 'Associate Software Architect',
-            bullets: ["4Industry"],
-            date: 'Present',
-            image: app4mationLogo
-        },
+        // {
+        //     title: 'App4mation',
+        //     subtitle: 'Associate Software Architect',
+        //     bullets: ["4Industry"],
+        //     date: 'Present',
+        //     image: app4mationLogo
+        // },
         {
             title: 'App4mation',
             subtitle: 'Senior Developer',
-            description: 'Did iOS development for the 4Industry mobile application.',
+            description: 'iOS development for the 4Industry mobile application.',
             bullets: ["4Industry"],
-            date: '2022 Jun',
+            date: 'Now',
             image: app4mationLogo
         },
         {
