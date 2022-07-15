@@ -18,7 +18,7 @@
 <div class="flex flex-col h-full">
 	<Menu></Menu>
 	<div class="wrapper flex flex-col flex-grow items-center">
-		<main class="p-6 pt-24 w-full sm:w-2/3 dark:text-white">
+		<main class="p-6 pt-12 w-full sm:w-2/3 dark:text-white">
 			<Router routes={{
 				'/': Home,
 				'/skills': Skills,
