@@ -8,19 +8,20 @@
 
 
     let work = [
-        // {
-        //     title: 'App4mation',
-        //     subtitle: 'Associate Software Architect',
-        //     bullets: ["4Industry"],
-        //     date: 'Present',
-        //     image: app4mationLogo
-        // },
+        {
+            title: '4Industry',
+            subtitle: 'Senior Developer',
+            description: 'Company was renamed to better align with our product. Working on the iOS app, and doing some architecture work.',
+            bullets: ["4Industry"],
+            date: '2022 Oct',
+            image: app4mationLogo
+        },
         {
             title: 'App4mation',
             subtitle: 'Senior Developer',
             description: 'iOS development for the 4Industry mobile application.',
             bullets: ["4Industry"],
-            date: 'Now',
+            date: '2022 Oct',
             image: app4mationLogo
         },
         {
