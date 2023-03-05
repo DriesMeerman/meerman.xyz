@@ -27,7 +27,7 @@
 			}} />
 		</main>
 
-		<div class="particle-background">
+		<div class="particle-background max-h-screen">
 			<Particles class="h-full border-1"></Particles>
 		</div>
 	</div>
