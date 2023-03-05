@@ -8,6 +8,8 @@ import image from 'svelte-image'
 import { scss } from 'svelte-preprocess';
 
 import json from '@rollup/plugin-json';
+import markdown from '@jackfranklin/rollup-plugin-markdown'
+import glob from 'rollup-plugin-glob'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -42,6 +44,8 @@ export default {
 	},
 	plugins: [
 		json(),
+		markdown(),
+		glob(),
 		svelte({
 			preprocess: [
 				image({
