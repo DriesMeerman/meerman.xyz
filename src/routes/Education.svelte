@@ -1,7 +1,7 @@
 <script>
     import Card from "../components/Card.svelte";
     import StyledTimeLine from "../components/StyledTimeLine.svelte";
-    import {getImage} from "../imageHelper";
+    import {getImage} from "../services/imageService";
 
     const timelineItems = [
         {

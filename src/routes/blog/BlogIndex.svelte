@@ -1,33 +1,25 @@
 <script>
-    import { onMount, onDestroy } from "svelte";
-    import {particlesEnabled} from "../../state";
-
-    import all from './articles/*.md'
-    import Card from "../../components/Card.svelte";
-
-    export const posts = all.map( post => {
-        const {filename, html, metadata} = post;
-
-        const permalink = filename.replace(/\.md$/, '')
-        const date = new Date(metadata.date)
-
-        return {...metadata, permalink, filename, date, html}
-    }).sort( (lhs, rhs) => {
-        return lhs.date < rhs.date;
-    })
-
-    export function isLast(list, index) {
-        return (list.length - 1) == index;
-    }
-
+    // import { onMount, onDestroy } from "svelte";
+    // import {particlesEnabled} from "../../state";
     // onMount(() => particlesEnabled.set(false))
     // onDestroy(() => particlesEnabled.set(true))
 
-    console.log('posts', posts[0])
+    import all from './articles/*.md'
+    import Card from "../../components/Card.svelte";
+    import {transformMeta, sortByDate} from "../../services/markdownService";
+
+    export const posts = all.map(transformMeta).sort(sortByDate)
+
+    export function isLast(list, index) {
+        return (list.length - 1) === index;
+    }
+
+    let first = posts[0]
+    console.log('posts', first, Object.keys((first)))
 </script>
 
 <div>
-    <h1 class="justify-center flex text-4xl pb-12">Blog index</h1>
+    <h1 class="justify-center flex text-4xl pb-12">Articles</h1>
 
     <Card class="p-6">
         <div>
