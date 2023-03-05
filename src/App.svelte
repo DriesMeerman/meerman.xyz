@@ -1,17 +1,22 @@
 <script>
 	import Router, {location, link} from 'svelte-spa-router';
 	import Particles from './components/Particles.svelte'
-	import {darkMode} from "./state"
+	import {darkMode, particlesEnabled} from "./state"
 	import Menu from './components/Menu.svelte'
 	import Home from './routes/Home.svelte'
 	import Experience from "./routes/Experience.svelte";
 	import Skills from './routes/Skills.svelte'
 	import Education from "./routes/Education.svelte";
+	import BlogIndex from "./routes/blog/BlogIndex.svelte";
 
+
+	let showBackground = true;
 
 	darkMode.subscribe (enabled => document.documentElement.classList.toggle('dark', enabled));
+	particlesEnabled.subscribe( enabled => showBackground = enabled)
 
-	export let url = "";
+	// export let url = "";
+
 
 </script>
 
@@ -23,11 +28,12 @@
 				'/': Home,
 				'/skills': Skills,
 				'/experience': Experience,
-				'/education': Education
+				'/education': Education,
+				'/blog': BlogIndex
 			}} />
 		</main>
 
-		<div class="particle-background max-h-screen">
+		<div class="particle-background max-h-screen" class:hidden={!showBackground}>
 			<Particles class="h-full border-1"></Particles>
 		</div>
 	</div>
