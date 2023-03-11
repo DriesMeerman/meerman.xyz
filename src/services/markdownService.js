@@ -7,7 +7,11 @@ export function transformMeta(file){
     const {filename, html} = file;
     // .meta is used by markdown-it for generating rss feed, while .metadata is for svelte Markdown plugin
     const metadata = file.metadata || file.meta;
-    const permalink = filename.replace(/\.md$/, '');
+    const blogPath = filename
+        .toLowerCase()
+        .replace(/\.md$/, '');
+    const permalink = `/#/blog/${blogPath}`
+
     const date = new Date(metadata.date);
 
     return {...metadata, permalink, filename, date, html};

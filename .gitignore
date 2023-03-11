@@ -5,4 +5,4 @@
 .DS_Store
 .idea/
 /static/feed.xml
-/static/data.json
+/static/feed.json

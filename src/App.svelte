@@ -8,17 +8,15 @@
 	import Skills from './routes/Skills.svelte'
 	import Education from "./routes/Education.svelte";
 	import BlogIndex from "./routes/blog/BlogIndex.svelte";
-
+	import Article from "./routes/blog/Article.svelte";
 
 	let showBackground = true;
 
 	darkMode.subscribe (enabled => document.documentElement.classList.toggle('dark', enabled));
 	particlesEnabled.subscribe( enabled => showBackground = enabled)
 
-	// export let url = "";
-
-
 </script>
+
 
 <div class="flex flex-col h-full">
 	<Menu></Menu>
@@ -29,19 +27,21 @@
 				'/skills': Skills,
 				'/experience': Experience,
 				'/education': Education,
-				'/blog': BlogIndex
+				'/blog/:slug': Article,
+				'/blog': BlogIndex,
 			}} />
 		</main>
 
-		<div class="particle-background max-h-screen" class:hidden={!showBackground}>
+		<div class="particle-background max-h-screen" class:fade-in={showBackground} class:fade-out={!showBackground}>
 			<Particles class="h-full border-1"></Particles>
 		</div>
 	</div>
-
-
 </div>
 
+
 <style lang="scss">
+	$fade-in-seconds: 3s;
+	$fade-out-seconds: 2s;
 
 	@media (min-width: 640px) {
 		main {
@@ -67,5 +67,70 @@
 		}
 	}
 
+	.fade-in {
+		animation: fadeIn $fade-in-seconds;
+		-webkit-animation: fadeIn $fade-in-seconds;
+		-moz-animation: fadeIn $fade-in-seconds;
+		-o-animation: fadeIn $fade-in-seconds;
+		-ms-animation: fadeIn $fade-in-seconds;
+	}
 
+	.fade-out {
+		animation: fadeOut $fade-out-seconds;
+		-webkit-animation: fadeOut $fade-out-seconds;
+		-moz-animation: fadeOut $fade-out-seconds;
+		-o-animation: fadeOut $fade-out-seconds;
+		-ms-animation: fadeOut $fade-out-seconds;
+		opacity: 0;
+	}
+
+	@keyframes fadeOut {
+		0% { opacity: 1; }
+		100% { opacity: 0; }
+	}
+
+	@-moz-keyframes fadeOut {
+		0% { opacity: 1; }
+		100% { opacity: 0; }
+	}
+
+	@-webkit-keyframes fadeOut {
+		0% { opacity: 1; }
+		100% { opacity: 0; }
+	}
+
+	@-o-keyframes fadeOut {
+		0% { opacity: 1; }
+		100% { opacity: 0; }
+	}
+
+	@-ms-keyframes fadeOut {
+		0% { opacity: 1; }
+		100% { opacity: 0; }
+	}
+
+	@keyframes fadeIn {
+		0% { opacity: 0; }
+		100% { opacity: 1; }
+	}
+
+	@-moz-keyframes fadeIn {
+		0% { opacity: 0; }
+		100% { opacity: 1; }
+	}
+
+	@-webkit-keyframes fadeIn {
+		0% { opacity: 0; }
+		100% { opacity: 1; }
+	}
+
+	@-o-keyframes fadeIn {
+		0% { opacity: 0; }
+		100% { opacity: 1; }
+	}
+
+	@-ms-keyframes fadeIn {
+		0% { opacity: 0; }
+		100% { opacity: 1; }
+	}
 </style>

@@ -6,6 +6,7 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
   },
   plugins: [
+    require('@tailwindcss/typography'),
   ],
   content: [
     "./static/*.html",
