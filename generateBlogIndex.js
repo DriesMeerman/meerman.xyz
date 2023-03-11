@@ -13,6 +13,10 @@ const outputDir = path.join(__dirname, 'static');
 const outputFilePath = path.join(outputDir, 'feed.json');
 const outputRssPath = path.join(outputDir, 'feed.xml');
 
+if (!fs.existsSync(markdownDir)) {
+    console.log('No articles found, stopping...');
+    return;
+}
 const files = fs.readdirSync(markdownDir)
 
 console.log("Found files:")
