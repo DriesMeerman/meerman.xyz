@@ -10,11 +10,7 @@
 	import BlogIndex from "./routes/blog/BlogIndex.svelte";
 	import Article from "./routes/blog/Article.svelte";
 
-	let showBackground = true;
-
 	darkMode.subscribe (enabled => document.documentElement.classList.toggle('dark', enabled));
-	particlesEnabled.subscribe( enabled => showBackground = enabled)
-
 </script>
 
 
@@ -32,7 +28,7 @@
 			}} />
 		</main>
 
-		<div class="particle-background max-h-screen" class:fade-in={showBackground} class:fade-out={!showBackground}>
+		<div class="particle-background max-h-screen" class:fade-in={$particlesEnabled} class:fade-out={!$particlesEnabled}>
 			<Particles class="h-full border-1"></Particles>
 		</div>
 	</div>

@@ -4,36 +4,38 @@
     import {transformMeta, sortByDate} from "../../services/markdownService";
 
     export const posts = articles.map(transformMeta).sort(sortByDate)
-
+    
     export function isLast(list, index) {
         return (list.length - 1) === index;
     }
 </script>
 
-<h1 class="justify-center flex text-4xl pb-12">Articles</h1>
 
-<Card class="p-6">
-    <div class="w-full">
-        {#each posts as post, index}
-            <article class="{index === 0 ? '' : 'pt-6'}">
+<div class:hidden={posts.length < 1}>
+    <h1 class="justify-center flex text-4xl pb-12">Articles</h1>
+    <Card class="p-6">
+        <div class="w-full">
+            {#each posts as post, index}
+                <article class="{index === 0 ? '' : 'pt-6'}">
+                    <a class="cursor-pointer" href={post.permalink}>
+                        <div class="flex flex-row justify-between">
+                            <h2 class="text-2xl hover:decoration-blue-400">{post.title}</h2>
+                            <p class="">[{post.date.toLocaleDateString()}]</p>
+                        </div>
+                    </a>
+                    {#if post.summary}
+                        <p class="text-sm pt-2">{post.summary}</p>
+                    {/if}
 
-                <a class="cursor-pointer" href={post.permalink}>
-                    <div class="flex flex-row justify-between">
-                        <h2 class="text-2xl hover:decoration-blue-400">{post.title}</h2>
-                        <p class="">[{post.date.toLocaleDateString()}]</p>
-                    </div>
-                </a>
-                {#if post.summary}
-                    <p class="text-sm pt-2">{post.summary}</p>
+                </article>
+                {#if !isLast(posts, index)}
+                    <hr class="mt-2">
                 {/if}
+            {/each}
+        </div>
+    </Card>
+</div>
 
-            </article>
-            {#if !isLast(posts, index)}
-                <hr class="mt-2">
-            {/if}
-        {/each}
-    </div>
-</Card>
 
 <div class="rss-icon" title="This will open the rss feed">
     <a href="/feed.xml">
