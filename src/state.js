@@ -4,6 +4,7 @@ let storedTheme = localStorage.theme
 let defaultMode = storedTheme ? storedTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 const darkMode = writable(defaultMode)
+const particlesEnabled = writable(true)
 
 function toggleDarkMode() {
 	darkMode.update(c => {
@@ -12,4 +13,15 @@ function toggleDarkMode() {
     } );
 }
 
-export { darkMode, toggleDarkMode }
+function toggleParticles(){
+    particlesEnabled.update(b => {
+        return b = !b;
+    })
+}
+
+export {
+    darkMode,
+    toggleDarkMode,
+    particlesEnabled,
+    toggleParticles
+}

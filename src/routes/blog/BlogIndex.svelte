@@ -1,0 +1,60 @@
+<script>
+    import articles from './articles/*.md'
+    import Card from "../../components/Card.svelte";
+    import {transformMeta, sortByDate} from "../../services/markdownService";
+
+    export const posts = articles.map(transformMeta).sort(sortByDate)
+    
+    export function isLast(list, index) {
+        return (list.length - 1) === index;
+    }
+</script>
+
+
+{#if posts.length >= 1}
+    <h1 class="justify-center flex text-4xl pb-12">Articles</h1>
+    <Card class="p-6">
+        <div class="w-full">
+            {#each posts as post, index}
+                <article class="{index === 0 ? '' : 'pt-6'}">
+                    <a class="cursor-pointer" href={post.permalink}>
+                        <div class="flex flex-row justify-between">
+                            <h2 class="text-2xl hover:decoration-blue-400">{post.title}</h2>
+                            <p class="">[{post.date.toLocaleDateString()}]</p>
+                        </div>
+                    </a>
+                    {#if post.summary}
+                        <p class="text-sm pt-2">{post.summary}</p>
+                    {/if}
+
+                </article>
+                {#if !isLast(posts, index)}
+                    <hr class="mt-2">
+                {/if}
+            {/each}
+        </div>
+    </Card>
+{:else}
+    <div>Error no articles found</div>
+{/if}
+
+
+<div class="rss-icon" title="This will open the rss feed">
+    <a href="/feed.xml">
+        <svg class="dark:fill-white" width="25" height="25" version="1.1" xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490 490" xml:space="preserve">
+        <g><g><g><path d="M468.2,489.5H20.8C9.4,489.5,0,480.1,0,468.7V21.3C0,9.9,9.4,0.5,20.8,0.5h448.4c11.4,0,20.8,9.4,20.8,20.8v448.4     C489,480.1,479.6,489.5,468.2,489.5z M40.6,448.9h407.8V41.1H40.6V448.9z"/>
+                <g><path d="M260.1,419.8c-11.4,0-20.8-9.4-20.8-20.8c0-77-62.4-139.4-139.4-139.4c-11.4,0-20.8-9.4-20.8-20.8      c0-11.4,9.4-20.8,20.8-20.8c99.9,0,181,81.1,181,181C280.9,410.4,271.5,419.8,260.1,419.8z"/>
+                    <path d="M347.5,419.8c-11.4,0-20.8-9.4-20.8-20.8c0-124.8-102-227.8-227.8-227.8c-11.4,0-20.8-9.4-20.8-20.8s9.4-20.8,20.8-20.8      c147.7,0,268.4,120.7,268.4,268.4C368.3,410.4,358.9,419.8,347.5,419.8z"/>
+                    <path d="M173.7,419.8c-11.4,0-20.8-9.4-20.8-20.8c0-29.1-23.9-53.1-53.1-53.1c-11.4,0-20.8-9.4-20.8-20.8      c0-11.4,9.4-20.8,20.8-20.8c52,0,94.7,42.7,94.7,94.7C194.5,410.4,185.2,419.8,173.7,419.8z"/></g></g></g></g>
+    </svg>
+    </a>
+</div>
+
+<style>
+    .rss-icon {
+        position: fixed;
+        left: 1rem;
+        bottom: 1rem;
+    }
+</style>

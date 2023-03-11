@@ -1,7 +1,7 @@
 <script>
     import StyledTimeLine from "../components/StyledTimeLine.svelte";
     import Card from "../components/Card.svelte";
-    import {getImage} from "../imageHelper";
+    import {getImage} from "../services/imageService";
 
     let app4mationLogo = getImage('app4mation', 'png');
     let plat4mationLogo = getImage('plat4mation', 'png');;
