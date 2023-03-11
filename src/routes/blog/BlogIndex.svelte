@@ -11,7 +11,7 @@
 </script>
 
 
-<div class:hidden={posts.length < 1}>
+{#if posts.length >= 1}
     <h1 class="justify-center flex text-4xl pb-12">Articles</h1>
     <Card class="p-6">
         <div class="w-full">
@@ -34,7 +34,9 @@
             {/each}
         </div>
     </Card>
-</div>
+{:else}
+    <div>Error no articles found</div>
+{/if}
 
 
 <div class="rss-icon" title="This will open the rss feed">
