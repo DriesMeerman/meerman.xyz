@@ -1,19 +1,16 @@
-import fs from 'fs';
-import path from 'path';
-import MarkdownIt from 'markdown-it';
-import RSS from 'rss';
-import { fileURLToPath } from 'url';
-import meta from 'markdown-it-meta';
+const fs = require('fs');
+const path = require('path');
+const MarkdownIt = require('markdown-it');
+const RSS = require('rss');
+const meta = require('markdown-it-meta');
 
 const md = new MarkdownIt()
 md.use(meta);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const markdownDir = path.join(__dirname, 'src/routes/blog/articles/');
 const outputDir = path.join(__dirname, 'static');
-const outputFilePath = path.join(outputDir, 'data.json');
+
+const outputFilePath = path.join(outputDir, 'feed.json');
 const outputRssPath = path.join(outputDir, 'feed.xml');
 
 const files = fs.readdirSync(markdownDir)
@@ -27,10 +24,14 @@ const data = files.map((filename) => {
     const content = fs.readFileSync(path.join(markdownDir, filename), 'utf-8');
     md.render(content);
     const metaData = md.meta;
+    const blogUrlPath = filename
+        .toLowerCase()
+        .replace(/\.md$/, '');
 
     return {
         filename: filename,
-        ...metaData
+        ...metaData,
+        url: `https://meerman.xyzm/#/blog/${blogUrlPath}`,
     };
 });
 
@@ -48,10 +49,11 @@ const feed = new RSS({
 });
 
 data.forEach((item) => {
+
     feed.item({
         title: item.title,
         description: item.summary,
-        url: `https://meerman.xyzm/blog/${item.filename.replace(/\.md$/, '')}`,
+        url: item.url,
         date: new Date(item.date),
     });
 });
