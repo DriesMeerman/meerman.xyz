@@ -3,9 +3,9 @@
 
     let darkModeIconFill;
     let menuItems = [
-        // {link: "#/blog", text: "Blog"},
         {link: "#/experience", text: "Experience"},
         {link: "#/education", text: "Education"},
+        {link: "#/blog", text: "Blog"},
         {link: "#/skills", text: "Skills"},
     ]
 
