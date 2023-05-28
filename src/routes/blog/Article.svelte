@@ -19,7 +19,7 @@
 
 
 {#if post}
-    <div class="prose dark:prose-invert max-w-none">
+    <div class="prose dark:prose-invert max-w-none list-disc dark:marker:text-white">
         {@html post.html}
     </div>
 {:else }
