@@ -45,7 +45,7 @@ With the changes in management at Twitter microblogging and normal blogging seem
 For myself I'd rather consume short blog articles with deeper content than similar twitter threads.
 For that reason I also want to make everything accessible through an RSS feed, as that is how I would like to consume the content.
 RSS feeds give people back the control rather than being at the whims of big tech algorithms.
-The feed for this blog can be found [here](/feed.xml)
+The feed for this blog can be found [here](/feed.xml).
 
 
 ## Solution a custom tech stack
