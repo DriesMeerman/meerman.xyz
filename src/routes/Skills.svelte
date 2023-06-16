@@ -1,5 +1,6 @@
 <script>
     import Card from "../components/Card.svelte";
+    import PillButton from "../components/PillButton.svelte";
     import SkillCard from "../components/SkillCard.svelte";
 
     const toNameItems = label => {
@@ -48,17 +49,30 @@
         "Languages": ['Dutch (native)', 'English (fluent)'].map(toNameItems),
         "Processes": ['Scrum (PSM I)', 'DevOps'].map(toNameItems)
     }
-</script>
 
-<Card class="px-6 py-3 my-8 content-center">
-    <div class="flex justify-center items-center  w-full">
-
-
-        <SkillCard></SkillCard>
-    </div>
+    let categories = {
+        "frontend": {name: "Frontend", selected: true},
+        "backend": {name: "Backend", selected: true},
+        "mobile": {name: "Mobile", selected: true},
+        "tooling": {name: "Tooling", selected: true},
+        "misc": {name: "Other", selected: true},
+}
 
     
 
+</script>
+
+
+<div class="category-selectors flex flex-row">
+    {#each Object.values(categories) as category}
+        <PillButton name={category.name} isSelected={category.selected}></PillButton>
+    {/each}
+</div>
+
+<Card class="px-6 py-3 my-8 content-center">
+    <div class="flex justify-center items-center  w-full">
+        <SkillCard></SkillCard>
+    </div>
 </Card>
 
 <Card class="px-6 py-3">
@@ -67,7 +81,7 @@
     Some information has been omitted due to relevancy. <br>
     Overall I would describe my skill set as that of a Fullstack Engineer with DevOps knowledge.
 </Card>
-<!--backdrop-blur-md-->
+
 <Card class="my-8 grid grid-cols-1 md:grid-cols-2 px-6 pb-6">
     {#each Object.entries(skills) as [skill, content]}
         <div class="pt-3">
