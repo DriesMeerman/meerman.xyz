@@ -1,5 +1,6 @@
 <script>
     import Card from "../components/Card.svelte";
+    import SkillCard from "../components/SkillCard.svelte";
 
     const toNameItems = label => {
         return {name: label, items: []}
@@ -48,6 +49,17 @@
         "Processes": ['Scrum (PSM I)', 'DevOps'].map(toNameItems)
     }
 </script>
+
+<Card class="px-6 py-3 my-8 content-center">
+    <div class="flex justify-center items-center  w-full">
+
+
+        <SkillCard></SkillCard>
+    </div>
+
+    
+
+</Card>
 
 <Card class="px-6 py-3">
     Shown below is an overview of skills I have consisting of programming languages, frameworks and technologies.
