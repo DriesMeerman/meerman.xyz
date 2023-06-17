@@ -1,13 +1,19 @@
 <script>
-    export let isSelected;
+    export let selected = false;
     export let name;
+
+
+    const select = () => {
+        selected = !selected;
+    }
+
 </script>
 
 <button class="py-2 px-4 flex rounded-full bg-stone-300 hover:bg-stone-400 dark:bg-zinc-500 bg-opacity-80 dark:bg-opacity-70 hover:dark:bg-zinc-600 hover:outline outline-1"
-on:click="{() => isSelected = !isSelected}">
+on:click="{select}" on:click>
 
 
-<div class="{isSelected ? 'w-4' : 'opacity-0 w-0'}  h-6 transition-all duration-300 ease dark:fill-white flex flex-col justify-center">
+<div class="{selected ? 'w-4' : 'opacity-0 w-0'}  h-6 transition-all duration-300 ease dark:fill-white flex flex-col justify-center">
 <svg class="w-4 h-4" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
 width="800px" height="800px" viewBox="0 0 78.369 78.369"
 xml:space="preserve">
