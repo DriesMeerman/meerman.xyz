@@ -3,10 +3,10 @@
 
     let darkModeIconFill;
     let menuItems = [
+        {link: "#/skills", text: "Skills"},
         {link: "#/experience", text: "Experience"},
         {link: "#/education", text: "Education"},
         {link: "#/blog", text: "Blog"},
-        {link: "#/skills", text: "Skills"},
     ]
 
     darkMode.subscribe(enabled => {
@@ -30,7 +30,9 @@
             {/each}
         </div>
         <div>
-            <div class="cursor-pointer mtop-6" on:click={toggleDarkMode} title={$darkMode ? 'Dark' : 'Light'}>
+            <div tabindex="0" class="cursor-pointer mtop-6" role="button" on:click={toggleDarkMode} 
+            on:keydown={(e) => {if (e.key === 'Enter' || e.key === ' ') toggleDarkMode()}} 
+            title={$darkMode ? 'Dark' : 'Light'} >
                 <svg class="transition5" width="24px" height="24px" viewBox="0 0 24 24" fill="{darkModeIconFill}"
                      xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8V16Z"/>
