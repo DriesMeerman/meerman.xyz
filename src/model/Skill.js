@@ -17,6 +17,17 @@ export class Skill {
         this.altText = altText;
         this.bullets = bullets;
     }
+
+    /**
+     * a method that hashes the name of the skill to a number
+     */
+    getHash() {
+        let hash = 0;
+        for (let i = 0; i < this.name.length; i++) {
+            hash = this.name.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return hash;
+    }
 }
 
 export const skills = {

@@ -1,12 +1,108 @@
 <script>
     
     export let title;
-    export let description;
+    export let description = "";
     export let image;
-    export let alt
+    export let alt = null;
     export let items;
 
+    export let gradient = 0;
+    export let rarity = "common";
+
     let wasClicked = false;
+
+
+    // from-purple-500/25 to-pink-500/25
+
+
+
+    const colorPairs = [
+        ["from-purple-500/25", "to-pink-500/25"],
+        ["from-green-500/25", "to-blue-500/25"],
+        ["from-yellow-500/25", "to-red-500/25"],
+        ["from-pink-500/25", "to-purple-500/25"],
+        ["from-blue-500/25", "to-green-500/25"],
+        ["from-red-500/25", "to-yellow-500/25"],
+        ["from-pink-500/25", "to-yellow-500/25"],
+        ["from-blue-500/25", "to-purple-500/25"],
+        ["from-red-500/25", "to-green-500/25"],
+        ["from-purple-500/25", "to-blue-500/25"],
+        ["from-green-500/25", "to-yellow-500/25"],
+        ["from-yellow-500/25", "to-pink-500/25"],
+        ["from-gray-500/25", "to-pink-300/25"],
+        ["from-pink-400/25", "to-purple-600/25"],
+    ];
+
+
+    const colors = {
+        "purple": "from-purple-500/25 to-pink-500/25",
+        "green": "from-green-500/25 to-blue-500/25",
+        "yellow": "from-yellow-500/25 to-red-500/25",
+        "pink": "from-pink-500/25 to-purple-500/25",
+        // "blue": "from-blue-500/25 to-green-500/25",
+        
+        
+        //"blue": "from-blue-500/25 to-purple-500/25",
+
+
+"blue": "from-cyan-500/25 to-blue-500/25",
+
+        // "red": "from-red-500/25 to-yellow-500/25",
+
+        "red": "from-amber-500/25 to-red-500/25",
+
+        // "gray": "from-gray-500/25 to-pink-300/25",
+        "gray": "from-gray-500/25 to-pink-300/25",
+    };
+
+    const colorRarity = {
+        "common": colors.gray,
+        "uncommon": colors.green,
+        "rare": colors.blue,
+        "epic": colors.purple,
+        "legendary": colors.red,
+    };
+    
+
+    // let colorPairs = [...rareColorPairs]
+
+    // let usedColorPairsIndices = [];
+
+
+    function getGradient() {
+
+        return colorRarity[rarity];
+
+        // get random value from colors
+        // let keys = Object.keys(colors);
+        // let randomKey = keys[Math.floor(Math.random() * keys.length)];
+        // console.log(randomKey);
+        // return colors[randomKey];
+
+        // let index = Math.abs(gradient) % colorPairs.length;
+        // // console.log(index, colorPairs.length, colorPairs);
+
+        // return colorPairs[index].join(' ');
+
+        // let randomIndex = Math.floor(Math.random() * colorPairs.length);
+
+        // // add index to used indices
+        // usedColorPairsIndices.push(randomIndex);
+
+
+        // // check if random index has been used before
+        // while (usedColorPairsIndices.includes(randomIndex)) {
+        //     randomIndex = randomIndex+1 % colorPairs.length;
+        // }
+
+        // // if all indices have been used, reset used indices
+        // if (usedColorPairsIndices.length === colorPairs.length) {
+        //     usedColorPairsIndices = [];
+        // }
+
+
+        // return colorPairs[randomIndex].join(' ');
+    }
 </script>
 
 
@@ -16,7 +112,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace&display=swap" rel="stylesheet"> 
 </svelte:head>
 
-<div class="skill-card {wasClicked ? 'show-back-side' : ''} flex flex-col h-80 w-48 border-solid border-teal rounded-lg bg-gradient-to-r from-purple-500/25 to-pink-500/25" 
+<div class="skill-card {wasClicked ? 'show-back-side' : ''} flex flex-col h-80 w-48 border-solid border-teal rounded-lg bg-gradient-to-r {colorRarity[rarity]}" 
 role="button"
     on:click={() => wasClicked = !wasClicked}
     on:keydown={(event) => {
@@ -32,7 +128,8 @@ role="button"
             <img alt="{alt || `${title} logo`}" class="image object-contain h-full w-full" src="{image}"/>
         </div>
         <div class="skill-title m-4 ">
-            {title}
+            {title} 
+            <!-- {`(${rarity})`} -->
             <hr class="max-w-[80%] dark:border-zinc-50 border-zinc-800">
         </div>
         <div class="card-body-text m-4 mt-auto break-words">
@@ -72,6 +169,8 @@ role="button"
         position: relative;
         transform-style: preserve-3d;
         transition: transform 0.6s;
+
+        perspective: 1000px;
 
         .back {
             position: absolute;
