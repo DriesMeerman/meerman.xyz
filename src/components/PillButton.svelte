@@ -3,7 +3,7 @@
     export let name;
 </script>
 
-<button class="py-2 px-4 mx-2 flex rounded-full bg-stone-300 hover:bg-stone-400 dark:bg-zinc-500 bg-opacity-80 dark:bg-opacity-70 hover:dark:bg-zinc-600 hover:outline outline-1"
+<button class="py-2 px-4 flex rounded-full bg-stone-300 hover:bg-stone-400 dark:bg-zinc-500 bg-opacity-80 dark:bg-opacity-70 hover:dark:bg-zinc-600 hover:outline outline-1"
 on:click="{() => isSelected = !isSelected}">
 
 

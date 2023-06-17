@@ -1,9 +1,12 @@
 <script>
     
-    export let title = "Tailwind CSS";
-    export let description = "Tailwind css is a utility first css framework. It allows you to build custom components with ease.";
-    export let image = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/2048px-Tailwind_CSS_Logo.svg.png";
+    export let title;
+    export let description;
+    export let image;
     export let alt
+    export let items;
+
+    let wasClicked = false;
 </script>
 
 
@@ -13,32 +16,90 @@
 <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace&display=swap" rel="stylesheet"> 
 </svelte:head>
 
-<div class="skill-card flex flex-col h-80 w-48 border-solid border-teal rounded-lg bg-gradient-to-r from-purple-500/25 to-pink-500/25">
+<div class="skill-card {wasClicked ? 'show-back-side' : ''} flex flex-col h-80 w-48 border-solid border-teal rounded-lg bg-gradient-to-r from-purple-500/25 to-pink-500/25" 
+role="button"
+    on:click={() => wasClicked = !wasClicked}
+    on:keydown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            wasClicked = !wasClicked;
+            event.preventDefault();
+        }
+    }}
+    tabindex="0">
 
-    <div class="skill-logo border-solid border-2 border-white/10 h-36 w-36 mx-4 mt-4 self-center p-2 rounded-lg">
-        <img alt="{alt || `${title} logo`}" class="image h-full w-full" src="{image}"/>
+    <div class="front h-full w-full">
+        <div class="skill-logo border-solid border-2 border-white/10 h-32 w-32 mx-4 mt-4 self-center p-4 rounded-lg">
+            <img alt="{alt || `${title} logo`}" class="image object-contain h-full w-full" src="{image}"/>
+        </div>
+        <div class="skill-title m-4 ">
+            {title}
+            <hr class="max-w-[80%] dark:border-zinc-50 border-zinc-800">
+        </div>
+        <div class="card-body-text m-4 mt-auto break-words">
+            {description}
+        </div>
     </div>
-    <div class="skill-title m-4 ">
-        {title}
-        <hr class="max-w-[80%] dark:border-zinc-50 border-zinc-800">
-    </div>
-    <div class="description m-4 mt-auto">
-        {description}
+
+    <div class="back card-body-text h-full w-full flex flex-col p-4 mt-auto">
+        {#if items}
+            <ul class="list-inside list-disc">
+                {#each items as item}
+                <li>
+                    {item}
+                </li>
+            {/each}
+            </ul>
+            
+        {/if}
     </div>
 
 </div>
 
-<style>
+<style lang="scss">
     
+    .show-back-side {
+        transition: all ease 0.8s;
+        transform: rotateY(180deg);
 
+        .skill-card {
+            transform: rotateY(180deg);
 
-    .description {
+        }
+    }
+
+    .skill-card {
+
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s;
+
+        .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            transform: rotateY(180deg);
+
+            ul {
+                margin-top: auto;
+            }
+
+        }
+        .front {
+            transform: rotateY(0deg);
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    .card-body-text {
         font-size: 10px;
         font-family: monospace;
     }
 
     .skill-logo{
-        box-shadow: inset 1px 1px 2px 1px #0000004f
+        box-shadow: inset 1px 1px 2px 1px #0000004f;
     }
 
     .skill-title {
@@ -59,7 +120,11 @@
         box-shadow: 1px 1px 3px 0px rgb(23 76 76 / 70%)
 
         /* box-shadow: 1px 1px 3px 0px rgb(153 166 166); */
+
+       
     }
+
+
 
     :hover.skill-card {
         transition: all ease 0.4s;

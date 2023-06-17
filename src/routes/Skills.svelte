@@ -2,77 +2,101 @@
     import Card from "../components/Card.svelte";
     import PillButton from "../components/PillButton.svelte";
     import SkillCard from "../components/SkillCard.svelte";
+    import {skills} from "../model/Skill.js";
 
     const toNameItems = label => {
         return {name: label, items: []}
     }
 
-    let skills = {
-        "Programming": [
-            {
-                name: 'Swift',
-                items: ['SwiftUI / UIKit', 'Alamofire']
-            },
-            {name: 'HTML', items: []},
-            {name: '(S)CSS', items: []},
-            {
-                name: 'Javascript',
-                items: ['NodeJS',
-                    // 'Angularjs',
-                    'Vue.js',
-                    'Svelte',
-                    'Gulp'
-                ]
-            },
-            {name: 'SQL', items: []},
-            {
-                name: 'Python',
-                items: ['Scikit-learn',
-                    // 'pandas',
-                    'flask',
-                    // 'Jupyter-notebook'
-                ]
-            },
-            {name: 'Dart', items: ['Flutter']},
-            {
-                name: 'Java', items: [
-                    'Junit',
-                    'Spring',
-                    'Android'
-                ]
-            },
-            {name: 'Kotlin', items: []},
-            {name: 'Haskell', items: []},
-        ],
-        "Technologies": ['Git', 'Docker', 'Linux', 'Windows', 'MacOS', 'UML', 'Azure DevOps', 'ServiceNow',
-            'Gitlab CI/CD', 'Github Actions'].map(toNameItems),
-        "Languages": ['Dutch (native)', 'English (fluent)'].map(toNameItems),
-        "Processes": ['Scrum (PSM I)', 'DevOps'].map(toNameItems)
-    }
+    // let skills = {
+    //     "Programming": [
+    //         {
+    //             name: 'Swift',
+    //             items: ['SwiftUI / UIKit', 'Alamofire']
+    //         },
+    //         {name: 'HTML', items: []},
+    //         {name: '(S)CSS', items: []},
+    //         {
+    //             name: 'Javascript',
+    //             items: ['NodeJS',
+    //                 // 'Angularjs',
+    //                 'Vue.js',
+    //                 'Svelte',
+    //                 'Gulp'
+    //             ]
+    //         },
+    //         {name: 'SQL', items: []},
+    //         {
+    //             name: 'Python',
+    //             items: ['Scikit-learn',
+    //                 // 'pandas',
+    //                 'flask',
+    //                 // 'Jupyter-notebook'
+    //             ]
+    //         },
+    //         {name: 'Dart', items: ['Flutter']},
+    //         {
+    //             name: 'Java', items: [
+    //                 'Junit',
+    //                 'Spring',
+    //                 'Android'
+    //             ]
+    //         },
+    //         {name: 'Kotlin', items: []},
+    //         {name: 'Haskell', items: []},
+    //     ],
+    //     "Technologies": ['Git', 'Docker', 'Linux', 'Windows', 'MacOS', 'UML', 'Azure DevOps', 'ServiceNow',
+    //         'Gitlab CI/CD', 'Github Actions'].map(toNameItems),
+    //     "Languages": ['Dutch (native)', 'English (fluent)'].map(toNameItems),
+    //     "Processes": ['Scrum (PSM I)', 'DevOps'].map(toNameItems)
+    // }
 
     let categories = {
-        "frontend": {name: "Frontend", selected: true},
-        "backend": {name: "Backend", selected: true},
-        "mobile": {name: "Mobile", selected: true},
-        "tooling": {name: "Tooling", selected: true},
-        "misc": {name: "Other", selected: true},
+        "frontend": {name: "Frontend", selected: true, items: skills.frontend},
+        "backend": {name: "Backend", selected: true, items: skills.backend},
+        "mobile": {name: "Mobile", selected: true, items: skills.mobile},
+        "tooling": {name: "Tooling", selected: true, items: skills.tooling},
+        "misc": {name: "Other", selected: true, items: skills.misc},
 }
 
-    
+    console.log(categories)
+    console.log(skills)
 
 </script>
 
 
-<div class="category-selectors flex flex-row">
+<div class="category-selectors flex flex-row flex-wrap">
     {#each Object.values(categories) as category}
-        <PillButton name={category.name} isSelected={category.selected}></PillButton>
+        <div class="m-1">
+            <PillButton name={category.name} isSelected={category.selected}></PillButton>
+        </div>
     {/each}
 </div>
 
-<Card class="px-6 py-3 my-8 content-center">
-    <div class="flex justify-center items-center  w-full">
+<Card class="px-6 py-3 my-8 flex flex-col backdrop-blur-sm" >
+    {#each  Object.values(categories) as category}
+
+        <div class="p-1">
+            <h4 class="h4 ml-2">{category.name}</h4>
+        <hr/>
+
+        <div class="flex flex-row p-4 flex-wrap justify-around">
+            {#each category.items as skill}
+        <div class="m-2">
+            <SkillCard  title={skill.name} 
+            description={skill.description} 
+            image={skill.image}
+            items={skill.bullets}></SkillCard>
+        </div>
+            
+        {/each}
+        </div>
+        
+        </div>
+    {/each}
+    <!-- <div class="flex justify-center items-center  w-full">
         <SkillCard></SkillCard>
-    </div>
+    </div> -->
 </Card>
 
 <Card class="px-6 py-3">
@@ -82,7 +106,7 @@
     Overall I would describe my skill set as that of a Fullstack Engineer with DevOps knowledge.
 </Card>
 
-<Card class="my-8 grid grid-cols-1 md:grid-cols-2 px-6 pb-6">
+<!-- <Card class="my-8 grid grid-cols-1 md:grid-cols-2 px-6 pb-6">
     {#each Object.entries(skills) as [skill, content]}
         <div class="pt-3">
             <h2 class="text-xl leading-tight mb-2 font-thin">{skill}</h2>
@@ -100,4 +124,4 @@
             </ul>
         </div>
     {/each}
-</Card>
+</Card> -->
