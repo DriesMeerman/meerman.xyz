@@ -3,10 +3,10 @@
 
     let darkModeIconFill;
     let menuItems = [
+        {link: "#/skills", text: "Skills"},
         {link: "#/experience", text: "Experience"},
         {link: "#/education", text: "Education"},
         {link: "#/blog", text: "Blog"},
-        {link: "#/skills", text: "Skills"},
     ]
 
     darkMode.subscribe(enabled => {
