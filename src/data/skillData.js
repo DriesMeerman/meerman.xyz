@@ -60,6 +60,14 @@ export const skills = {
                     "logoAlt": "AngularJS logo",
                     "relatedSkills": [],
                     "rarity": "common"
+                },
+                {
+                    "name": "Tailwind CSS",
+                    "description": "Tailwind CSS is a utility-first CSS framework for rapidly building custom user interfaces.",
+                    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/2048px-Tailwind_CSS_Logo.svg.png",
+                    "logoAlt": "Tailwind CSS logo",
+                    "relatedSkills": [],
+                    "rarity": "rare"
                 }
             ],
             "backend": [
