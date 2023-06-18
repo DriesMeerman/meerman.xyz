@@ -12,8 +12,8 @@
     };
 </script>
 
-<div class="px-6flex flex-col">
-    <div class="flex flex-row flex-wrap justify-around scale-75">
+<div class="px-6 flex flex-col">
+    <div class="flex flex-row flex-wrap justify-around scale-75 origin-top">
         {#each rarities as rarity}
             <div class={cardWrapperStyle}>
                 <TradingCard

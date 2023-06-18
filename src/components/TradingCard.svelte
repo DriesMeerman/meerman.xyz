@@ -4,8 +4,6 @@
     export let image;
     export let alt = null;
     export let items = [];
-
-    export let gradient = 0;
     export let rarity = "common";
 
     let wasClicked = false;
@@ -96,24 +94,21 @@
 
 <style lang="scss">
 
-@font-face {
+
+    @font-face {
         font-family: "Bruno Ace";
         src: url("/assets/BrunoAce-Regular.ttf");
     }
+
     .show-back-side {
         transition: all ease 0.8s;
         transform: rotateY(180deg);
-
-        .skill-card {
-            transform: rotateY(180deg);
-        }
     }
 
     .skill-card {
         position: relative;
         transform-style: preserve-3d;
         transition: transform 0.6s;
-
         perspective: 1000px;
 
         .back {
@@ -127,6 +122,7 @@
                 margin-top: auto;
             }
         }
+        
         .front {
             transform: rotateY(0deg);
             backface-visibility: hidden;

@@ -64,8 +64,10 @@
     {/each}
 </Card>
 
+<div class="pt-16">
+    <h4 class="h4">Legend</h4>
+    <div class="scale-75 origin-top">
+        <TradingCardLegend></TradingCardLegend>
+    </div>
 
-<h4 class="h4">Legend</h4>
-<div class="scale-75">
-    <TradingCardLegend></TradingCardLegend>
 </div>

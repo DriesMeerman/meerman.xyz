@@ -46,6 +46,14 @@ export const skills = {
                     "rarity": "rare"
                 },
                 {
+                    "name": "Tailwind CSS",
+                    "description": "Tailwind CSS is a utility-first CSS framework for rapidly building custom user interfaces.",
+                    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/2048px-Tailwind_CSS_Logo.svg.png",
+                    "logoAlt": "Tailwind CSS logo",
+                    "relatedSkills": [],
+                    "rarity": "rare"
+                },
+                {
                     "name": "Vue.js",
                     "description": "Vue.js is a progressive framework for building user interfaces.",
                     "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/2048px-Vue.js_Logo_2.svg.png",
@@ -60,15 +68,8 @@ export const skills = {
                     "logoAlt": "AngularJS logo",
                     "relatedSkills": [],
                     "rarity": "common"
-                },
-                {
-                    "name": "Tailwind CSS",
-                    "description": "Tailwind CSS is a utility-first CSS framework for rapidly building custom user interfaces.",
-                    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/2048px-Tailwind_CSS_Logo.svg.png",
-                    "logoAlt": "Tailwind CSS logo",
-                    "relatedSkills": [],
-                    "rarity": "rare"
                 }
+
             ],
             "backend": [
                 {
@@ -156,7 +157,7 @@ export const skills = {
                 },
                 {
                     "name": "GitLab",
-                    "description": "GitLab is a web-based DevOps lifecycle tool that provides a Git-repository manager providing wiki, issue-tracking and CI/CD pipeline features, using an open-source license, developed by GitLab Inc.",
+                    "description": "GitLab is a web-based DevOps lifecycle tool that provides a Git-repository manager providing wiki, issue-tracking and CI/CD pipeline features.",
                     "image": "https://cdn-icons-png.flaticon.com/256/5968/5968853.png",
                     "logoAlt": "GitLab logo",
                     "relatedSkills": [],
