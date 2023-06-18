@@ -37,11 +37,13 @@ export class Skill {
     }
 }
 
-export const skills = {
-    frontend: skillData.frontend.map(skill => Skill.fromJSON(skill)),
-    backend: skillData.backend.map(skill => Skill.fromJSON(skill)),
-    mobile: skillData.mobile.map(skill => Skill.fromJSON(skill)),
-    tooling: skillData.tooling.map(skill => Skill.fromJSON(skill)),
-    misc: skillData.misc.map(skill => Skill.fromJSON(skill))
 
-}
+console.log(skillData)
+
+
+export const skills= Object.keys(skillData).reduce((result, current) => {
+    
+    result[current] = skillData[current].map(skill => Skill.fromJSON(skill))
+    return result
+}, {});
+

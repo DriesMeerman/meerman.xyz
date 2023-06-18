@@ -50,7 +50,7 @@ export default {
 			preprocess: [
 				image({
 					sizes: [400],
-					processFolders: ['assets'],
+					processFolders: ['assets', 'assets/logos'],
 					processFoldersSizes: true,
 					compressionLevel: 8, // png quality level
 					quality: 80,

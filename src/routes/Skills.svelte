@@ -6,11 +6,10 @@
     import { skills } from "../model/Skill.js";
 
     const categories = {
-        frontend: { name: "Frontend", selected: true, items: skills.frontend },
-        backend: { name: "Backend", selected: true, items: skills.backend },
-        mobile: { name: "Mobile", selected: true, items: skills.mobile },
-        tooling: { name: "Tooling", selected: true, items: skills.tooling },
-        misc: { name: "Other", selected: true, items: skills.misc },
+        lang: { name: "Languages", selected: true, items: skills.language },
+        framework: { name: "Frameworks", selected: true, items: skills.framework },
+        tooling: { name: "Tools", selected: true, items: skills.tooling },
+        misc: { name: "Miscellaneous", selected: true, items: skills.misc },
     };
 
    let selectedCount = Object.values(categories).filter(c => c.selected).length;
@@ -45,7 +44,7 @@
             <h4 class="h4 ml-2">{category.name}</h4>
             <hr />
 
-            <div class="flex flex-row p-4 flex-wrap justify-around">
+            <div class="flex flex-row p-4 flex-wrap mx-8">
                 {#each category.items || [] as skill}
                     <div class="m-2">
                         <SkillCard skill={skill} />
