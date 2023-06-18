@@ -1,7 +1,7 @@
 <script>
     import Card from "../components/Card.svelte";
     import PillButton from "../components/PillButton.svelte";
-    import TradingCard from "../components/TradingCard.svelte";
+    import SkillCard from "../components/SkillCard.svelte";
     import TradingCardLegend from "../components/TradingCardLegend.svelte";
     import { skills } from "../model/Skill.js";
 
@@ -39,7 +39,7 @@
 
 
 
-<Card class="px-6 py-3 mb-4 flex flex-col backdrop-blur-sm {selectedCount ? '' : 'hidden'}">
+<Card class="px-6 py-3 mb-4 flex flex-col backdrop-blur-sm {selectedCount ? '' : 'hidden'} scale-100">
     {#each Object.values(categories) as category, i}
         <div class="p-1 {!category.selected ? 'hidden': ''}">
             <h4 class="h4 ml-2">{category.name}</h4>
@@ -48,15 +48,9 @@
             <div class="flex flex-row p-4 flex-wrap justify-around">
                 {#each category.items || [] as skill}
                     <div class="m-2">
-                        <TradingCard
-                            title={skill.name}
-                            description={skill.description}
-                            image={skill.image}
-                            alt={skill.altText}
-                            items={skill.bullets}
-                            rarity={skill.rarity}
-                            
-                        />
+                        <SkillCard skill={skill} />
+
+                   
                     </div>
                 {/each}
             </div>
@@ -71,3 +65,4 @@
     </div>
 
 </div>
+

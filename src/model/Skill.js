@@ -1,6 +1,4 @@
 
-import {getImage} from "../services/imageService";
-
 import {skills as skillData} from "../data/skillData";
 
 export class Skill {
@@ -11,19 +9,19 @@ export class Skill {
      * @param {string} image
      * @param {string} rarity
      * @param {string}  [altText]
-     * @param {[string]} bullets
+     * @param {[string]} attributes
      */
-    constructor(name, description, image, rarity, altText, bullets) {
+    constructor(name, description, image, rarity, altText, attributes) {
         this.name = name;
         this.description = description;
         this.image = image;
         this.rarity = rarity;
         this.altText = altText;
-        this.bullets = bullets;
+        this.attributes = attributes;
     }
 
     static fromJSON(json) {
-        return new Skill(json.name, json.description, json.image, json.rarity, json.altText, json.relatedSkills);
+        return new Skill(json.name, json.description, json.image, json.rarity, json.altText, json.attributes);
     }
     
 
