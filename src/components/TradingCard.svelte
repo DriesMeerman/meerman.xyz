@@ -1,11 +1,7 @@
 <script>
-    export let title = "";
-    export let description = "";
     export let image;
-    export let alt = null;
-    export let items = [];
-
-    export let gradient = 0;
+    export let alt = "an image";
+    export let backText = "";
     export let rarity = "common";
 
     let wasClicked = false;
@@ -44,12 +40,13 @@
         epic: colors.purple,
         legendary: colors.red,
     };
+
 </script>
 
 <div
     class="skill-card {wasClicked
         ? 'show-back-side'
-        : ''} flex flex-col h-80 w-48 border-solid border-teal rounded-lg bg-gradient-to-r {colorRarity[
+        : ''} flex flex-col h-64 w-40 border-solid border-teal rounded-lg bg-gradient-to-r {colorRarity[
         rarity
     ]}"
     role="button"
@@ -64,56 +61,34 @@
 >
     <div class="front h-full w-full">
         <div
-            class="skill-logo border-solid border-2 border-white/10 h-32 w-32 mx-4 mt-4 self-center p-4 rounded-lg"
+            class="sunken-border w-36 h-28 border-solid border-2 border-white/10 mx-3 mt-2 self-center p-4 rounded-lg"
         >
             <img
-                alt={alt || `${title} logo`}
-                class="image object-contain h-full w-full"
+                alt={alt}
+                class="image object-contain h-full w-full aspect-square	"
                 src={image}
             />
         </div>
-        <div class="skill-title m-4">
-            {title}
-            <hr class="max-w-[80%] dark:border-zinc-50 border-zinc-800" />
-        </div>
-        <div class="card-body-text m-4 mt-auto break-words">
-            {description}
+        <div class="p-3 h-full">
+            <slot></slot>
         </div>
     </div>
 
     <div class="back card-body-text h-full w-full flex flex-col p-4 mt-auto">
-        {#if items}
-            <ul class="list-inside list-disc">
-                {#each items as item}
-                    <li>
-                        {item}
-                    </li>
-                {/each}
-            </ul>
-        {/if}
+        {backText}
     </div>
 </div>
 
 <style lang="scss">
-
-@font-face {
-        font-family: "Bruno Ace";
-        src: url("/assets/BrunoAce-Regular.ttf");
-    }
     .show-back-side {
         transition: all ease 0.8s;
         transform: rotateY(180deg);
-
-        .skill-card {
-            transform: rotateY(180deg);
-        }
     }
 
     .skill-card {
         position: relative;
         transform-style: preserve-3d;
         transition: transform 0.6s;
-
         perspective: 1000px;
 
         .back {
@@ -127,6 +102,7 @@
                 margin-top: auto;
             }
         }
+        
         .front {
             transform: rotateY(0deg);
             backface-visibility: hidden;
@@ -140,7 +116,7 @@
         font-family: monospace, Courier;
     }
 
-    .skill-logo {
+    .sunken-border {
         box-shadow: inset 1px 1px 2px 1px #0000004f;
     }
 

@@ -1,16 +1,15 @@
 <script>
     import Card from "../components/Card.svelte";
     import PillButton from "../components/PillButton.svelte";
-    import TradingCard from "../components/TradingCard.svelte";
+    import SkillCard from "../components/SkillCard.svelte";
     import TradingCardLegend from "../components/TradingCardLegend.svelte";
     import { skills } from "../model/Skill.js";
 
     const categories = {
-        frontend: { name: "Frontend", selected: true, items: skills.frontend },
-        backend: { name: "Backend", selected: true, items: skills.backend },
-        mobile: { name: "Mobile", selected: true, items: skills.mobile },
-        tooling: { name: "Tooling", selected: true, items: skills.tooling },
-        misc: { name: "Other", selected: true, items: skills.misc },
+        lang: { name: "Languages", selected: true, items: skills.language },
+        framework: { name: "Frameworks", selected: true, items: skills.framework },
+        tooling: { name: "Tools", selected: true, items: skills.tooling },
+        misc: { name: "Miscellaneous", selected: true, items: skills.misc },
     };
 
    let selectedCount = Object.values(categories).filter(c => c.selected).length;
@@ -39,24 +38,18 @@
 
 
 
-<Card class="px-6 py-3 mb-4 flex flex-col backdrop-blur-sm {selectedCount ? '' : 'hidden'}">
+<Card class="px-6 py-3 mb-4 flex flex-col backdrop-blur-sm {selectedCount ? '' : 'hidden'} scale-100">
     {#each Object.values(categories) as category, i}
         <div class="p-1 {!category.selected ? 'hidden': ''}">
             <h4 class="h4 ml-2">{category.name}</h4>
             <hr />
 
-            <div class="flex flex-row p-4 flex-wrap justify-around">
+            <div class="flex flex-row p-4 flex-wrap mx-8">
                 {#each category.items || [] as skill}
                     <div class="m-2">
-                        <TradingCard
-                            title={skill.name}
-                            description={skill.description}
-                            image={skill.image}
-                            alt={skill.altText}
-                            items={skill.bullets}
-                            rarity={skill.rarity}
-                            
-                        />
+                        <SkillCard skill={skill} />
+
+                   
                     </div>
                 {/each}
             </div>
@@ -64,8 +57,11 @@
     {/each}
 </Card>
 
+<div class="pt-16">
+    <h4 class="h4">Legend</h4>
+    <div class="scale-75 origin-top">
+        <TradingCardLegend></TradingCardLegend>
+    </div>
 
-<h4 class="h4">Legend</h4>
-<div class="scale-75">
-    <TradingCardLegend></TradingCardLegend>
 </div>
+

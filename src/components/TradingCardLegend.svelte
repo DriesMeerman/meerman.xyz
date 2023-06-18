@@ -12,15 +12,20 @@
     };
 </script>
 
-<div class="px-6flex flex-col">
-    <div class="flex flex-row flex-wrap justify-around scale-75">
+<div class="px-6 flex flex-col">
+    <div class="flex flex-row flex-wrap justify-around origin-top">
         {#each rarities as rarity}
             <div class={cardWrapperStyle}>
-                <TradingCard
-                    title={upperCased(rarity)}
-                    {rarity}
+                <TradingCard 
+                    rarity={rarity}
                     image={legendImage}
-                />
+                > 
+                <div class="flex flex-col justify-between h-full">
+                    <div>
+                        <h2 class="skill-title">{upperCased(rarity)}</h2>
+                        <hr class="max-w-[90%] dark:border-zinc-50 border-zinc-800" />
+                    </div>
+            </TradingCard>
             </div>
         {/each}
     </div>
