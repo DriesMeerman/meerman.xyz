@@ -1,8 +1,14 @@
 <script>
-    import { darkMode, toggleDarkMode, particlesEnabled, toggleParticles } from "../state";
+    import {
+        darkMode,
+        toggleDarkMode,
+        particlesEnabled,
+        toggleParticles,
+    } from "../state";
 
     let darkModeIconFill;
     let particleText = "Disable particles";
+    let expanded = true;
 
     let menuItems = [
         { link: "#/skills", text: "Skills" },
@@ -23,16 +29,40 @@
 </script>
 
 <nav
-    class="border-b-2 border-teal-500 dark:border-sky-600 dark:bg-zinc-700 flex items-center justify-between flex-wrap p-3 transition5"
+    class="border-b-2 border-teal-500 dark:border-sky-600 dark:bg-zinc-700 flex items-center justify-between flex-wrap p-2 pt-1 transition5"
 >
-    <div class="flex items-center flex-shrink-0 dark:text-white mr-6">
+
+
+
+    <div class="flex items-center flex-shrink-0 dark:text-white mr-6 justify-between w-full sm:w-20">
         <a href="/#/" class="font-semibold text-xl tracking-tight">Meerman</a>
+
+        <div class="sm:hidden mr-4 flex">
+            <button type="button" class=" text-gray-500 hover:text-white focus:text-white focus:outline-none transition" on:click={() => expanded = !expanded}>
+                <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                  
+                  {#if expanded}
+                  <path fill-rule="evenodd" d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z"/>
+                  
+                    {:else}
+                    <path  fill-rule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"/>
+            
+                    {/if}
+                </svg>
+              </button>
+        </div>
+        
+        
     </div>
 
+    {#if expanded}
+    <hr class="w-full dark:border-zinc-50/25 border-zinc-800/25 mt-1 sm:hidden" />
+    {/if}
+
     <div
-        class="w-full block flex-grow lg:flex lg:items-center lg:w-auto lg:h-7"
+        class="w-full block flex-grow sm:flex sm:items-center sm:w-auto sm:h-7 {expanded ? '' : 'hidden'}"
     >
-        <div class="text-sm lg:flex-grow">
+        <div class="text-sm sm:flex sm:flex-grow">
             {#each menuItems as item}
                 <a
                     href={item.link}
@@ -42,10 +72,13 @@
                 </a>
             {/each}
         </div>
-        <div class="mx-2" 
-        title={particleText}
-        role="button"
-        tabindex="0"
+        
+        <div class="flex flex-row mt-2 sm:mt-0 gap-4 sm:gap-2">
+            <div
+            class=""
+            title={particleText}
+            role="button"
+            tabindex="0"
             on:click={() => toggleParticles()}
             on:keydown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
@@ -68,7 +101,7 @@
         <div>
             <div
                 tabindex="0"
-                class="cursor-pointer mtop-6"
+                class="cursor-pointer mtop-0 sm:mtop-6"
                 role="button"
                 on:click={toggleDarkMode}
                 on:keydown={(e) => {
@@ -98,6 +131,8 @@
                 </svg>
             </div>
         </div>
+        </div>
+
     </div>
 </nav>
 
@@ -109,4 +144,5 @@
     .mtop-6 {
         margin-top: 6px;
     }
+    
 </style>
