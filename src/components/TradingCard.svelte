@@ -61,7 +61,7 @@
 >
     <div class="front h-full w-full">
         <div
-            class="sunken-border w-36 h-28 border-solid border-2 border-white/10 mx-3 mt-2 self-center p-4 rounded-lg"
+            class="card-image w-36 h-28 border-solid border-2 border-white/10 mx-3 mt-2 self-center p-4 rounded-lg"
         >
             <img
                 alt={alt}
@@ -116,9 +116,19 @@
         font-family: monospace, Courier;
     }
 
-    .sunken-border {
+    .card-image {
         box-shadow: inset 1px 1px 2px 1px #0000004f;
+        background: #e5edf473;
     }
+
+    // using global so the dark mode can override this
+    :global(.dark .card-image)  {
+        box-shadow: inset 1px 1px 2px 1px #0000004f;
+        background: #77889973 !important;
+
+    }
+
+
 
     .skill-title {
         font-family: "Bruno Ace", cursive;
