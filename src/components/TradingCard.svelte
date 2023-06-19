@@ -80,6 +80,7 @@
 </div>
 
 <style lang="scss">
+
     .show-back-side {
         transition: all ease 0.8s;
         transform: rotateY(180deg);
@@ -97,10 +98,6 @@
             height: 100%;
             backface-visibility: hidden;
             transform: rotateY(180deg);
-
-            ul {
-                margin-top: auto;
-            }
         }
         
         .front {
