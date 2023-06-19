@@ -41,12 +41,14 @@
         legendary: colors.red,
     };
 
+    const hasShine = rarity === "epic" || rarity === "legendary";
+
 </script>
 
 <div
     class="skill-card {wasClicked
         ? 'show-back-side'
-        : ''} flex flex-col h-64 w-40 border-solid border-teal rounded-lg bg-gradient-to-r {colorRarity[
+        : 'overflow-hidden'} flex flex-col h-64 w-40 border-solid border-teal rounded-lg bg-gradient-to-r {colorRarity[
         rarity
     ]}"
     role="button"
@@ -59,6 +61,9 @@
     }}
     tabindex="0"
 >
+
+<div class="{hasShine ? 'shine' : ''} overflow-visible"></div>
+
     <div class="front h-full w-full">
         <div
             class="card-image w-36 h-28 border-solid border-2 border-white/10 mx-3 mt-2 self-center p-4 rounded-lg"
@@ -80,6 +85,32 @@
 </div>
 
 <style lang="scss">
+
+.show-back-side {
+    .shine{
+        display: none;
+    }
+}
+
+.shine{
+    // modified from https://codepen.io/nilbog/pen/ZYLQdR
+  width: 1000px;
+  height: 100px;
+  margin-left: -100px;
+  transform: rotate(30deg);
+  background: -webkit-linear-gradient(top, transparent, rgba(200,200,200,0.1),transparent);
+  position: absolute;
+  animation: shine 6s ease-in-out 8;
+}
+@keyframes shine{
+  0%,100%{
+    margin-top: -100px;
+    
+  }
+  50%{
+    margin-top: 800px;
+  }
+}
 
     .show-back-side {
         transition: all ease 0.8s;
