@@ -8,7 +8,7 @@
 
     let darkModeIconFill;
     let particleText = "Disable particles";
-    let expanded = true;
+    let expanded = false;
 
     let menuItems = [
         { link: "#/skills", text: "Skills" },
