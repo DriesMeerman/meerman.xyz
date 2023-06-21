@@ -44,7 +44,7 @@
             <h4 class="h4 ml-2">{category.name}</h4>
             <hr />
 
-            <div class="flex flex-row p-4 flex-wrap mx-8  gap-4">
+            <div class="flex flex-row justify-center p-4 flex-wrap mx-8  gap-4">
                 {#each category.items || [] as skill}
                     <SkillCard skill={skill} />
                 {/each}
