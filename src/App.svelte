@@ -5,7 +5,7 @@
 	import Menu from './components/Menu.svelte'
 	import Home from './routes/Home.svelte'
 	import Experience from "./routes/Experience.svelte";
-	import Skills from './routes/Skills.svelte'
+	import Skills from './routes/SkillsPage.svelte'
 	import Education from "./routes/Education.svelte";
 	import BlogIndex from "./routes/blog/BlogIndex.svelte";
 	import Article from "./routes/blog/Article.svelte";

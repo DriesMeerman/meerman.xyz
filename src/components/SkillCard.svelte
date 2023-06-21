@@ -16,7 +16,7 @@
                 <h2 class="skill-title">{skill.name}</h2>
                 <hr class="max-w-[90%] dark:border-zinc-50 border-zinc-800" />
             </div>
-            <div class="mr-auto rounded-sm grid grid-flow-row grid-cols-2">
+            <div class="rounded-sm flex flex-row">
                 {#each skill.attributes as attribute}
                     <div class="skill-attribute py-1 px-2 mr-2 mt-1" title={attribute}>{attribute}</div>
                 {/each}

@@ -34,7 +34,7 @@
                         <div class="flex">
                             {#if item.image}
                             <div class="mx-2 relative thumbnail-holder self-center">
-                                    <img class="h-full w-full object-cover absolute" src="{item.image}"/>
+                                    <img class="h-full w-full object-cover absolute" src="{item.image}" alt={item.title + " logo"}/>
                             </div>
                             {/if}
                             <div class="mb-2">
@@ -77,9 +77,6 @@
 {/if}
 
 <style>
-    .no-event {
-        pointer-events: none;
-    }
 
     .thumbnail-holder {
         width: 1.5rem;
