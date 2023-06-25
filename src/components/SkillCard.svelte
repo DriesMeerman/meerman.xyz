@@ -8,7 +8,6 @@
     <TradingCard
         image={skill.image}
         alt={skill.altText}
-        items={skill.attributes}
         rarity={skill.rarity}
     >
         <div class="flex flex-col justify-between h-full">
