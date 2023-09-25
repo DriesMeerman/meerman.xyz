@@ -1,0 +1,68 @@
+---
+title: Finishing projects
+tags: 
+date: 2023-09-25
+author: Dries Meerman
+---
+# Finishing (side) projects
+
+Many hobbyists enjoy working on side-projects during their off times, but many of these projects end up in project purgatory.
+Why is it that this happens? Often they exceed a invisible threshold people forget about.
+
+The project expiry date, without outside forces or active progress you can quickly loose interest in a project.
+This is something I never really thought about until Zack Freedman mentioned it in a video[^1]
+For side-projects this is more likely to happen due to them often not having any outside forces such as deadlines or managers to push them forward.
+This has happened to me many times because I don't take this into account when starting the project.
+
+When starting a new project I get distracted by all the fun possible technologies or new architecture patterns I could use.
+The clock towards the expiry date then starts to run even though I don't consciously think about that.
+Most often these side-projects have a large amount of growth potential which I think is good, but I forget to put down initial constraints and a specific goal.
+That makes it very easy to keep circling between things that interrest me without actually making any progress.
+I have many such projects in my personal project graveyard, where often I ran out of motivation while I did not have enough of a working project to keep going.
+
+### Why is it a problem?
+So why does it matter that you don't finish these projects?
+For one being able to finish projects is a valuable skill.
+Being getting the project to a state where you can actually use it will lead you to hopefully use it.
+Which in turn will show you the weak points and what can be improved to help the user experience.
+Finishing a project in one way or another also gives your mind room for creativity for other things. 
+When wanting to work on something, these unfinished projects can still take up space in your mind.
+The whole idea of finishing projects and why is described a lot more eloquently by Bre Pettis and Kio Stark in the [Cult of Done](https://medium.com/@bre/the-cult-of-done-manifesto-724ca1c2ff13) Manifesto[^2]
+
+### What can we do to prevent this?
+
+So how can we make sure we actually finish side-projects?
+There are a few techniques I like to use to keep me on task.
+
+* Prepare
+* Cheat
+* Constrain / set a clear goal
+* Collaborate
+
+Now I'm going to explain these and how they help.
+
+1. Prepare
+	Think about the architecture you want to use, what technologies you want to use. Write down a rough idea of the UX flow your project will have. So while preparing and choosing technologies how do you prevent on getting stuck with analysis paralysis? Recently I've been planning to work on a simple workout tracking app, but I still haven't started. I keep not deciding on a technology / changing my mind. Leading to me not starting on actually making the thing, which means I can't use it and don't get the experience of doing the project. I do this because I'm trying to prematurely optimize for scenarios which might never happen.
+2. Cheat
+   What do I mean by this? I don't mean plagiarise someone else's project and pretend its yours and be done with it. But take shortcuts where possible use existing components that solve a problem for you. Doing everything from scratch can be fun but quickly takes a lot of time. If there are specific things you want to learn I would recommend to do that for a specific thing in the project and focus on that. Then you can still get the thrill of making it yourself, while it can get integrated into a project that has a better chance at getting finished. Don't be afraid to start with some existing template and modify it to fit your project. Finally cheat by preparing before this project "timer" really starts. 
+3. Constrain
+	Focus on the MVP first and set time constraints in which you have to reach that point. Otherwise it becomes easy to spend extra time on details that don't matter. There will always be some expiry date on the project but by thinking you have forever you will spend time on the wrong things. Being conscious of deadlines will help you focus on what matters.
+4. Collaborate
+	One way to have significantly higher chance to get something working is collaborate. Have a friend or family member be involved, this can be in various ways. If you are building for someone else you will be motivated to give them this thing so they can use it. Alternatively working on something with someone else can be fun and motivating even if they're not a stakeholder.
+
+### To conclude
+
+By using these techniques you are more likely to actually get side-projects projects done. 
+And by giving yourself stakeholders and constraining your expected time to work on it, you are more likely to focus on the important things.
+No more getting stuck with analysis paralysis on things that don't matter when you want to deliver something to someone or a deadline.
+Prepare upfront so there are fewer things to get stuck on when actually doing the work.
+Remember that it can be okay to take the easy way for certain parts as long as it helps you get to the goal, just remember to not cheat yourself out of the goal.
+When wanting to learn more about a specific topic make sure that the shortcuts you take take away from the learning you want to do.
+It's also important to remember you can always come back to it later and building on top of something that works is more motivating (to me at least) than continuing on a half baked project I haven't worked on in 6 months.
+
+There is no magic bullet that will prevent your projects from ending up in purgatory but these techniques have helped me to finish more than I did before.
+
+# Sources
+
+[^1]: Zack Freedman [How to Finish Your Weekend Projects in One Weekend](https://www.youtube.com/watch?v=72a85tWOJVY)  
+[^2]: The cult of done [Manifesto](https://medium.com/@bre/the-cult-of-done-manifesto-724ca1c2ff13)
