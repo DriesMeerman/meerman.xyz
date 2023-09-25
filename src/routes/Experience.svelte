@@ -11,7 +11,7 @@
         {
             title: '4Industry',
             subtitle: 'Senior Developer',
-            description: 'Company was renamed to better align with our product. Working on the iOS app, and doing some architecture work.',
+            description: 'Company was renamed to better align with our product. Working on the iOS app, doing architecture work, code reviews and interviews of applicants for various roles.',
             bullets: ["4Industry"],
             date: '2022 Oct',
             image: app4mationLogo
