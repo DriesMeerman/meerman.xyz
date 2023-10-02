@@ -74,7 +74,7 @@
             description: 'Story level risk assessment in agile\n' +
                 'software development using\n' +
                 'machine-learning',
-            date: '2018 Feb',
+            date: '2022 May',
             image: app4mationLogo,
             attachments: [{
                 title: 'Thesis.pdf',
