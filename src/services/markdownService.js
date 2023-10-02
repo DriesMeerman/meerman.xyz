@@ -24,7 +24,7 @@ export function transformMeta(file){
  * @returns {boolean}
  */
 export function sortByDate(lhs, rhs) {
-    return lhs.date < rhs.date;
+    return rhs.date - lhs.date;
 }
 
 /**
