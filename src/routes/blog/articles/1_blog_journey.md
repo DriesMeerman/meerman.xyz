@@ -1,6 +1,7 @@
 ---
 title: The journey of starting a blog
 tags:
+summary: In this article, the author reflects on their journey of starting a blog after completing their Master's degree, driven by a desire to enhance their writing skills, conduct research, and share knowledge. They discuss the essential requirements for their blog, including the need for control over its hosting, a preferred Markdown format for writing, and the implementation of RSS feeds for content distribution. Choosing a custom tech stack, they extended their existing website using Rollup, Svelte, and Markdown plugins while improving the appearance with Tailwind CSS. They automated RSS feed generation with the help of ChatGPT, although future enhancements, such as automating image publishing and addressing Markdown footnotes, are considered. The article concludes with a reminder to prioritize project completion over perfection and to utilize available tools for efficiency.
 date: 2023-05-28
 author: Dries Meerman
 ---

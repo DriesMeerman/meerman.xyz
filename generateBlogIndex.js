@@ -35,7 +35,7 @@ const data = files.map((filename) => {
     return {
         filename: filename,
         ...metaData,
-        url: `https://meerman.xyzm/#/blog/${blogUrlPath}`,
+        url: `https://meerman.xyz/#/blog/${blogUrlPath}`,
     };
 });
 
