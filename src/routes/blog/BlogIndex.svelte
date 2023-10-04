@@ -12,20 +12,17 @@
 
 
 {#if posts.length >= 1}
-    <h1 class="justify-center flex text-4xl pb-12">Articles</h1>
+    <h1 class="justify-center flex text-4xl pb-12" title="This name was chosen as an homage to Seneca's reflections and the fact that it spells out the first letters of my name.">Digital Reflections</h1>
     <Card class="p-6">
         <div class="w-full">
             {#each posts as post, index}
                 <article class="{index === 0 ? '' : 'pt-6'}">
                     <a class="cursor-pointer" href={post.permalink}>
                         <div class="flex flex-row justify-between">
-                            <h2 class="text-2xl hover:decoration-blue-400">{post.title}</h2>
+                            <h2 class="text-2xl hover:decoration-blue-400" title={post.summary}>{post.ID} - {post.title}</h2>
                             <p class="">[{post.date.toLocaleDateString()}]</p>
                         </div>
                     </a>
-                    {#if post.summary}
-                        <p class="text-sm pt-2">{post.summary}</p>
-                    {/if}
 
                 </article>
                 {#if !isLast(posts, index)}
