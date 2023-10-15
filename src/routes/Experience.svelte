@@ -10,9 +10,17 @@
     let work = [
         {
             title: '4Industry',
+            subtitle: 'Software Architect',
+            description: 'A role change to focus more on architecture rather than spending most of my time development. Doing this with a focus on our mobile platforms.',
+            bullets: [],
+            date: '2023 Oct',
+            image: app4mationLogo
+        },
+        {
+            title: '4Industry',
             subtitle: 'Senior Developer',
-            description: 'Company was renamed to better align with our product. Working on the iOS app, doing architecture work, code reviews and interviews of applicants for various roles.',
-            bullets: ["4Industry"],
+            description: 'The Company was renamed to better align with our product. Working on the iOS app, doing architecture work, code reviews and interviews of applicants for various roles.',
+            bullets: [],
             date: '2022 Oct',
             image: app4mationLogo
         },
