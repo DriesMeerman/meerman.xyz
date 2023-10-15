@@ -110,7 +110,7 @@
                         e.preventDefault();
                     }
                 }}
-                title={$darkMode ? "Dark" : "Light"}
+                title={$darkMode ? "Lightmode" : "Darkmode"}
             >
                 <svg
                     class="transition5"
