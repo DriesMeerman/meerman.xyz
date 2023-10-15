@@ -13,8 +13,9 @@ export function transformMeta(file){
     const permalink = `/#/blog/${blogPath}`
 
     const date = new Date(metadata.date);
+    const id = String(metadata.ID).padStart(3, '0');
 
-    return {...metadata, permalink, filename, date, html};
+    return {...metadata, permalink, filename, date, html, ID: id};
 }
 
 /**
