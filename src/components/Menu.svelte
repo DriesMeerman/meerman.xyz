@@ -29,7 +29,7 @@
 </script>
 
 <nav
-    class="border-b-2 border-teal-500 dark:border-sky-600 dark:bg-zinc-700 flex items-center justify-between flex-wrap p-2 pt-1 transition5"
+    class="border-b-2 border-teal-500 dark:border-sky-600 dark:bg-zinc-700 flex items-center justify-between flex-wrap p-2 pt-1 duration-500"
 >
 
 
@@ -38,7 +38,7 @@
         <a href="/#/" class="font-semibold text-xl tracking-tight">Meerman</a>
 
         <div class="sm:hidden mr-4 flex">
-            <button type="button" class=" text-gray-500 hover:text-white focus:text-white focus:outline-none transition" on:click={() => expanded = !expanded}>
+            <button type="button" class=" text-gray-500 hover:text-white focus:text-white  focus:outline-none transition" on:click={() => expanded = !expanded}>
                 <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
                   
                   {#if expanded}
@@ -60,11 +60,12 @@
     {/if}
 
     <div
-        class="w-full block flex-grow sm:flex sm:items-center sm:w-auto sm:h-7 {expanded ? '' : 'hidden'}"
+        class="w-full block flex-grow sm:flex sm:items-center sm:w-auto sm:h-7 transition-all duration-500 sm:overflow-visible overflow-hidden {expanded ? 'max-h-48' : 'max-h-0'}"
     >
         <div class="text-sm sm:flex sm:flex-grow">
             {#each menuItems as item}
                 <a
+                    on:click={() => expanded = !expanded}
                     href={item.link}
                     class="block mtop-6 mt-4 lg:inline-block lg:mt-0 text-teal-900 dark:text-white dark:hover:text-sky-600 mr-4 hover:text-teal-600"
                 >
@@ -75,7 +76,7 @@
         
         <div class="flex flex-row mt-2 sm:mt-0 gap-4 sm:gap-2">
             <div
-            class=""
+            class="hover:animate-pulse"
             title={particleText}
             role="button"
             tabindex="0"
@@ -113,7 +114,7 @@
                 title={$darkMode ? "Lightmode" : "Darkmode"}
             >
                 <svg
-                    class="transition5"
+                    class="hover:animate-pulse"
                     width="24px"
                     height="24px"
                     viewBox="0 0 24 24"
@@ -137,9 +138,6 @@
 </nav>
 
 <style>
-    .transition5 {
-        transition: all 0.5s;
-    }
 
     .mtop-6 {
         margin-top: 6px;
