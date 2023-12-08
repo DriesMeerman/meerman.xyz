@@ -8,6 +8,15 @@
     export function isLast(list, index) {
         return (list.length - 1) === index;
     }
+
+    /**
+     * 
+     * @param {Date} date
+     * @returns {string} a date in the format YYYY-MM-dd
+     */
+    export function isoDate(date) {
+        return date.toISOString().split('T')[0];
+    }
 </script>
 
 
@@ -20,7 +29,7 @@
                     <a class="cursor-pointer" href={post.permalink}>
                         <div class="flex flex-row justify-between">
                             <h2 class="text-l hover:decoration-blue-400" title={post.summary}>{post.ID} - {post.title}</h2>
-                            <p class="">[{post.date.toLocaleDateString()}]</p>
+                            <p class="text-xs">[{isoDate(post.date)}]</p>
                         </div>
                     </a>
 
