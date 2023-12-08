@@ -9,7 +9,7 @@
     let cssClass;
     export {cssClass as class};
 
-    onMount(async () => {
+    setTimeout(async () => {
         let config = {...particleConfig}
         new particlesJS('particles', config);
 
