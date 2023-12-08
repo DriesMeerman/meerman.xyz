@@ -1,6 +1,6 @@
 {
   "name": "meerman.xyz",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "private": false,
   "scripts": {
     "watch:tailwind": "postcss static/tailwind.css -o static/index.css -w",
@@ -39,7 +39,6 @@
   },
   "dependencies": {
     "particles.js": "github:DriesMeerman/particles.js",
-    "sharp": "^0.33.0",
     "sirv-cli": "^2.0.0",
     "svelte-spa-router": "^3.2.0",
     "svelte-vertical-timeline": "^0.0.2"
