@@ -8,7 +8,6 @@
     let hideOverflow = true;
 
     $: {
-        console.log("Mutating state", { showBackSide, hideOverflow });
         if (showBackSide) {
             hideOverflow = false;
         } else {

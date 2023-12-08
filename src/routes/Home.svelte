@@ -4,7 +4,7 @@
 </script>
 
 
-<Person class="my-8">
+<Person>
     <div class="max-w-3/4 p-2">
         I'm a software engineer interested in solving complex problems.
         Frameworks, programming languages and other tools are not goals in themselves for me but rather a means to solve problems.
@@ -16,6 +16,6 @@
 </Person>
 
 <div class="mt-24">
-    <Socials class="pt-4"></Socials>
+    <Socials></Socials>
 </div>
 

@@ -38,9 +38,6 @@ export class Skill {
 }
 
 
-console.log(skillData)
-
-
 export const skills= Object.keys(skillData).reduce((result, current) => {
     
     result[current] = skillData[current].map(skill => Skill.fromJSON(skill))
