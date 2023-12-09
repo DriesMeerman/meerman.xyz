@@ -1,12 +1,12 @@
 <script>
-    import { onMount, onDestroy } from "svelte";
+    import { onDestroy } from "svelte";
     import { particlesEnabled } from "../../state";
     import all from "./articles/*.md";
 
     export let params = {};
     export const post = findPost(all, params.slug);
 
-    onMount(() => particlesEnabled.set(false));
+    setTimeout(() => particlesEnabled.set(false));
     onDestroy(() => particlesEnabled.set(true));
 
     function findPost(posts, name) {
