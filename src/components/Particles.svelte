@@ -1,6 +1,5 @@
 <script>
 
-    import { onMount } from 'svelte';
     import {darkMode} from "../state";
 
     import * as particleConfig from '../particle.config.json'
@@ -9,7 +8,7 @@
     let cssClass;
     export {cssClass as class};
 
-    setTimeout(async () => {
+    setTimeout(() => {
         let config = {...particleConfig}
         new particlesJS('particles', config);
 
