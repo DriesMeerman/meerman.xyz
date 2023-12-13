@@ -29,7 +29,7 @@
                     <a class="cursor-pointer" href={post.permalink}>
                         <div class="flex flex-row justify-between">
                             <h2 class="text-l hover:decoration-blue-400" title={post.summary}>{post.ID} - {post.title}</h2>
-                            <p class="text-xs">[{isoDate(post.date)}]</p>
+                            <p class="text-xs min-w-fit ml-4 lh-inherit">[{isoDate(post.date)}]</p>
                         </div>
                     </a>
 
@@ -62,5 +62,9 @@
         position: fixed;
         left: 1rem;
         bottom: 1rem;
+    }
+
+    .lh-inherit {
+        line-height: inherit;
     }
 </style>
