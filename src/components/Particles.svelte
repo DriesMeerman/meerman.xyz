@@ -16,4 +16,4 @@
     })
 </script>
 
-<div id="particles" class="w-full h-full p-2 {cssClass || ''}"></div>
+<div id="particles" class="w-full h-full select-none p-2 {cssClass || ''}"></div>

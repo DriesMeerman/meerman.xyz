@@ -4,17 +4,11 @@ import Card from "./Card.svelte";
 
 </script>
 
-<Card class="flex-col lg:flex-row">
-    <div class="sm:w-full img-max p-2">
-        <Image class="rounded-full" src="assets/avatar.jpg" />
-    </div>
-    <div class="p-2 lg:ml-5 ml-2">
+<Card class="">
+    <div class="p-6 lg:ml-5 ml-2">
+        <div class="p w-32 md:w-48 float-left mr-4">
+            <Image class="rounded-full" src="assets/avatar.jpg" />
+        </div>
         <slot></slot>
     </div>
 </Card>
-
-<style>
-    .img-max {
-        max-width: 16rem;
-    }
-</style>
