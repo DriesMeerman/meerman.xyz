@@ -65,7 +65,7 @@
             subtitle: 'Junior Developer',
             description: 'Started my carreer working part-time while studying, as a fullstack developer using the ServiceNow platform.',
             bullets: ['Scrumboard4U', 'Rooms4U', 'Planboard4U'],
-            date: '2018 Jul',
+            date: '2016 Jul',
             image: plat4mationLogo
         },
         {
