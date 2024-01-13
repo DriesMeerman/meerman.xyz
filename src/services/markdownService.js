@@ -15,7 +15,7 @@ export function transformMeta(file){
     const date = new Date(metadata.date);
     const id = String(metadata.ID).padStart(3, '0');
 
-    return {...metadata, permalink, filename, date, html, ID: id};
+    return {...metadata, permalink, filename, date, html, ID: id, tags: metadata.tags || []};
 }
 
 /**
