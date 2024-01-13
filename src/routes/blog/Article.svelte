@@ -24,8 +24,6 @@
     }
 </script>
 
-<pre>{JSON.stringify(post, 0, 4)}</pre>
-
 {#if post}
     <div
         class="prose dark:prose-invert max-w-none list-disc dark:marker:text-white"
@@ -51,9 +49,7 @@
     {#if post}
     <title>{post.title}</title>
     <meta name="description" content={post.summary} />
-    <meta name="author" content="{post.author}">
+    <meta name="author" content="{post.author}" />
+    <meta name="keywords" content="{post.tags.join(', ')}"/ >
     {/if}
 </svelte:head>
-
-
-    
