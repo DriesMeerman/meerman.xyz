@@ -109,9 +109,10 @@
             subtitle: 'PHP Configuration validator',
             description: 'A system which validated dependency injection configuration files, in the form of a PHP cli interface. ',
             date: '2015 Jan'// - 2014 Sep',
-            // image: getImage('ms_logo')
         },
     ]
+
+    let uniqueTitles = [...new Set([...work.map(item => item.title), ...internships.map(item => item.title)])];
 
 </script>
 
@@ -127,3 +128,10 @@
         <StyledTimeLine timeLineItems="{internships}"></StyledTimeLine>
     </Card>
 </div>
+
+<svelte:head>
+    <title>Meerman</title>
+    <meta name="description" content="A list of work experiences">
+    <meta name="author" content="Dries Meerman">
+    <meta name="keywords" content="Dries Meerman, Meerman, Software Engineer, Software Engineering, Software Architect, Programmer, {uniqueTitles.join(', ')}">
+</svelte:head>

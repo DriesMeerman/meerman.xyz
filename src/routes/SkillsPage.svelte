@@ -12,11 +12,9 @@
         misc: { name: "Miscellaneous", selected: true, items: skills.misc },
     };
 
-   let selectedCount = Object.values(categories).filter(c => c.selected).length;
-
-
-
- 
+   const categoryContent = Object.values(categories)
+   let selectedCount = categoryContent.filter(c => c.selected).length;
+   let keywords = categoryContent.flatMap(c => c.items).map(s => s.name).join(', ');
 
 </script>
 
@@ -32,9 +30,6 @@
         </div>
     {/each}
 </div>
-
-
-
 
 
 
@@ -61,3 +56,9 @@
 
 </div>
 
+<svelte:head>
+    <title>Meerman</title>
+    <meta name="description" content="A list of hard and soft skills, visualized in a trading card format.">
+    <meta name="author" content="Dries Meerman">
+    <meta name="keywords" content="Dries Meerman, Meerman, Software Engineer, Software Engineering, Software Architect, Programmer, {keywords}">
+</svelte:head>
