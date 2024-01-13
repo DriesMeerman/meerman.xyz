@@ -50,6 +50,6 @@
     <title>{post.title}</title>
     <meta name="description" content={post.summary} />
     <meta name="author" content="{post.author}" />
-    <meta name="keywords" content="{post.tags.join(', ')}"/ >
+    <meta name="keywords" content="{post.tags.join(', ')}" />
     {/if}
 </svelte:head>
