@@ -19,6 +19,12 @@
     }
 </script>
 
+<svelte:head>
+    <title>Meerman - Blog</title>
+    <meta name="description" content="Digital reflections - A collection of articles about software development, technology, and other topics." />
+    <meta name="author" content="Dries Meerman">
+    <meta name="keywords" content="Dries Meerman, Meerman, Software Engineer, Blog">
+</svelte:head>
 
 {#if posts.length >= 1}
     <h1 class="justify-center flex text-2xl pb-12" title="This name was chosen as an homage to Seneca's reflections and the fact that it spells out the first letters of my name.">Digital Reflections</h1>

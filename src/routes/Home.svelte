@@ -26,3 +26,9 @@
     <Socials></Socials>
 </div>
 
+<svelte:head>
+    <title>Meerman</title>
+    <meta name="description" content="A website about Dries Meerman, showing some of his skills, experience and education he has accumulated over the years.">
+    <meta name="author" content="Dries Meerman">
+    <meta name="keywords" content="Dries Meerman, Meerman, Software Engineer, Software Engineering">
+</svelte:head>
