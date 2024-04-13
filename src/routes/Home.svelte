@@ -18,7 +18,8 @@
 
         My profession primarily involves desk-based work, to balance this out a I like going to the gym to get physical energy out and keep my endurance up. 
         In the summers I enjoy to go longboarding gliding across preferably smooth paths.
-        I'm also a hobbyist 3D printer, it is a great intersection between digital and physical. It can be practical but I mainly enjoy printing small trinkets found online as my 3D modelling skills could be improved
+        I'm also a hobbyist 3D printer, it is a great intersection between digital and physical. 
+        It can be practical but I mainly enjoy printing small trinkets found online as my 3D modelling skills could be improved.
     </p>
 </Person>
 
@@ -28,7 +29,7 @@
 
 <svelte:head>
     <title>Meerman</title>
-    <meta name="description" content="A website about Dries Meerman, showing some of his skills, experience and education he has accumulated over the years.">
+    <meta name="description" content="A website showcasing Dries Meerman's skills, education, and experience he has accumulated over the years.">
     <meta name="author" content="Dries Meerman">
     <meta name="keywords" content="Dries Meerman, Meerman, Software Engineer, Software Engineering">
 </svelte:head>

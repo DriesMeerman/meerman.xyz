@@ -74,7 +74,7 @@ export const skills = {
             "image": "https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/181_Java_logo_logos-512.png",
             "logoAlt": "Java logo",
             "attributes": ["backend", "mobile"],
-            "rarity": "common"
+            "rarity": "uncommon"
         },
         {
             "name": "Haskell",
@@ -221,7 +221,7 @@ export const skills = {
             "image": getImage('servicenow_logo'),
             "logoAlt": "ServiceNow logo",
             "attributes": ["PaaS"],
-            "rarity": "rare"
+            "rarity": "epic"
         },
         {
             "name": "MacOS",

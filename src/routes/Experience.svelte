@@ -9,6 +9,14 @@
 
     let work = [
         {
+            title: 'ServiceNow',
+            subtitle: 'Staff Software Engineer',
+            description: '4Industry got acquired by ServiceNow, we are going to re-platform the 4Industry suite on to the ServiceNow platform as the Connected Worker product.',
+            bullets: [],
+            date: '2024 Apr',
+            image: getImage('servicenow_logo'),
+        },
+        {
             title: '4Industry',
             subtitle: 'Software Architect',
             description: 'A role change to focus more on architecture rather than spending most of my time development. Doing this with a focus on our mobile platforms.',
