@@ -93,7 +93,7 @@
             date: '2022 May',
             image: app4mationLogo,
             attachments: [{
-                title: 'Thesis.pdf',
+                title: 'Master Thesis.pdf',
                 image: '/assets/file.svg',
                 url: '/assets/Thesis_Risk_assessment_in_agile_software_development.pdf'
             }]
@@ -103,7 +103,12 @@
             subtitle: 'Bachelor graduation project',
             description: 'Build a set of tools to make local development on a ServiceNow instance easier. Researching which tools (Gulp, Grunt, etc) where the most fitting for Plat4mation\'s workflow.',
             date: '2018 Feb',
-            image: plat4mationLogo
+            image: plat4mationLogo,
+            attachments: [{
+                title: 'Bachelor Thesis.pdf',
+                image: '/assets/file.svg',
+                url: '/assets/Third_party_tool_integration_in_a_service_based_cloud_ecosystem.pdf'
+            }]
         },
         {
             title: 'Microsoft',
