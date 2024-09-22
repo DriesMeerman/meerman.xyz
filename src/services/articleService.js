@@ -1,5 +1,5 @@
-import { articles } from "../data/articleData";
-import { MarkdownItem, sortByDate } from "./markdownService";
+import { articles } from "../data/articleData.js";
+import { MarkdownItem, sortByDate } from "./markdownService.js";
 
 
 /**

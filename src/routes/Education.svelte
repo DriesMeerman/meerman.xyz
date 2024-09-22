@@ -1,8 +1,7 @@
 <script>
-    import { educationTimeline } from '../data/educationData';
+    import { educationTimeline } from '../data/educationData.js';
     import Card from "../components/Card.svelte";
     import StyledTimeLine from "../components/StyledTimeLine.svelte";
-    import {getImage} from "../services/imageService";
 
     const timelineItems = educationTimeline
 </script>

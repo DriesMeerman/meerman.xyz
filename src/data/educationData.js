@@ -1,4 +1,4 @@
-import { getImage } from '../services/imageService';
+import { getImage } from '../services/imageService.js';
 
 export const educationTimeline = [
     {

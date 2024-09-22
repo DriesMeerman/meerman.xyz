@@ -1,7 +1,7 @@
 <script>
     // import articles from './articles/*.md'
     import Card from "../../components/Card.svelte";
-    import { getAllArticles } from "../../services/articleService";
+    import { getAllArticles } from "../../services/articleService.js";
 
 
     export const posts = getAllArticles()

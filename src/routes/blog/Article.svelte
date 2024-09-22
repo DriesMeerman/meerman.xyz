@@ -1,7 +1,7 @@
 <script>
     import {  onDestroy } from "svelte";
-    import { particlesEnabled } from "../../state";
-    import { findPost } from "../../services/articleService";
+    import { particlesEnabled } from "../../state.js";
+    import { findPost } from "../../services/articleService.js";
 
     export let params = {};
 

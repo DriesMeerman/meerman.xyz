@@ -1,7 +1,7 @@
 <script>
     import StyledTimeLine from "../components/StyledTimeLine.svelte";
     import Card from "../components/Card.svelte";
-    import { workData, internshipData } from "../data/workExperiencedata";
+    import { workData, internshipData } from "../data/workExperiencedata.js";
 
     const work = workData;
     const internships = internshipData;
