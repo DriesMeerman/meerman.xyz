@@ -26,6 +26,18 @@
         if (enabled) particleText = "Disable particles";
         else particleText = "Enable particles";
     });
+
+    // Add this function
+    function getIconClass(isDarkMode) {
+        return `icon-hover ${isDarkMode ? 'dark:fill-white' : 'fill-black'}`;
+    }
+
+    function menuItemClicked() {
+        expanded = false;
+        if (window && window.tinylytics) {
+            window.tinylytics.triggerUpdate();
+        }
+    }
 </script>
 
 <nav
@@ -40,19 +52,19 @@
         <div class="sm:hidden mr-4 flex">
             <button type="button" class=" text-gray-500 hover:text-white focus:text-white  focus:outline-none transition" on:click={() => expanded = !expanded}>
                 <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
-                  
+
                   {#if expanded}
                   <path fill-rule="evenodd" d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z"/>
-                  
+
                     {:else}
                     <path  fill-rule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"/>
-            
+
                     {/if}
                 </svg>
               </button>
         </div>
-        
-        
+
+
     </div>
 
     {#if expanded}
@@ -65,7 +77,7 @@
         <div class="text-sm sm:flex sm:flex-grow">
             {#each menuItems as item}
                 <a
-                    on:click={() => expanded = !expanded}
+                    on:click={menuItemClicked}
                     href={item.link}
                     class="block mtop-6 mt-4 lg:inline-block lg:mt-0 text-teal-900 dark:text-white dark:hover:text-sky-600 mr-4 hover:text-teal-600"
                 >
@@ -73,7 +85,7 @@
                 </a>
             {/each}
         </div>
-        
+
         <div class="flex flex-row mt-2 sm:mt-0 gap-4 sm:gap-2">
             <div
             class="hover:animate-pulse"
@@ -89,7 +101,7 @@
             }}
         >
             <svg
-                fill={darkModeIconFill}
+                class={getIconClass($darkMode)}
                 width="24px"
                 height="24px"
                 viewBox="0 0 16 16"
@@ -114,11 +126,10 @@
                 title={$darkMode ? "Lightmode" : "Darkmode"}
             >
                 <svg
-                    class="hover:animate-pulse"
+                    class={getIconClass($darkMode)}
                     width="24px"
                     height="24px"
                     viewBox="0 0 24 24"
-                    fill={darkModeIconFill}
                     xmlns="http://www.w3.org/2000/svg"
                 >
                     <path
@@ -142,5 +153,19 @@
     .mtop-6 {
         margin-top: 6px;
     }
-    
+
+    /* Add these new styles */
+    .icon-hover {
+        transition: transform 0.3s ease, fill 0.3s ease;
+    }
+
+    .icon-hover:hover {
+        transform: scale(1.1);
+        fill: #64748b; /* Tailwind slate-500 */
+    }
+
+    /* Dark mode override */
+    :global(.dark) .icon-hover:hover {
+        fill: #94a3b8; /* Tailwind slate-400 for better contrast in dark mode */
+    }
 </style>

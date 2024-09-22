@@ -1,21 +1,29 @@
 <script>
-    import articles from './articles/*.md'
+    // import articles from './articles/*.md'
     import Card from "../../components/Card.svelte";
-    import {transformMeta, sortByDate} from "../../services/markdownService";
+    import { getAllArticles } from "../../services/articleService.js";
 
-    export const posts = articles.map(transformMeta).sort(sortByDate)
-    
+
+    export const posts = getAllArticles()
     export function isLast(list, index) {
         return (list.length - 1) === index;
     }
 
     /**
-     * 
+     *
      * @param {Date} date
      * @returns {string} a date in the format YYYY-MM-dd
      */
     export function isoDate(date) {
         return date.toISOString().split('T')[0];
+    }
+
+
+    function articleClicked() {
+        console.log("article clicked");
+        if (window && window.tinylytics) {
+            window.tinylytics.triggerUpdate();
+        }
     }
 </script>
 
@@ -32,7 +40,7 @@
         <div class="w-full">
             {#each posts as post, index}
                 <article class="{index === 0 ? '' : 'pt-6'}">
-                    <a class="cursor-pointer" href={post.permalink}>
+                    <a class="cursor-pointer" href={post.permalink} on:click={articleClicked}>
                         <div class="flex flex-row justify-between">
                             <h2 class="text-l hover:decoration-blue-400" title={post.summary}>{post.ID} - {post.title}</h2>
                             <p class="text-xs min-w-fit ml-4 lh-inherit">[{isoDate(post.date)}]</p>

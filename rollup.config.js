@@ -6,9 +6,10 @@ import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import image from 'svelte-image'
 import { scss } from 'svelte-preprocess';
+import ignore from 'rollup-plugin-ignore';
+
 
 import json from '@rollup/plugin-json';
-import markdown from '@jackfranklin/rollup-plugin-markdown'
 import glob from 'rollup-plugin-glob'
 
 const production = !process.env.ROLLUP_WATCH;
@@ -43,8 +44,8 @@ export default {
 		file: 'static/build/bundle.js'
 	},
 	plugins: [
+		ignore(['**/*.md']),
 		json(),
-		markdown(),
 		glob(),
 		svelte({
 			preprocess: [

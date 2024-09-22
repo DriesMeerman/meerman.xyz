@@ -55,7 +55,6 @@
     const hasShine = rarity === "epic" || rarity === "legendary";
 
     function cardClicked(event) {
-        console.log("Card clicked", event);
         if (event.key === "Enter" || event.key === " ") {
             showBackSide = !showBackSide;
             event.preventDefault();

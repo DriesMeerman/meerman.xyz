@@ -31,3 +31,19 @@
     </a>
 
 </Card>
+
+<style>
+    a svg {
+        transition: transform 0.3s ease, fill 0.3s ease;
+    }
+
+    a:hover svg {
+        transform: scale(1.1);
+        fill: #64748b; /* Using a color from the Tailwind slate palette */
+    }
+
+    /* For Stack Overflow icon, we need to target the path instead */
+    a:hover svg path {
+        fill: #64748b; /* Using the same color for consistency */
+    }
+</style>
