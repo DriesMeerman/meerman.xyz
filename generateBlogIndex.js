@@ -9,9 +9,12 @@ md.use(meta);
 
 const markdownDir = path.join(__dirname, 'src/routes/blog/articles/');
 const outputDir = path.join(__dirname, 'static');
+const dataDir = path.join(__dirname, 'src/data');
+
 
 const outputFilePath = path.join(outputDir, 'feed.json');
 const outputRssPath = path.join(outputDir, 'feed.xml');
+const outputJsonPath = path.join(dataDir, 'articleData.js');
 
 if (!fs.existsSync(markdownDir)) {
     console.log('No articles found, stopping...');
@@ -63,3 +66,9 @@ data.forEach((item) => {
 });
 
 fs.writeFileSync(outputRssPath, feed.xml());
+
+const articleData = `// Generated at ${new Date().toISOString()}
+const articlesString = \`${JSON.stringify(data, null, 2)}\`;
+export const articles = JSON.parse(articlesString);
+`;
+fs.writeFileSync(outputJsonPath, articleData);
