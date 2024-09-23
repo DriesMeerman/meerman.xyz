@@ -1,4 +1,4 @@
-// Generated at 2024-09-22T00:42:01.375Z
+// Generated at 2024-09-23T21:37:11.570Z
 const articlesString = `[
   {
     "filename": "dr-001.md",
@@ -52,6 +52,22 @@ const articlesString = `[
     "summary": "Swift 5.9, released with Xcode 15.2, introduces significant language improvements, including bi-directional C++ compatibility, macros, and the use of 'if' and 'switch' as expressions for more readable code. Debugging sees a speed boost, particularly in 'p' and 'po' commands, and there are notable enhancements to the Swift Package Manager and the Swift-syntax project. The author is particularly excited about the potential for cleaner code with 'if' expressions and the anticipated improvements in code analysis tools. This update also brings advancements for Swift on Windows platforms.",
     "ID": 4,
     "url": "https://meerman.xyz/#/blog/dr-004"
+  },
+  {
+    "filename": "dr-005.md",
+    "title": "Artificially enhanced IDE's and sidequests",
+    "tags": [
+      "ai",
+      "programming",
+      "ci",
+      "side-quest",
+      "ide"
+    ],
+    "date": "2024-09-22T00:00:00.000Z",
+    "author": "Dries Meerman",
+    "summary": "The article discusses the Dries' experience with using AI-enhanced IDEs, specifically Cursor, to address issues on their website, including markdown flavour inconsistencies and large bundle sizes. Initially hesitant to fix these problems due to their complexity and existing functionality, the author explores how AI can assist in making the process faster and less tedious. They delve into the complexities of markdown variations and their desire to implement footnotes, eventually using AI to optimize the site's structure and reduce bundle sizes. While the AI helped streamline tasks, it also introduced some minor bugs, such as incorrect file capitalization, highlighting both the potential and limitations of AI-driven development. Overall, the author found AI tools useful for problem-solving and workflow improvements, despite occasional challenges.",
+    "ID": "005",
+    "url": "https://meerman.xyz/#/blog/dr-005"
   }
 ]`;
 export const articles = JSON.parse(articlesString);
