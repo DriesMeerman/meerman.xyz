@@ -21,9 +21,9 @@
 <div class="category-selectors flex flex-row flex-wrap mb-4">
     {#each Object.values(categories) as category}
         <div class="m-1">
-            <PillButton name={category.name} selected={category.selected} 
-            on:click={()=>{ 
-                category.selected = !category.selected; 
+            <PillButton name={category.name} selected={category.selected}
+            on:click={()=>{
+                category.selected = !category.selected;
                 let add = category.selected ? 1 : -1;
                 selectedCount += add;
                 }} />
@@ -33,28 +33,29 @@
 
 
 
-<Card class="px-6 py-3 mb-4 flex flex-col backdrop-blur-sm {selectedCount ? '' : 'hidden'} scale-100">
+<Card class="px-2 py-3 mb-4 flex flex-col backdrop-blur-sm {selectedCount ? '' : 'hidden'} ">
     {#each Object.values(categories) as category, i}
         <div class="p-1 {!category.selected ? 'hidden': ''}">
             <h4 class="h4 ml-2">{category.name}</h4>
             <hr />
 
-            <div class="flex flex-row justify-center p-4 flex-wrap mx-8  gap-4">
+            <div class="flex flex-row justify-center flex-wrap md:p-4 md:mx-8  gap-4 md:gap-8 py-4">
                 {#each category.items || [] as skill}
+                <div class="scale-90 md:scale-100">
                     <SkillCard skill={skill} />
+                </div>
                 {/each}
             </div>
         </div>
     {/each}
 </Card>
 
-<div class="pt-16">
+<!-- <div class="pt-16">
     <h4 class="h4">Legend</h4>
     <div class="scale-75 origin-top">
         <TradingCardLegend></TradingCardLegend>
     </div>
-
-</div>
+</div> -->
 
 <svelte:head>
     <title>Meerman</title>
