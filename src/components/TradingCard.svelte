@@ -63,7 +63,7 @@
 </script>
 
 <div
-    class="skill-card flex flex-col h-64 w-40 border-solid border-teal rounded-lg bg-gradient-to-r {showBackSide
+    class="skill-card flex flex-col h-48 w-30 md:h-64 md:w-40 border-solid border-teal rounded-lg bg-gradient-to-r {showBackSide
         ? 'show-back-side'
         : ''} {hideOverflow ? 'overflow-hidden' : ''} {colorRarity[rarity]}"
     role="button"
@@ -75,7 +75,7 @@
 
     <div class="front h-full w-full">
         <div
-            class="card-image w-36 h-28 border-solid border-2 border-white/10 mx-3 mt-2 self-center p-4 rounded-lg"
+            class="card-image w-32 h-20 md:w-36 md:h-28 border-solid border-2 border-white/10 mx-3 mt-2 self-center p-4 rounded-lg"
         >
             <img
                 {alt}
