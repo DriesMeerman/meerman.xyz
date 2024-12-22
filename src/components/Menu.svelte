@@ -15,6 +15,7 @@
         { link: "#/experience", text: "Experience" },
         { link: "#/education", text: "Education" },
         { link: "#/blog", text: "Blog" },
+        { link: "#/canvas", text: "Canvas" },
     ];
 
     darkMode.subscribe((enabled) => {
