@@ -1,12 +1,18 @@
 <script>
+    /**
+     * This is a simple example of a canvas animation that draws lines in a diagonal pattern.
+     * The structure of code and animation is bad and should not be followed as a good example.
+     * Following iterations will be using improved structure.
+    */
+
     import { darkMode } from "../state";
 
     const SECONDARY_COLOR_LIGHT = "#15b8a6";
     const SECONDARY_COLOR_DARK = "#0084c7";
 
-
     let secondColor = SECONDARY_COLOR_LIGHT;
     let pause = false;
+
 
     darkMode.subscribe((enabled) => {
         if (enabled) {
@@ -21,6 +27,7 @@
         setupCanvas(12);
     }, 10);
 
+
     function setupCanvas(fontSize) {
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
@@ -31,6 +38,10 @@
         field.animate(0);
     }
 
+    /**
+     * Private class for handling the canvas animation.
+     * This will be refactored in the next iteration to be more modular and reusable.
+     */
     class CanvasAnimator {
         #ctx;
         #width;
@@ -41,7 +52,7 @@
             this.#ctx = ctx;
             this.#width = width;
             this.#height = height;
-            this.#cellSize = 12;
+            this.#cellSize = 10;
             this.lastRender = 0;
             this.interval = 1000 / 60; // 60fps
             this.timer = 0;
