@@ -9,9 +9,21 @@
 
     const SECONDARY_COLOR_LIGHT = "#15b8a6";
     const SECONDARY_COLOR_DARK = "#0084c7";
+    const WIDTHS = [200, 300, 400, 800];
+    const LINESIZES = [15, 30, 45, 60];
+
+    let aspectRatios = [4/3, 16/9, 16/10, 1];
+    let aspectIndex = Math.floor(Math.random() * aspectRatios.length);
+    let selectedAspectRatio = aspectRatios[aspectIndex];
+
+    let selectedWidthIndex = Math.floor(Math.random() * WIDTHS.length);
+    let selectedWidth = WIDTHS[selectedWidthIndex];
+    let selectedHeight = selectedWidth * selectedAspectRatio; // 4:3 aspect ratio
 
     let secondColor = SECONDARY_COLOR_LIGHT;
     let pause = false;
+
+    let width, height = 0;
 
 
     darkMode.subscribe((enabled) => {
@@ -34,6 +46,8 @@
         ctx.font = `${fontSize}px monospace`;
         ctx.fillStyle = "#19d419";
 
+        width = canvas.width;
+        height = canvas.height;
         let field = new CanvasAnimator(ctx, canvas.width, canvas.height);
         field.animate(0);
     }
@@ -58,7 +72,7 @@
             this.timer = 0;
 
             this.tempOffset = 0;
-            this.tempLineLength = 15;
+            this.tempLineLength = LINESIZES[selectedWidthIndex];
         }
 
         animate(timestamp) {
@@ -79,7 +93,7 @@
             if (this.tempOffset > this.#height || this.offset > this.#width) {
                 this.#ctx.clearRect(0, 0, this.#width, this.#height);
                 this.tempOffset = Math.cos(this.timer) * 15;
-                this.tempLineLength = 15;
+                this.tempLineLength = LINESIZES[selectedWidthIndex];
             }
 
             requestAnimationFrame(this.animate.bind(this));
@@ -109,7 +123,7 @@
 </script>
 
 <div class="relative flex min-h-[200px] w-full h-full">
-    <canvas id="canvas" class="flex-grow border-2 border-teal-500 dark:border-sky-600 w-full h-full"></canvas>
+    <canvas id="canvas" class="flex-grow border-2 border-teal-500 dark:border-sky-600 w-full h-full" width="{selectedWidth}" height="{selectedHeight}"></canvas>
     <button class="icon-hover pause-button" on:click={() => {pause = !pause}}>
         {#if pause}
         ▶
@@ -118,6 +132,7 @@
         {/if}
         ︎</button>
 </div>
+<p>{width} × {height}</p>
 
 <style>
 #canvas {
