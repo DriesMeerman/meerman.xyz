@@ -27,4 +27,3 @@ on:click="{select}" on:click>
 
 <div class="ml-2 select-none">{name}</div>
 </button>
-

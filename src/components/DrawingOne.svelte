@@ -1,12 +1,27 @@
 <script>
+    import { darkMode } from "../state";
 
+    const SECONDARY_COLOR_LIGHT = "#15b8a6";
+    const SECONDARY_COLOR_DARK = "#0084c7";
+
+
+    let secondColor = SECONDARY_COLOR_LIGHT;
+    let pause = false;
+
+    darkMode.subscribe((enabled) => {
+        if (enabled) {
+            secondColor = SECONDARY_COLOR_DARK;
+        } else {
+            secondColor = SECONDARY_COLOR_LIGHT;
+        }
+    });
+
+    // Still need to fix so onMount works again at some point
     setTimeout(() => {
-        alternate(12);
-    }, 100);
+        setupCanvas(12);
+    }, 10);
 
-
-
-    function alternate(fontSize) {
+    function setupCanvas(fontSize) {
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
         ctx.font = `${fontSize}px monospace`;
@@ -36,12 +51,18 @@
         }
 
         animate(timestamp) {
+            if (pause) {
+                setTimeout(() => {
+                    this.animate(0);
+                }, 50);
+                return;
+            }
             const elapsed = timestamp - this.lastRender;
             if (elapsed > this.interval) {
                 this.lastRender = timestamp - (elapsed % this.interval);
                 this.timer += 1;
-                this.tempLineLength += Math.random() * (Math.sin(this.timer)*20)
-                this.drawDebugLines(this.tempOffset++, this.tempLineLength );
+                this.tempLineLength += Math.random() * (Math.sin(this.timer) * 20);
+                this.drawDebugLines(this.tempOffset++, this.tempLineLength);
             }
 
             if (this.tempOffset > this.#height || this.offset > this.#width) {
@@ -53,7 +74,7 @@
             requestAnimationFrame(this.animate.bind(this));
         }
 
-        drawDebugLines(offset, lineLength){
+        drawDebugLines(offset, lineLength) {
             let xStart = offset;
             let yStart = offset;
             let xEnd = xStart + lineLength;
@@ -67,14 +88,49 @@
             this.#ctx.stroke();
 
             // draw vertical line
-            this.#ctx.strokeStyle = "red";
+            this.#ctx.strokeStyle = secondColor;
             this.#ctx.beginPath();
             this.#ctx.moveTo(xStart, yStart);
             this.#ctx.lineTo(xStart, yEnd);
             this.#ctx.stroke();
         }
-
     }
 </script>
 
-<canvas id="canvas" class="w-full h-full border-2 border-red"></canvas>
+<div class="relative flex min-h-[200px] w-full h-full">
+    <canvas id="canvas" class="flex-grow border-2 border-teal-500 dark:border-sky-600 w-full h-full"></canvas>
+    <button class="icon-hover pause-button" on:click={() => {pause = !pause}}>
+        {#if pause}
+        ▶
+        {:else}
+        ⏸
+        {/if}
+        ︎</button>
+</div>
+
+<style>
+#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.pause-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}
+
+.icon-hover {
+    transition: transform 0.3s ease, fill 0.3s ease;
+    color: rgba(0,0,0,1);
+}
+
+.icon-hover:hover {
+    transform: scale(1.1);
+    color: rgba(0,0,0,0.3);
+}
+
+</style>

@@ -1,6 +1,15 @@
 <script>
+    import { onDestroy } from "svelte";
     import Card from "../components/Card.svelte";
     import DrawingOne from "../components/DrawingOne.svelte";
+    import { particlesEnabled } from "../state";
+
+
+    particlesEnabled.set(false);
+
+    onDestroy(() => {
+        particlesEnabled.set(true);
+    });
 </script>
 
 <svelte:head>
@@ -11,8 +20,14 @@
 </svelte:head>
 
 <div>
-    <!-- <h1 class="pb-8 text-3xl font-semibold">Canvas visualizations</h1> -->
-    <h2 class="text-xl pb-4">Debug lines</h2>
+    <div class="pt-4 pb-24">
+    <p>This page consists of experiments with HTML canvases and me just having some fun with them.</p>
+    </div>
+
+    <h2 class="text-xl pb-4 select-none">
+        <span># 1</span>
+        Debug lines
+    </h2>
     <Card class="flex-col">
         <DrawingOne></DrawingOne>
     </Card>

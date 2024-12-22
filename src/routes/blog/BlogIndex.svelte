@@ -1,5 +1,4 @@
 <script>
-    // import articles from './articles/*.md'
     import Card from "../../components/Card.svelte";
     import { getAllArticles } from "../../services/articleService.js";
 
@@ -20,7 +19,6 @@
 
 
     function articleClicked() {
-        console.log("article clicked");
         if (window && window.tinylytics) {
             window.tinylytics.triggerUpdate();
         }
