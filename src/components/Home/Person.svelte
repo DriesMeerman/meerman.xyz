@@ -1,6 +1,6 @@
 <script>
 import Image from "svelte-image";
-import Card from "./Card.svelte";
+import Card from "../Card.svelte";
 
 </script>
 

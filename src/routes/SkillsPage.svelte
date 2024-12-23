@@ -1,9 +1,10 @@
 <script>
     import Card from "../components/Card.svelte";
-    import PillButton from "../components/PillButton.svelte";
-    import SkillCard from "../components/SkillCard.svelte";
-    import TradingCardLegend from "../components/TradingCardLegend.svelte";
+    import PillButton from "../components/Skills/PillButton.svelte";
+    import SkillCard from "../components/Skills/SkillCard.svelte";
     import { skills } from "../model/Skill.js";
+    // import TradingCardLegend from "../components/Skills/TradingCardLegend.svelte";
+
 
     const categories = {
         lang: { name: "Languages", selected: true, items: skills.language },
@@ -15,8 +16,9 @@
    const categoryContent = Object.values(categories)
    let selectedCount = categoryContent.filter(c => c.selected).length;
    let keywords = categoryContent.flatMap(c => c.items).map(s => s.name).join(', ');
-
 </script>
+
+
 
 <div class="category-selectors flex flex-row flex-wrap mb-4">
     {#each Object.values(categories) as category}

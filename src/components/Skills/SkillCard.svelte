@@ -1,8 +1,9 @@
 <script>
-    
-    import TradingCard from "../components/TradingCard.svelte";
+    import TradingCard from "../TradingCard.svelte";
     export let skill;
 </script>
+
+
 
 <div>
     <TradingCard
@@ -23,6 +24,8 @@
         </div>
     </TradingCard>
 </div>
+
+
 
 <style>
 

@@ -15,6 +15,7 @@
         { link: "#/experience", text: "Experience" },
         { link: "#/education", text: "Education" },
         { link: "#/blog", text: "Blog" },
+        { link: "#/canvas", text: "Canvas" },
     ];
 
     darkMode.subscribe((enabled) => {
@@ -44,8 +45,6 @@
     class="border-b-2 border-teal-500 dark:border-sky-600 dark:bg-zinc-700 flex items-center justify-between flex-wrap p-2 pt-1 duration-500"
 >
 
-
-
     <div class="flex items-center flex-shrink-0 dark:text-white mr-6 justify-between w-full sm:w-20">
         <a href="/#/" class="font-semibold text-xl tracking-tight">Meerman</a>
 
@@ -63,8 +62,6 @@
                 </svg>
               </button>
         </div>
-
-
     </div>
 
     {#if expanded}

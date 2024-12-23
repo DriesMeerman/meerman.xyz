@@ -1,5 +1,5 @@
 <script>
-    import TradingCard from "./TradingCard.svelte";
+    import TradingCard from "../TradingCard.svelte";
 
     let cardWrapperStyle = "hover:scale-150 transition-all duration-500 my-4";
     let legendImage =
@@ -16,10 +16,10 @@
     <div class="flex flex-row flex-wrap justify-around origin-top">
         {#each rarities as rarity}
             <div class={cardWrapperStyle}>
-                <TradingCard 
+                <TradingCard
                     rarity={rarity}
                     image={legendImage}
-                > 
+                >
                 <div class="flex flex-col justify-between h-full">
                     <div>
                         <h2 class="skill-title">{upperCased(rarity)}</h2>

@@ -17,6 +17,9 @@
 
 
     async function loadPost() {
+        particlesEnabled.set(false);
+        loading = true;
+
         if (post) {
             try {
                 htmlContent = await post.getHtml();
@@ -34,7 +37,6 @@
             errorMessage = "The requested article could not be found.";
             loading = false;
         }
-        particlesEnabled.set(false);
     }
 
     function addImageClickListeners() {
