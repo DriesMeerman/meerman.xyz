@@ -5,7 +5,7 @@
      * Following iterations will be using improved structure.
     */
 
-    import { darkMode } from "../state";
+    import { darkMode } from "../../state";
 
     const SECONDARY_COLOR_LIGHT = "#15b8a6";
     const SECONDARY_COLOR_DARK = "#0084c7";
@@ -22,9 +22,7 @@
 
     let secondColor = SECONDARY_COLOR_LIGHT;
     let pause = false;
-
     let width, height = 0;
-
 
     darkMode.subscribe((enabled) => {
         if (enabled) {
@@ -35,19 +33,18 @@
     });
 
     // Still need to fix so onMount works again at some point
-    setTimeout(() => {
-        setupCanvas(12);
-    }, 10);
-
+    setTimeout(() => { setupCanvas(12) }, 10);
 
     function setupCanvas(fontSize) {
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
+
         ctx.font = `${fontSize}px monospace`;
         ctx.fillStyle = "#19d419";
 
         width = canvas.width;
         height = canvas.height;
+
         let field = new CanvasAnimator(ctx, canvas.width, canvas.height);
         field.animate(0);
     }
@@ -70,19 +67,19 @@
             this.lastRender = 0;
             this.interval = 1000 / 60; // 60fps
             this.timer = 0;
-
             this.tempOffset = 0;
             this.tempLineLength = LINESIZES[selectedWidthIndex];
         }
 
+
         animate(timestamp) {
             if (pause) {
-                setTimeout(() => {
-                    this.animate(0);
-                }, 50);
+                setTimeout(() => { this.animate(0) }, 50);
                 return;
             }
+
             const elapsed = timestamp - this.lastRender;
+
             if (elapsed > this.interval) {
                 this.lastRender = timestamp - (elapsed % this.interval);
                 this.timer += 1;
@@ -132,7 +129,7 @@
         {/if}
         ︎</button>
 </div>
-<p>{width} × {height}</p>
+<p class="p-2 text-xs">{width} × {height}</p>
 
 <style>
 #canvas {
@@ -158,5 +155,4 @@
     transform: scale(1.1);
     color: rgba(0,0,0,0.3);
 }
-
 </style>

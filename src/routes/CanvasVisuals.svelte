@@ -1,7 +1,7 @@
 <script>
     import { onDestroy } from "svelte";
     import Card from "../components/Card.svelte";
-    import DrawingOne from "../components/DrawingOne.svelte";
+    import DrawingOne from "../components/Visuals/DrawingOne.svelte";
     import { particlesEnabled } from "../state";
 
 

@@ -2,11 +2,7 @@
     export let selected = false;
     export let name;
 
-
-    const select = () => {
-        selected = !selected;
-    }
-
+    const select = () => { selected = !selected; }
 </script>
 
 <button class="py-2 px-4 flex rounded-full bg-stone-300 hover:bg-stone-400 dark:bg-zinc-500 bg-opacity-80 dark:bg-opacity-70 hover:dark:bg-zinc-600 hover:outline outline-1"
