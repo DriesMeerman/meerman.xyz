@@ -1,4 +1,4 @@
-// Generated at 2024-09-23T21:37:11.570Z
+// Generated at 2025-04-17T19:22:50.794Z
 const articlesString = `[
   {
     "filename": "dr-001.md",
@@ -68,6 +68,20 @@ const articlesString = `[
     "summary": "The article discusses the Dries' experience with using AI-enhanced IDEs, specifically Cursor, to address issues on their website, including markdown flavour inconsistencies and large bundle sizes. Initially hesitant to fix these problems due to their complexity and existing functionality, the author explores how AI can assist in making the process faster and less tedious. They delve into the complexities of markdown variations and their desire to implement footnotes, eventually using AI to optimize the site's structure and reduce bundle sizes. While the AI helped streamline tasks, it also introduced some minor bugs, such as incorrect file capitalization, highlighting both the potential and limitations of AI-driven development. Overall, the author found AI tools useful for problem-solving and workflow improvements, despite occasional challenges.",
     "ID": "005",
     "url": "https://meerman.xyz/#/blog/dr-005"
+  },
+  {
+    "filename": "dr-006.md",
+    "date": "2025-04-16T00:00:00.000Z",
+    "title": "Exploring the Model Context Protocol",
+    "tags": [
+      "article",
+      "ai",
+      "MCP"
+    ],
+    "author": "Dries Meerman",
+    "ID": "006",
+    "summary": "Inspired by recent advancements in agentic AI like VS Code's agent mode and Google's Agent2Agent protocol, the author explores the Model Context Protocol (MCP), an open standard allowing Large Language Models (LLMs) to request external context and utilize tools for more accurate, less hallucinatory results. Motivated to apply this to their ServiceNow expertise, the author developed a custom MCP server (available on GitHub) to retrieve table schemas, detailing the building process using official guides and the MCP Inspector tool for local testing. The article concludes by demonstrating the successful integration of this server into the Cursor editor, where an LLM agent uses the custom tool to fetch live ServiceNow data and generate code based on it, showcasing MCP's potential to enhance AI coding assistants with reliable, real-world context and actions.",
+    "url": "https://meerman.xyz/#/blog/dr-006"
   }
 ]`;
 export const articles = JSON.parse(articlesString);
