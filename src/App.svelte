@@ -10,7 +10,7 @@
 	import BlogIndex from "./routes/blog/BlogIndex.svelte";
 	import Article from "./routes/blog/Article.svelte";
 	import CanvasVisualis from './routes/CanvasVisuals.svelte';
-
+	import Tools from './routes/Tools.svelte';
 	darkMode.subscribe (enabled => document.documentElement.classList.toggle('dark', enabled));
 </script>
 
@@ -26,7 +26,8 @@
 				'/education': Education,
 				'/blog/:slug': Article,
 				'/blog': BlogIndex,
-				'/canvas': CanvasVisualis
+				'/canvas': CanvasVisualis,
+				'/tools': Tools
 			}} />
 		</main>
 
