@@ -13,6 +13,18 @@
         // particlesEnabled.set(true);
     });
 
+
+    async function getIcon(iconUrl) {
+        const response = await fetch(iconUrl);
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch SVG: ${response.statusText}`);
+        }
+
+        const svgText = await response.text();
+        return svgText;
+    }
+
     const iconSize = '5em';
 
     // Adapt the SVG string to the desired size
@@ -34,14 +46,39 @@
         return modifiedSvg;
     }
 
+    const listOfGradientColors = [
+        'from-purple-600 to-blue-600',
+        'from-blue-600 to-green-600',
+        'from-green-600 to-yellow-600',
+        'from-yellow-600 to-red-600',
+        'from-red-600 to-purple-600',
+
+        'from-purple-600 via-blue-600 to-green-600',
+        'from-blue-600 via-green-600 to-yellow-600',
+        'from-green-600 via-yellow-600 to-red-600',
+        'from-yellow-600 via-red-600 to-purple-600',
+    ];
+
+    // const randomGradientColor = listOfGradientColors[Math.floor(Math.random() * listOfGradientColors.length)];
+    const getRandomGradientColor = () => {
+        return listOfGradientColors[Math.floor(Math.random() * listOfGradientColors.length)];
+    }
+
+
 </script>
 
 <div>
-    <div class="flex flex-wrap justify-center gap-4">
+    <div class="flex justify-start items-center w-full p-4 bg-gray-700 p-4 mb-12 rounded-md backdrop-blur-sm bg-opacity-75">
+
+    <div class="text-left flex items-start">
+        This page contains tools, programs and apps that I use.
+    </div>
+    </div>
+    <div class="flex flex-wrap justify-between gap-8">
         {#each tools as tool}
-            <div class="bg-gray-700 p-4 rounded-md backdrop-blur-sm w-32 flex-none">
+            <div class="bg-gray-700 p-4 rounded-md backdrop-blur-sm w-32 flex-none  bg-opacity-75">
                 <div class="text-center flex justify-center items-center overflow-hidden w-24 h-24">
-                    {#await fetch(tool.icon).then(res => res.text())}
+                    {#await getIcon(tool.icon)}
                         <p>Loading icon...</p>
                     {:then svgContent}
                         {@html adaptSvgString(svgContent, iconSize, iconSize)}
