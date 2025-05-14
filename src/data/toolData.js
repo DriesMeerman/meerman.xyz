@@ -22,7 +22,7 @@ const toolDataBySection = {
     { name: 'awk', url: 'https://www.gnu.org/software/gawk/', description: 'Pattern scanning and processing language.', icon: '/icons/bash.svg' },
     { name: 'sed', url: 'https://www.gnu.org/software/sed/', description: 'Stream editor for performing basic text transformations.', icon: '/icons/bash.svg' },
     { name: 'tail', url: 'https://www.gnu.org/software/coreutils/manual/html_node/tail-invocation.html', description: 'Outputs the last part of files.', icon: '/icons/bash.svg' },
-    { name: 'CRON', url: 'https://en.wikipedia.org/wiki/Cron', description: 'Time-based job scheduler in Unix-like computer operating systems.', icon: '/icons/bash.svg' },
+    { name: 'cron', url: 'https://en.wikipedia.org/wiki/Cron', description: 'Time-based job scheduler in Unix-like computer operating systems. Great for simple script automation.', icon: '/icons/bash.svg' },
     { name: 'tree', url: 'https://mama.indstate.edu/users/ice/tree/', description: 'Displays directory paths and files in a tree-like format.', icon: '/icons/bash.svg' },
     { name: 'df', url: 'https://www.gnu.org/software/coreutils/manual/html_node/df-invocation.html', description: 'Reports file system disk space usage.', icon: '/icons/bash.svg' },
     { name: 'mv', url: 'https://www.gnu.org/software/coreutils/manual/html_node/mv-invocation.html', description: 'Move or rename files and directories.', icon: '/icons/bash.svg' },
@@ -33,14 +33,7 @@ const toolDataBySection = {
     { name: 'entr', url: 'https://github.com/eradman/entr/', description: 'Run arbitrary commands when files change.', icon: '/icons/bash.svg' },
     { name: 'lazygit', url: 'https://github.com/jesseduffield/lazygit', description: 'A simple terminal UI for git commands.', icon: '/icons/git.svg' },
   ],
-  macosSpecific: [
-    { name: 'Preview', description: 'macOS built-in application for viewing images and PDFs.', icon: '/icons/bash.svg' },
-    { name: 'Screenshot: Region to Clipboard', shortcut: 'Cmd+Ctrl+Shift+3', description: 'Captures a selected region to the clipboard.', icon: '/icons/bash.svg' },
-    { name: 'Screenshot: Fullscreen to Clipboard', shortcut: 'Cmd+Ctrl+Shift+4', description: 'Captures the entire screen to the clipboard.', icon: '/icons/bash.svg' },
-    { name: 'Screenshot: Region to File', shortcut: 'Cmd+Shift+3', description: 'Captures a selected region to a file.', icon: '/icons/bash.svg' },
-    { name: 'Screenshot: Fullscreen to File', shortcut: 'Cmd+Shift+4', description: 'Captures the entire screen to a file.', icon: '/icons/bash.svg' },
-    { name: 'Screen Capture Controls', shortcut: 'Cmd+Shift+5', description: 'Opens macOS screen capture options, including screen recording.', icon: '/icons/bash.svg' },
-  ],
+
   devTools: [
     { name: 'Cursor', description: 'AI-powered code editor.', icon: '/icons/cursor.svg' },
     { name: 'JetBrains IDEs', description: 'Suite of IDEs for various languages (e.g., IntelliJ IDEA, PyCharm, WebStorm).', icon: '/icons/intellij.svg' },

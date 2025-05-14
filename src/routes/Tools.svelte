@@ -116,4 +116,27 @@
         </div>
 
     </div>
+
+    <div class="my-8">
+        <h1>MacOS shortcuts</h1>
+        <hr class="mb-4">
+        <div class="flex justify-start w-full p-4 bg-gray-700 p-4 mb-12 rounded-md backdrop-blur-sm bg-opacity-75">
+            <div class="text-left">
+                <p class="mb-4">
+                    There are some great built-in tools macOS provides. 'Preview' serves as the default application for viewing images, PDF files and many more.
+                    For screen captures, you have multiple options:
+                </p>
+                <ul class="list-disc list-inside pl-4 text-sm space-y-1">
+                    <li>Screenshot region to your clipboard: <kbd>Cmd+Ctrl+Shift+3</kbd></li>
+                    <li>Screenshot the entire screen to your clipboard: <kbd>Cmd+Ctrl+Shift+4</kbd></li>
+                    <li>Screenshot a selected region to a file: <kbd>Cmd+Shift+3</kbd></li>
+                    <li>Screenshot the entire screen to a file: <kbd>Cmd+Shift+4</kbd></li>
+                    <li>Open screen capture controls (+video): <kbd>Cmd+Shift+5</kbd></li>
+                </ul>
+                <p class="my-4">
+                    When there's an image in your clipboard, you can use <kbd>Cmd+Shift+N</kbd> if preview is open to create a new document with the image.
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
