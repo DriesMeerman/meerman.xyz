@@ -1,18 +1,7 @@
 <script>
-    import { onDestroy } from "svelte";
-    import { particlesEnabled } from "../state";
     import { tools, unixTools } from "../data/toolData";
 
-    function initializeToolsPage() {
-        // particlesEnabled.set(false);
-    }
-
-    initializeToolsPage();
-
-    onDestroy(() => {
-        // particlesEnabled.set(true);
-    });
-
+    const iconSize = '5em';
 
     async function getIcon(iconUrl) {
         const response = await fetch(iconUrl);
@@ -25,13 +14,12 @@
         return svgText;
     }
 
-    const iconSize = '5em';
-
     // Adapt the SVG string to the desired size
     function adaptSvgString(svgString, width, height) {
         if (!svgString || typeof svgString !== 'string') {
             return '';
         }
+
         let modifiedSvg = svgString.replace(
             /<svg([^>]*)>/i,
             (match, attributes) => {
