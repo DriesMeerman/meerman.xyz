@@ -14,8 +14,9 @@
         { link: "#/skills", text: "Skills" },
         { link: "#/experience", text: "Experience" },
         { link: "#/education", text: "Education" },
+        { link: "#/tools", text: "Tools" },
         { link: "#/blog", text: "Blog" },
-        { link: "#/canvas", text: "Canvas" },
+//        { link: "#/canvas", text: "Canvas" },
     ];
 
     darkMode.subscribe((enabled) => {
@@ -151,7 +152,6 @@
         margin-top: 6px;
     }
 
-    /* Add these new styles */
     .icon-hover {
         transition: transform 0.3s ease, fill 0.3s ease;
     }
@@ -161,7 +161,6 @@
         fill: #64748b; /* Tailwind slate-500 */
     }
 
-    /* Dark mode override */
     :global(.dark) .icon-hover:hover {
         fill: #94a3b8; /* Tailwind slate-400 for better contrast in dark mode */
     }
