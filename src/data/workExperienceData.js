@@ -6,16 +6,16 @@ const plat4mationLogo = getImage('plat4mation');
 export const workData = [
     {
         title: 'ServiceNow',
-        subtitle: 'Engineering Manager',
+        subtitle: 'Engineering Manager (M3)',
 	level: 'm3',
-        description: 'Due to some restructuring in our business unit, I switched to a hybrid role with 50% development and 50% management. Continuing my work on mobile platform releases and coordinating with product / design and business units. While helping 4 direct reports grow in their career.',
+        description: 'I switched to a hybrid role with 50% development and 50% management, with my official title changing to manager. Continuing my work on mobile platform releases and coordinating with product / design and business units. While helping 4 direct reports grow in their career.',
         bullets: [],
         date: '2025 Jun',
         image: getImage('servicenow_logo'),
     },
     {
         title: 'ServiceNow',
-        subtitle: 'Staff Software Engineer',
+        subtitle: 'Staff Software Engineer (IC4)',
 	level: 'ic4',
         description: '4Industry got acquired by ServiceNow, we are going to re-platform the 4Industry suite on to the ServiceNow platform as the Connected Worker product. Worked on multiple mobile platform releases.',
         bullets: ['Yokohama', 'Zurich'],
