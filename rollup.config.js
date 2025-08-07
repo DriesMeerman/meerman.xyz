@@ -5,7 +5,8 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import image from 'svelte-image'
-import { scss } from 'svelte-preprocess';
+import sveltePreprocess from 'svelte-preprocess';
+import sass from 'sass';
 import ignore from 'rollup-plugin-ignore';
 
 
@@ -49,6 +50,21 @@ export default {
 		glob(),
 		svelte({
 			preprocess: [
+				// Precompile <style lang="scss"> blocks so downstream markup preprocessors can parse
+				{
+					markup: async ({ content }) => {
+						const replaced = content.replace(/<style\s+lang=["']scss["'][^>]*>([\s\S]*?)<\/style>/g, (m, scssCode) => {
+							try {
+								const result = sass.compileString(scssCode, { style: 'expanded' });
+								return `<style>${result.css}</style>`;
+							} catch (e) {
+								console.error('SCSS precompile failed:', e);
+								return m;
+							}
+						});
+						return { code: replaced };
+					}
+				},
 				image({
 					sizes: [400],
 					processFolders: ['assets', 'assets/logos'],
@@ -61,7 +77,11 @@ export default {
 						force: true
 					},
 				}),
-				scss()
+				sveltePreprocess({
+					scss: {
+						implementation: sass
+					}
+				}),
 			],
 			compilerOptions: {
 				// enable run-time checks when not in production
