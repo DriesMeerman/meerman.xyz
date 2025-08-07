@@ -67,8 +67,29 @@ data.forEach((item) => {
 
 fs.writeFileSync(outputRssPath, feed.xml());
 
-const articleData = `// Generated at ${new Date().toISOString()}
-const articlesString = \`${JSON.stringify(data, null, 2)}\`;
+const newArticlesJson = JSON.stringify(data, null, 2);
+
+// If nothing changed besides the timestamp, don't rewrite the file to avoid git churn
+try {
+    let shouldWrite = true;
+    if (fs.existsSync(outputJsonPath)) {
+        const existing = fs.readFileSync(outputJsonPath, 'utf-8');
+        const match = existing.match(/const articlesString = `([\s\S]*?)`;/);
+        if (match && match[1] === newArticlesJson) {
+            shouldWrite = false;
+            console.log('articleData.js content unchanged; skipping rewrite (timestamp preserved).');
+        }
+    }
+
+    if (shouldWrite) {
+        const articleData = `// Generated at ${new Date().toISOString()}
+const articlesString = \`${newArticlesJson}\`;
 export const articles = JSON.parse(articlesString);
 `;
-fs.writeFileSync(outputJsonPath, articleData);
+        fs.writeFileSync(outputJsonPath, articleData);
+        console.log('articleData.js written');
+    }
+} catch (err) {
+    console.error('Failed to write articleData.js:', err);
+    process.exitCode = 1;
+}
