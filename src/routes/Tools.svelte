@@ -36,13 +36,13 @@
 </script>
 
 <div>
-    <div class="flex justify-start w-full p-4 bg-gray-700 p-4 mb-12 rounded-md backdrop-blur-sm bg-opacity-75">
+    <div class="flex justify-start w-full p-4 bg-stone-200 dark:bg-gray-700 p-4 mb-12 rounded-md backdrop-blur-sm bg-opacity-80 dark:bg-opacity-75">
         <div class="text-left flex flex-wrap">
             <p>
                 This is an overview of tools and programs I find useful and use on a daily basis.
             </p>
 
-            <p class="text-xs pt-1 text-gray-400 w-full flex justify-end">
+            <p class="text-xs pt-1 text-gray-600 dark:text-gray-400 w-full flex justify-end">
                 Last updated: 2025-05-14
             </p>
         </div>
@@ -50,7 +50,7 @@
 
     <div class="flex flex-wrap justify-between gap-8">
         {#each tools as tool}
-            <div class="bg-gray-700 p-4 rounded-md backdrop-blur-sm w-32 flex-none  bg-opacity-75">
+            <div class="bg-stone-200 dark:bg-gray-700 p-4 rounded-md backdrop-blur-sm w-32 flex-none bg-opacity-80 dark:bg-opacity-75">
                 <div class="text-center flex justify-center items-center overflow-hidden w-24 h-24">
                     {#await getIcon(tool.icon)}
                         <p>Loading icon...</p>
@@ -70,7 +70,7 @@
         <hr class="mb-4">
         <div class="flex flex-col gap-4">
             {#each unixTools as tool}
-                <div class="bg-gray-700 p-4 rounded-md backdrop-blur-sm flex-none  bg-opacity-75">
+                <div class="bg-stone-200 dark:bg-gray-700 p-4 rounded-md backdrop-blur-sm flex-none bg-opacity-80 dark:bg-opacity-75">
                     <div class="flex flex-row justify-between items-center">
                         <pre><span class="select-none mr-2">$</span>{tool.name}</pre>
 
@@ -108,7 +108,7 @@
     <div class="my-8">
         <h1>MacOS shortcuts</h1>
         <hr class="mb-4">
-        <div class="flex justify-start w-full p-4 bg-gray-700 p-4 mb-12 rounded-md backdrop-blur-sm bg-opacity-75">
+        <div class="flex justify-start w-full p-4 bg-stone-200 dark:bg-gray-700 p-4 mb-12 rounded-md backdrop-blur-sm bg-opacity-80 dark:bg-opacity-75">
             <div class="text-left">
                 <p class="mb-4">
                     There are some great built-in tools macOS provides. 'Preview' serves as the default application for viewing images, PDF files and many more.
