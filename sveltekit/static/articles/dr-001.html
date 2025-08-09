@@ -1,0 +1,84 @@
+<h1>The journey of writing a blog</h1>
+<h2>Why write a blog?</h2>
+<p>Last year I completed my Master&#39;s degree which means no more school essays.<br>I still enjoy the process of researching a subject and organizing my thoughts, by writing technical articles I want to improve my writing.<br>Actively researching a topic and crystallizing the thoughts using writing</p>
+<ul>
+<li>improve my writing</li>
+<li>Have an excuse to research things, and force myself to write them out and making them more tangible</li>
+<li>Knowledge sharing</li>
+</ul>
+<p>There are also quite a few technical blogs I enjoy reading, and I like to learn how to create similar high quality content.<br>A good example of this is <a href="https://www.factorio.com/blog/">Factorio friday facts</a>, with a good variety of interesting technical problems and how they solved it.</p>
+<h2>Blog requirements</h2>
+<h3>Control</h3>
+<p>I want the ability to both integrate the blog into my own website and host on platforms such as medium.<br>By not being tied to a publishing platform my content will not disappear completely if some platforms go out of business.<br>In general, I don&#39;t like the idea of my content being under the control of others.<br>This also gives me a great excuse to tinker with my website and add this blogging capability.<br>Large parts of the web are not faster than they were years ago, even though internet speeds and computing power has gone up significantly.<br>This is in part because with more processing power there has been more data being sent even in cases where it&#39;s not required.<br>By taking this control I can try to keep the blog fast, nobody likes waiting for a computer.</p>
+<h3>Writing Format</h3>
+<p>There are many programs and file formats that can be used to write in, all of them have their own pro&#39;s and con&#39;s.<br>While writing, I might use different computers and mobile devices that makes portability of the format important to me.<br>I don&#39;t want to have to micromanage all parts of the styling, however I want something that looks good without requiring a lot of effort.<br>I&#39;m comfortable in writing in Markdown which I think is very suitable for blogging as it can easily be transformed into HTML for the web.<br>The markdown content is still saved as plaintext so it has the portability aspect. Styling content in Markdown is relatively simple if you know the syntax which I happen to already know.<br>There are many different choices in Markdown editors, I happen to use <a href="https://obsidian.md/">Obsidian</a> for my own note taking which is a great editor for this purpose.<br>People usually read blogs on webpages not by downloading Markdown files, a format on its own is not enough.</p>
+<h3>RSS feeds</h3>
+<p>With the changes in management at Twitter microblogging and normal blogging seem to have gotten some more growth.<br>For myself I&#39;d rather consume short blog articles with deeper content than similar twitter threads.<br>For that reason I also want to make everything accessible through an RSS feed, as that is how I would like to consume the content.<br>RSS feeds give people back the control rather than being at the whims of big tech algorithms.<br>The feed for this blog can be found <a href="/feed.xml">here</a>.</p>
+<h2>Solution a custom tech stack</h2>
+<p>I already have a website I&#39;m happy with, so I prefer to extend that instead of starting another thing which might not get finished.<br>Luckily there are many libraries / software tools that can help with converting Markdown to HTML or other formats.<br>This will make it straightforward to implement a system that will turn the Markdown into webpages on my website.<br>Any future limitations will be there because of choices I made, they can therefore be removed by some effort from my side.<br>Or if I end up wanting to publish to alternate platforms, turning the Markdown into something that fits a different platform will probably not be too complex.</p>
+<h3>Initial plan</h3>
+<p>Use some existing markdown converter to build html and serve that on my website.<br>However, setting that up in the existing build pipeline seemed like a lot of more effort than implementing a Svelte markdown renderer.<br>I looked into completely rebuilding my website as Svelte-kit so that I could have faster pre-rendered pages.<br>However, that would make the project longer and make it less likely for me to actually finish it.</p>
+<blockquote>
+<p>Perfect is the enemy of good ~ Voltaire</p>
+</blockquote>
+<h3>Building it</h3>
+<p>After some googling I found an article that solved a similar problem <sup><a id="/blog/dr-001#footnote-ref-1" href="#/blog/dr-001#footnote-1" data-/blog/dr-001#footnote-ref aria-describedby="/blog/dr-001#footnote-label">1</a></sup> rendering Markdown pages in a Svelte website.<br>Well they used Svelte + Sapper so some modifications where required, however many other solutions I found used SvelteKit which is slightly different from my older Svelte SPA approach.<br>By using rollup-glob and a rollup Markdown plugin as shown below:</p>
+<pre><code class="language-javascript">import markdown from &#39;@jackfranklin/rollup-plugin-markdown&#39;
+import glob from &#39;rollup-plugin-glob&#39;
+
+export {
+    plugins: [
+	   json(),
+	   markdown(),
+	   glob(),
+	   svelte({...})
+    ],
+    ...
+  },
+</code></pre>
+<p>I am able to import Markdown files in Svelte components with file globs. While the Markdown plugin also parses the YML frontmatter<sup><a id="/blog/dr-001#footnote-ref-2" href="#/blog/dr-001#footnote-2" data-/blog/dr-001#footnote-ref aria-describedby="/blog/dr-001#footnote-label">2</a></sup> metadata which help with for example article dates.<br>The glob allows me to target multiple files at once, which I use to generate the blog index and render the content on pages.</p>
+<pre><code class="language-jsx">&lt;script&gt;
+import articles from &#39;./articles/*.md&#39;
+export const first = articles[0]
+&lt;/script&gt;
+
+&lt;div&gt;
+{#if first}
+	{@html first.html}
+{/if}
+&lt;/div&gt;
+</code></pre>
+<p>Now we have the ability to create an overview page from which we can open the other pages, and we can render the markdown content into article pages.<br>My website was already using the <a href="https://tailwindcss.com/">tailwind</a> css framework which strips the styling of default tags.<br>So initially rendered Markdown looked like this:<br><img src="assets/articles/1_blog_journey/tailwind_stripped_generated_html.png" alt="Tailwind stripped generated html"></p>
+<p>However tailwind already has a solution for this use-case.<br>By using the <a href="https://tailwindcss.com/docs/typography-plugin">typography plugin</a> with the prose class and an inverted version for darkmode I was all set.</p>
+<pre><code class="language-jsx">&lt;div class=&quot;prose dark:prose-invert max-w-none&quot;&gt;
+    {@html post.html}
+&lt;/div&gt;
+</code></pre>
+<p><img src="assets/articles/1_blog_journey/tailwind_fixed_generated_html.png" alt="Tailwind fixed generated html"></p>
+<p>What is left is an RSS feed so people have the option to stay updated when new posts are added.<br>The data which is required for an rss feed is already mostly defined in my YML frontmatter.<br>Because the blog is static and not part of a CMS (Content Management System) we can parse this at build time and generate a static RSS <a href="https://meerman.xyz/feed.xml">feed file</a>.<br>While this is rather simple I did not feel like writing this script myself so used ChatGPT<sup><a id="/blog/dr-001#footnote-ref-3" href="#/blog/dr-001#footnote-3" data-/blog/dr-001#footnote-ref aria-describedby="/blog/dr-001#footnote-label">3</a></sup>.<br><img src="assets/articles/1_blog_journey/chatgpt_blog_rss_generation.png" alt="ChatGPT blog rss feed generation"></p>
+<p>This wrote a script which was 95% correct so with minor modifications I&#39;m ready to merge everything to main and upload my first blog post.<br>Well mostly the process is not completely automated and there a few minor steps that still need to be adressed.<br>But rather than trying to be perfect, I will attempt getting something out first and improving it along the way.</p>
+<h2>Next steps</h2>
+<p>While this workflow does what I want it to there are a few missing features or things I want to improve upon.</p>
+<ol>
+<li>Images</li>
+<li>Footnotes</li>
+</ol>
+<p>Images are working reasonably well, but when publishing an article there is some manual effort required.<br>Changing the Obsidian image links in the format of <code>![[imagename.png]]</code> to <code>![Alt text / image name](hosted/imagepath.png)</code> and copy the images over to an asset folder on the blog part of my website.<br>Ideally I want to automate this process with some script in the future.</p>
+<p>I&#39;m already using the markdown footnote syntax in this article, however the Markdown parser I&#39;m using it does not support it.<br>The markdown footnote syntax is the following <code>in text[^4]</code> and then at the end of your article <code>[^4]: Some footnote</code>.<br>So while that is not fixed it will look a bit off.<br>I found this out after getting most everything to work, so I will need to modify the code to use a different Markdown parser which does support it.<br>This might have further implications on the current tech used for the blog but that will be a problem for the future.</p>
+<h1>Conclusion</h1>
+<p>Writing can be a good way to get some creativity out and improve your own thought processes.<br>Taking shortcuts can be okay if it helps you actually finish a project rather getting stuck in trying to finish the last 20%.<br>Use tools that are available when possible to speed up progress.<br>It is easier to add onto something that is finished that to finish something that has been on the back burner for a long time.</p>
+<h1>Sources and Notes</h1>
+<section class="footnotes" data-footnotes>
+<h2 id="/blog/dr-001#footnote-label" class="sr-only">Footnotes</h2>
+<ol>
+<li id="/blog/dr-001#footnote-1">
+<p>Creating a markdown blog <a href="https://dev.to/joshnuss/create-a-blog-with-markdown-sapper-50ad">Markdown with Sapper</a> <a href="#/blog/dr-001#footnote-ref-1" data-/blog/dr-001#footnote-backref aria-label="Back to reference 1">↩</a></p>
+</li>
+<li id="/blog/dr-001#footnote-2">
+<p>YML frontmatter is metadata for Markdown files defined at the start of the file between two lines of three dashes. <a href="#/blog/dr-001#footnote-ref-2" data-/blog/dr-001#footnote-backref aria-label="Back to reference 2">↩</a></p>
+</li>
+<li id="/blog/dr-001#footnote-3">
+<p>Popular large language model created by Openai (specifically one based on GPT 3.5) <a href="#/blog/dr-001#footnote-ref-3" data-/blog/dr-001#footnote-backref aria-label="Back to reference 3">↩</a></p>
+</li>
+</ol>
+</section>
