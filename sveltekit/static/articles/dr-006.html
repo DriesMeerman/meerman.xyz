@@ -1,0 +1,77 @@
+<h1>Exploring the Model Context Protocol</h1>
+<p>The VS Code team recently announced their agentic mode, I watched their <a href="https://www.youtube.com/watch?v=dutyOc_cAEU">video</a> and it got me more excited about AI tooling. Growing competition within AI coding tools, models, even protocols now it seems. With Google <a href="https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/">announcing</a> their Agent2Agent protocol.</p>
+<p>I&#39;m liking these open standards, allowing you to pick your own models and tools and use them in complexer ways; to do more than just simple gimmicks and with less hallucinations. So with all the movement in the space and Gemini 2.5 pro still being free in preview and GPT 4.1 dropping which is also more focussed on tool use. It got me excited to try and experiment with this new technology.</p>
+<p>I have been working with the ServiceNow platform for a long time so a simple and useful thing that popped into my mind is a tool to retrieve table schemas. (Fully original thoughts, not because the VS Code agentic mode video showed the same idea but for Postgres)</p>
+<p>You can find the MCP server I created on <a href="https://github.com/DriesMeerman/sn-dev-mcp">Github</a>.</p>
+<h1>What is MCP (Model Context Protocol)</h1>
+<p>For an indepth explanation I can recommend their <a href="https://modelcontextprotocol.io/introduction">documentation website</a> I got a lot of my information while working on this project from there.<br>I understand the protocol as follows, we have a model some Large Language Model (LLM) and it needs additional context to do something (without hallucinating, or asking the user). A simple example is databas schema&#39;s you are asking the model for some help with an SQL query, but it doesn&#39;t know what your table looks like.<br>MCP is just a standardised way for the LLM to keep working and request this information so it can act upon it.</p>
+<p><img src="assets/articles/dr-6/mcp_no_tool_structure.png" alt="mcp no tool structure"></p>
+<p>These diagrams show an example of steps that would get moved to the tool. Because the tools supply &quot;real&quot; data the accuracy / usefulness should be better than if its based on memory and requires less manual interaction.</p>
+<p><img src="assets/articles/dr-6/mcp_with_tool_structure.png" alt="mcp with tool structure"></p>
+<p>Additionally it can also allow your computer to do things instructed by the LLM while still having a layer of safety. For example when your AI powered editor asks to NPM install something, which can then be done by just accepting the tool use. It doesn&#39;t give the LLM power to do anything and it gets an answer on the success of it keeping context of what is happening.</p>
+<h1>Building an MCP Server</h1>
+<p>If you are serious about building an MCP yourself you should follow the official <a href="https://modelcontextprotocol.io/quickstart/server#node">quickstart guide for server developers</a>. Alongside this there is a nice collection of <a href="https://github.com/modelcontextprotocol/servers">reference MCP servers</a> on Github.<br>So lets assume you did follow the guide and your project builds. How do you run it locally / actually test it?</p>
+<blockquote>
+<p><em>Use the model inspector</em></p>
+</blockquote>
+<p>I did it with Node but python should be similar.</p>
+<pre><code class="language-bash">npm run build &amp;&amp; \
+npx @modelcontextprotocol/inspector node $(pwd)/dist/index.js \
+--connection-string https://&lt;USER&gt;:&lt;PASSWORD&gt;@&lt;INSTANCE&gt;.service-now.com
+</code></pre>
+<p>So lets break that command down. First we build the MCP server, then we run the inspector. The inspector takes as parameter a string to start the server, so I&#39;m assuming python would work just as well as node here. A full file path to the output of the MCP server, followed by its arguments. Which in my case are named even though the only options is a connection string, containing username password and host.</p>
+<p>This starts the inspector which has a nice web UI, which in turn starts the MCP server. If you use claude code, vs code, cursor or something else that will be starting the MCP server.</p>
+<p>The inspector is a lot easier during development though, as <strong>you</strong> can be the LLM you&#39;ve always wanted to be; that uses the tools. Its also nice you don&#39;t have to burn through tokens to get an LLM to use your tool for dev purposes.</p>
+<p>The inspector feels similar like a Postman or Insomnia<sup><a id="/blog/dr-006#footnote-ref-1" href="#/blog/dr-006#footnote-1" data-/blog/dr-006#footnote-ref aria-describedby="/blog/dr-006#footnote-label">1</a></sup>.<br><img src="assets/articles/dr-6/mcp_inspector.png" alt="mcp_inspector"></p>
+<p>It has clear in an outputs and you see immediatly whether your tool / resource is working or not. Which you define as part of adherence to the protocol, which is how the LLMs are able to communicate with it.</p>
+<p>The arguments past <code>node path/to/script.js</code> are arguments handled in the implementation of the MCP Server.</p>
+<h1>What now</h1>
+<p>So what does this all lead to? Hopefully a functioning MCP server, that you can add to a MCP client. Examples of this are some IDE&#39;s like VS Code and Cursor, but also Claude code. Look at your client&#39;s documentation for the exact specifics, I will explain it for Cursor as that is what I used.</p>
+<ol>
+<li>Have the repo locally<sup><a id="/blog/dr-006#footnote-ref-2" href="#/blog/dr-006#footnote-2" data-/blog/dr-006#footnote-ref aria-describedby="/blog/dr-006#footnote-label">2</a></sup></li>
+<li>Open its project folder and <code>npm install</code></li>
+<li>Build the project: <code>npm run build</code></li>
+<li>Open the project where you want to use the tool</li>
+<li>Create <code>.cursor/mcp.json</code> and add the following content<br>  Make sure to replace the placeholders</li>
+</ol>
+<pre><code class="language-json">{
+    &quot;mcpServers&quot;: {
+        &quot;mcp-sn&quot;: {
+            &quot;command&quot;: &quot;node&quot;,
+            &quot;args&quot;: [
+                &quot;/path/to/your/mcp-sn/dist/index.js&quot;,
+                &quot;--connection-string&quot;,
+                &quot;https://&lt;USER&gt;:&lt;PASSWORD&gt;@&lt;INSTANCE&gt;.service-now.com&quot;
+            ]
+        }
+    }
+}
+</code></pre>
+<p>As you can see this is very similar to the arguments we passed to the inspector only in a slightly different format.<br>Now open your cursor settings and enable the mcp server</p>
+<p><img src="assets/articles/dr-6/cursor_settings.png" alt="Cursor settings"><br>Hopefully we get a nice green dot showing its working.<br><img src="assets/articles/dr-6/mcp_active.png" alt="MCP active"></p>
+<h1>Result</h1>
+<p>Now you can try a request in the agent chat mode and get live data from the ServiceNow instance you are connected too.<br>For example as shown here:</p>
+<p><img src="assets/articles/dr-6/cursor_mcp_sn_task.png" alt="cursor mcp sn task"></p>
+<p>The video<sup><a id="/blog/dr-006#footnote-ref-3" href="#/blog/dr-006#footnote-3" data-/blog/dr-006#footnote-ref aria-describedby="/blog/dr-006#footnote-label">3</a></sup> below shows a demo creating a custom table and letting an LLM create scripts to query that table.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dcxhYRUoqpg" title="Model context protocol - LLM interacting with custom ServiceNow Table" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<br/>
+
+
+<h1>Closing thoughts</h1>
+<p>For a new protocol the documentation and existing knowledge on it is quite good and allows you to get started and get something up and running fast.</p>
+<p>It does require existing knowledge of LLMs and knowing how REST API&#39;s work is a big plus.</p>
+<p>I think this space is still getting started and I&#39;m curious to see what kind of tools will become available in the short and long term. To me the tools save user time while increasing result accuracy by preventing hallucinations. This makes the AI tooling a bit more robust.</p>
+<section class="footnotes" data-footnotes>
+<h2 id="/blog/dr-006#footnote-label" class="sr-only">Footnotes</h2>
+<ol>
+<li id="/blog/dr-006#footnote-1">
+<p>HTTP / REST Client(s) <a href="#/blog/dr-006#footnote-ref-1" data-/blog/dr-006#footnote-backref aria-label="Back to reference 1">↩</a></p>
+</li>
+<li id="/blog/dr-006#footnote-2">
+<p>Clone the repo <a href="https://github.com/DriesMeerman/sn-dev-mcp.git">https://github.com/DriesMeerman/sn-dev-mcp.git</a> <a href="#/blog/dr-006#footnote-ref-2" data-/blog/dr-006#footnote-backref aria-label="Back to reference 2">↩</a></p>
+</li>
+<li id="/blog/dr-006#footnote-3">
+<p>Unedited video showing tool usage in action <a href="https://youtu.be/H0cuVsLqhls">here</a> <a href="#/blog/dr-006#footnote-ref-3" data-/blog/dr-006#footnote-backref aria-label="Back to reference 3">↩</a></p>
+</li>
+</ol>
+</section>
