@@ -7,9 +7,9 @@ const meta = require('markdown-it-meta');
 const md = new MarkdownIt()
 md.use(meta);
 
-const markdownDir = path.join(__dirname, 'src/routes/blog/articles/');
-const outputDir = path.join(__dirname, 'static');
-const dataDir = path.join(__dirname, 'src/data');
+const markdownDir = process.env.BLOG_MARKDOWN_DIR || path.join(__dirname, 'src/routes/blog/articles/');
+const outputDir = process.env.BLOG_FEED_OUT_DIR || path.join(__dirname, 'sveltekit/static');
+const dataDir = process.env.BLOG_DATA_OUT_DIR || path.join(__dirname, 'src/data');
 
 
 const outputFilePath = path.join(outputDir, 'feed.json');
@@ -38,7 +38,7 @@ const data = files.map((filename) => {
     return {
         filename: filename,
         ...metaData,
-        url: `https://meerman.xyz/#/blog/${blogUrlPath}`,
+        url: `https://meerman.xyz/blog/${blogUrlPath}`,
     };
 });
 

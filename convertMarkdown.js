@@ -6,8 +6,8 @@ const matter = require('gray-matter'); // Add this line
 
 const markedFootnote = require('marked-footnote');
 
-const inputDir = 'src/routes/blog'; // Adjust this to your markdown files location
-const outputDir = 'static/'; // Adjust this to your desired output location
+const inputDir = process.env.BLOG_MARKDOWN_DIR || path.join(__dirname, 'src/routes/blog');
+const outputDir = process.env.BLOG_HTML_OUT_DIR || path.join(__dirname, 'sveltekit/static');
 
 
 
@@ -45,7 +45,17 @@ glob(`${inputDir}/**/*.md`).then(files => {
       prefixId: `/blog/${filename}#footnote-`
     }));
 
-    const html = marked.parse(markdownContent);
+    let html = marked.parse(markdownContent);
+
+    // Normalize image URLs: make root-relative and point to /assets if not absolute
+    html = html.replace(/<img\s+([^>]*?)src=["'](.*?)["']([^>]*)>/g, (m, pre, src, post) => {
+      if (/^https?:\/\//i.test(src)) return m; // external, leave as is
+      let normalized = src;
+      if (!src.startsWith('/')) normalized = '/' + src;
+      // if it's under src/static/assets in original project, ensure /assets prefix
+      normalized = normalized.replace(/^(\/)?static\//, '/');
+      return `<img ${pre}src="${normalized}"${post}>`;
+    });
 
     const relativePath = path.relative(inputDir, file);
     const outputPath = path.join(outputDir, relativePath.replace('.md', '.html'));
