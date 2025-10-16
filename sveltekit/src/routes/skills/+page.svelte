@@ -4,29 +4,28 @@
   import SkillCard from '$lib/skills/SkillCard.svelte';
   import { skills } from '$lib/model/Skill.js';
 
-  const categories = {
+  let categories = $state({
     lang: { name: 'Languages', selected: true, items: skills.language },
     framework: { name: 'Frameworks', selected: true, items: skills.framework },
     tooling: { name: 'Tools', selected: true, items: skills.tooling },
     misc: { name: 'Miscellaneous', selected: true, items: skills.misc }
-  };
+  });
 
-  const categoryContent = Object.values(categories);
-  let selectedCount = categoryContent.filter((c) => c.selected).length;
-  let keywords = categoryContent.flatMap((c) => c.items).map((s) => s.name).join(', ');
+  let selectedCount = Object.values(categories).filter((c) => c.selected).length;
+  let keywords = Object.values(categories).flatMap((c) => c.items).map((s) => s.name).join(', ');
 </script>
 
 <div class="category-selectors flex flex-row flex-wrap mb-4">
   {#each Object.values(categories) as category}
     <div class="m-1">
-      <PillButton name={category.name} selected={category.selected} on:click={() => { category.selected = !category.selected; selectedCount += category.selected ? 1 : -1; }} />
+      <PillButton name={category.name} selected={category.selected} onclick={() => { category.selected = !category.selected; selectedCount += category.selected ? 1 : -1; }} />
     </div>
   {/each}
   </div>
 
 <Card class="px-2 py-3 mb-4 flex flex-col backdrop-blur-sm {selectedCount ? '' : 'hidden'} ">
   {#each Object.values(categories) as category}
-    <div class="p-1 {!category.selected ? 'hidden': ''}">
+    <div class="p-1" class:hidden={!category.selected}>
       <h4 class="h4 ml-2">{category.name}</h4>
       <hr />
       <div class="flex flex-row justify-center flex-wrap md:p-4 md:mx-8  gap-4 md:gap-8 py-4">

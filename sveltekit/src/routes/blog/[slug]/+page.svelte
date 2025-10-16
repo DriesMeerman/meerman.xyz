@@ -7,7 +7,7 @@
 
   onMount(async () => {
     try {
-      const res = await fetch(`/articles/${data.slug}.html`);
+      const res = await fetch(`/articles/${data.slug}.html`, { cache: 'no-store' });
       if (!res.ok) throw new Error('Failed to load article');
       htmlContent = await res.text();
       await tick();
@@ -72,12 +72,7 @@
 </svelte:head>
 
 <style>
-  @media (min-width: 768px) {
-    .prose :global(img) {
-      max-width: 30rem;
-      margin: 1.5rem auto;
-    }
-  }
+  @media (min-width: 768px) { .prose :global(img) { max-width: 30rem; margin: 1.5rem auto; } }
   :global(.prose img) { cursor: pointer; transition: all 0.3s ease; border-radius: 15px; background: #f0f0f0; box-shadow: 0 10px 25px rgba(0,0,0,.5); padding: 1px; }
   :global(.prose img.enlarged) { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 90vw; max-height: 90vh; z-index: 1000; background: none; padding: 0; }
   :global(.dark .prose img) { background: #2a2a2a; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }

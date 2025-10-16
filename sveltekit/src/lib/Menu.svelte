@@ -4,7 +4,6 @@
   let particleText = $state('Disable particles');
   let expanded = $state(false);
   const menuItems = [
-    { href: '/', text: 'Home' },
     { href: '/skills', text: 'Skills' },
     { href: '/experience', text: 'Experience' },
     { href: '/education', text: 'Education' },

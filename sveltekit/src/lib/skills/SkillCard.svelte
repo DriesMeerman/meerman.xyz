@@ -1,15 +1,28 @@
 <script>
+  import TradingCard from '$lib/TradingCard.svelte';
   let { skill } = $props();
 </script>
 
-<div class="w-48 bg-stone-200 dark:bg-gray-700 rounded-lg p-3 text-sm">
-  <div class="w-full h-28 flex items-center justify-center overflow-hidden">
-    <img src={skill.image} alt={skill.altText || `${skill.name} logo`} class="max-h-24" />
-  </div>
-  <div class="mt-2">
-    <h3 class="font-semibold">{skill.name}</h3>
-    <p class="text-xs opacity-80">{skill.description}</p>
-  </div>
+<div>
+  <TradingCard image={skill.image} alt={skill.altText} rarity={skill.rarity}>
+    <div class="flex flex-col justify-between h-full">
+      <div>
+        <h2 class="skill-title">{skill.name}</h2>
+        <hr class="max-w-[90%] dark:border-zinc-50 border-zinc-800" />
+      </div>
+      <div class="rounded-sm flex flex-row">
+        {#each skill.attributes as attribute}
+          <div class="skill-attribute py-1 px-2 mr-2 mt-1" title={attribute}>{attribute}</div>
+        {/each}
+      </div>
+    </div>
+  </TradingCard>
 </div>
+
+<style>
+  @font-face { font-family: "Bruno Ace"; src: url("/assets/BrunoAce-Regular.ttf"); }
+  .skill-title { font-family: "Bruno Ace", cursive; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+  .skill-attribute { box-shadow: inset 1px 1px 2px 1px #0000004f; font-weight: 300; text-transform: uppercase; font-size: 8px; }
+</style>
 
 

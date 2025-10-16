@@ -26,7 +26,7 @@
     <main class="p-6 pt-12 w-full sm:w-2/3 dark:text-white mx-auto">
       {@render children?.()}
     </main>
-    <div class="particle-background max-h-screen" class:fade-in={$particlesEnabled} class:fade-out={!$particlesEnabled}>
+    <div class="particle-background" class:fade-in={$particlesEnabled} class:fade-out={!$particlesEnabled}>
       <Particles class="h-full border-1" />
     </div>
   </div>
@@ -38,9 +38,14 @@
   }
   .wrapper { position: relative; }
   .wrapper main { position: relative; z-index: 1; }
-  .wrapper .particle-background { position: absolute; z-index: 0; top: 0; right: 0; bottom: 0; left: 0; }
+  .wrapper .particle-background { position: fixed; z-index: 0; top: 0; right: 0; bottom: 0; left: 0; pointer-events: none; }
   .fade-in { animation: fadeIn 3s; }
   .fade-out { animation: fadeOut 2s; opacity: 0; }
+  :global(body) { color: #e5e7eb; }
+  :global(a) { color: inherit; text-decoration-color: #60a5fa; }
+  :global(nav a) { color: #e5e7eb; }
+  :global(nav a:hover) { color: #38bdf8; }
+  :global(nav a.font-semibold) { color: #e5e7eb; }
   @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
   @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
 </style>

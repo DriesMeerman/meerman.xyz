@@ -18,6 +18,6 @@
   });
 </script>
 
-<div id="particles" class={`w-full h-full select-none p-2 ${cssClass || ''}`}></div>
+<div id="particles" class={`absolute inset-0 w-full h-full select-none ${cssClass || ''}`}></div>
 
 
