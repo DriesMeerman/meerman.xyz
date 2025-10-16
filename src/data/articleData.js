@@ -1,4 +1,4 @@
-// Generated at 2025-04-17T19:22:50.794Z
+// Generated at 2025-10-16T22:16:03.914Z
 const articlesString = `[
   {
     "filename": "dr-001.md",
@@ -82,6 +82,18 @@ const articlesString = `[
     "ID": "006",
     "summary": "Inspired by recent advancements in agentic AI like VS Code's agent mode and Google's Agent2Agent protocol, the author explores the Model Context Protocol (MCP), an open standard allowing Large Language Models (LLMs) to request external context and utilize tools for more accurate, less hallucinatory results. Motivated to apply this to their ServiceNow expertise, the author developed a custom MCP server (available on GitHub) to retrieve table schemas, detailing the building process using official guides and the MCP Inspector tool for local testing. The article concludes by demonstrating the successful integration of this server into the Cursor editor, where an LLM agent uses the custom tool to fetch live ServiceNow data and generate code based on it, showcasing MCP's potential to enhance AI coding assistants with reliable, real-world context and actions.",
     "url": "https://meerman.xyz/#/blog/dr-006"
+  },
+  {
+    "filename": "dr-007.md",
+    "title": "30 bits of unsolicited advice",
+    "tags": [
+      "advice"
+    ],
+    "date": "2025-10-17T00:00:00.000Z",
+    "author": "Dries Meerman",
+    "ID": "007",
+    "summary": "This blog post, written upon turning 30, is a reflection on lessons learned through trial, curiosity, and self-discovery in one’s 20s. It’s not a list of rigid rules, but a collection of practical and philosophical reminders—about acting instead of overthinking, creating without fear, nurturing curiosity, building habits that last, and embracing both the weird and the ordinary. It’s about realizing that growth comes from showing up, experimenting, and engaging with life, while learning to balance reflection with action.",
+    "url": "https://meerman.xyz/#/blog/dr-007"
   }
 ]`;
 export const articles = JSON.parse(articlesString);
