@@ -7,3 +7,4 @@
 /static/feed.xml
 /static/feed.json
 /static/articles/
+/.svelte-kit/

@@ -1,35 +1,51 @@
-# Meerman
+# Meerman.xyz
 
 [![Build and publish](https://github.com/DriesMeerman/meerman.xyz/actions/workflows/deployment.yml/badge.svg)](https://github.com/DriesMeerman/meerman.xyz/actions/workflows/deployment.yml)
 
-This is my personal website, part portfolio part resume part blog.  
-The live version can be found at https://meerman.xyz
+My personal website - part portfolio, part resume, part blog.
+Live at: https://meerman.xyz
 
-# How to run
-Running the app locally does not require docker.
+## How to run
 
-`npm install`  
-`npm run dev`  
+Running the app locally requires Node.js.
 
-Then you should be able to open [localhost](http://localhost:8080)
+```sh
+npm install
+npm run dev
+```
 
----
-To generate the blog index and rss feed files run:  
-`npm run buildIndex`  
+Then open [localhost:5173](http://localhost:5173)
 
-It is also contained in:  
-`npm run build`  
-Which creates the production build.
+## Building
 
+To create a production build:
 
+```sh
+npm run build
+```
 
-# Technologies
-* Docker
+You can preview the production build with:
 
-## Frameworks
-* Svelte
-* Tailwindcss
+```sh
+npm run preview
+```
 
+## Project Structure
 
+- `src/` - SvelteKit application source
+- `content/blog/` - Markdown blog articles
+- `static/` - Static assets served directly
 
+## Blog
 
+Blog articles are written in Markdown in `content/blog/`. The build process:
+1. `generateBlogIndex.js` - Generates RSS feed and article data
+2. `convertMarkdown.js` - Converts markdown to HTML
+
+These run automatically before dev/build via npm scripts.
+
+## Technologies
+
+- **Framework**: SvelteKit (Svelte 5)
+- **Styling**: Tailwind CSS
+- **Deployment**: Docker / Static adapter

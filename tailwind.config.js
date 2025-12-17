@@ -1,16 +1,15 @@
-const production = !process.env.ROLLUP_WATCH;
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+export default {
   darkMode: 'class',
-  future: {
-    purgeLayersByDefault: true,
-    removeDeprecatedGapUtilities: true,
-  },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
   content: [
-    "./static/*.html",
-    "./src/App.svelte",
-    "./src/**/*.svelte"
-   ],
+    './src/app.html',
+    './src/**/*.svelte',
+    './src/**/*.js'
+  ],
+  theme: {
+    extend: {}
+  },
+  plugins: [require('@tailwindcss/typography')]
 };
+
+
