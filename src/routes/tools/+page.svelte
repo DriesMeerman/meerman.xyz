@@ -19,7 +19,7 @@
 </script>
 
 <div>
-  <div class="flex justify-start w-full p-4 bg-stone-200 dark:bg-gray-700 p-4 mb-12 rounded-md backdrop-blur-sm bg-opacity-80 dark:bg-opacity-75">
+  <div class="flex justify-start w-full p-4 bg-stone-200 dark:bg-zinc-500 p-4 mb-12 rounded-md bg-opacity-80 dark:bg-opacity-70">
     <div class="text-left flex flex-wrap">
       <p>
         This is an overview of tools and programs I find useful and use on a daily basis.
@@ -29,7 +29,7 @@
   </div>
   <div class="flex flex-wrap justify-between gap-8">
     {#each tools as tool}
-      <div class="bg-stone-200 dark:bg-gray-700 p-4 rounded-md backdrop-blur-sm w-32 flex-none bg-opacity-80 dark:bg-opacity-75">
+      <div class="bg-stone-200 dark:bg-zinc-500 p-4 rounded-md w-32 flex-none bg-opacity-80 dark:bg-opacity-70">
         <div class="text-center flex justify-center items-center overflow-hidden w-24 h-24">
           {#await getIcon(tool.icon)}
             <p>Loading icon...</p>
@@ -48,7 +48,7 @@
     <hr class="mb-4" />
     <div class="flex flex-col gap-4">
       {#each unixTools as tool}
-        <div class="bg-stone-200 dark:bg-gray-700 p-4 rounded-md backdrop-blur-sm flex-none bg-opacity-80 dark:bg-opacity-75">
+        <div class="bg-stone-200 dark:bg-zinc-500 p-4 rounded-md flex-none bg-opacity-80 dark:bg-opacity-70">
           <div class="flex flex-row justify-between items-center">
             <pre><span class="select-none mr-2">$</span>{tool.name}</pre>
             {#if tool.url}
