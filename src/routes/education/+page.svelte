@@ -1,8 +1,9 @@
 <script>
   import Card from '$lib/Card.svelte';
   import StyledTimeLine from '$lib/StyledTimeLine.svelte';
-  import { educationTimeline } from '$lib/data/educationData.js';
+  import { educationTimeline, internshipData } from '$lib/data/educationData.js';
   const timelineItems = educationTimeline;
+  const internships = internshipData;
 </script>
 
 <svelte:head>
@@ -17,6 +18,10 @@
     <h1 class="text-center my-4 font-bold text-lg">Education</h1>
     <StyledTimeLine timeLineItems={timelineItems} />
   </Card>
+  <Card class="pb-6 flex-col mt-6">
+    <h1 class="text-center my-4">Internships</h1>
+    <StyledTimeLine timeLineItems={internships} />
+  </Card>
 </div>
 
 <style>
@@ -24,5 +29,3 @@
     padding: 0 !important;
   }
 </style>
-
-

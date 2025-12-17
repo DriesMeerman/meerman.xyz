@@ -34,7 +34,12 @@
             {#if item.attachments?.length}
               <div class="mt-2 flex flex-col gap-2 md:items-end">
                 {#each item.attachments as a}
-                  <a class="text-sky-400 underline" href={a.url} target="_blank">{a.title}</a>
+                  <a class="attachment-link flex items-center gap-2" href={a.url} target="_blank">
+                    {#if a.image}
+                      <img src={a.image} alt="" class="h-10 w-8 object-contain" />
+                    {/if}
+                    <span class="text-sm">{a.title}</span>
+                  </a>
                 {/each}
               </div>
             {/if}
@@ -64,7 +69,12 @@
             {#if item.attachments?.length}
               <div class="mt-2 flex flex-col gap-2">
                 {#each item.attachments as a}
-                  <a class="text-sky-400 underline" href={a.url} target="_blank">{a.title}</a>
+                  <a class="attachment-link flex items-center gap-2" href={a.url} target="_blank">
+                    {#if a.image}
+                      <img src={a.image} alt="" class="h-10 w-8 object-contain" />
+                    {/if}
+                    <span class="text-sm">{a.title}</span>
+                  </a>
                 {/each}
               </div>
             {/if}
@@ -96,6 +106,11 @@
     .left { padding-right: 2.5rem; }
     .right { padding-left: 2.5rem; }
   }
+  .attachment-link {
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+  .attachment-link:hover {
+    opacity: 0.8;
+  }
 </style>
-
-
