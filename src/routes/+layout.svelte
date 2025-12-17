@@ -41,11 +41,22 @@
   .wrapper .particle-background { position: fixed; z-index: 0; top: 0; right: 0; bottom: 0; left: 0; pointer-events: none; }
   .fade-in { animation: fadeIn 3s; }
   .fade-out { animation: fadeOut 2s; opacity: 0; }
-  :global(body) { color: #e5e7eb; }
+  :global(body) {
+    color: #1f2937;
+    background-color: #f5f5f5;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+  :global(html.dark body) {
+    color: #e5e7eb;
+    background-color: #52525b; /* zinc-600 - original dark mode color */
+  }
   :global(a) { color: inherit; text-decoration-color: #60a5fa; }
-  :global(nav a) { color: #e5e7eb; }
-  :global(nav a:hover) { color: #38bdf8; }
-  :global(nav a.font-semibold) { color: #e5e7eb; }
+  :global(nav a) { color: #1f2937; }
+  :global(html.dark nav a) { color: #e5e7eb; }
+  :global(nav a:hover) { color: #0d9488; }
+  :global(html.dark nav a:hover) { color: #38bdf8; }
+  :global(nav a.font-semibold) { color: #1f2937; }
+  :global(html.dark nav a.font-semibold) { color: #e5e7eb; }
   @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
   @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
 </style>

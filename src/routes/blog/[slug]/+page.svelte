@@ -1,11 +1,15 @@
 <script>
-  import { onMount, tick } from 'svelte';
+  import { onMount, onDestroy, tick } from 'svelte';
+  import { particlesEnabled } from '$lib/state';
   export let data;
   let htmlContent = '';
   let errorMessage = '';
   let enlargedImage = null;
 
   onMount(async () => {
+    // Disable particles on blog article pages for better readability
+    particlesEnabled.set(false);
+
     try {
       const res = await fetch(`/articles/${data.slug}.html`, { cache: 'no-store' });
       if (!res.ok) throw new Error('Failed to load article');
@@ -18,6 +22,11 @@
     } catch (e) {
       errorMessage = e.message;
     }
+  });
+
+  onDestroy(() => {
+    // Re-enable particles when leaving the blog article
+    particlesEnabled.set(true);
   });
 
   function addImageClickListeners() {
