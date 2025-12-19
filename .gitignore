@@ -7,5 +7,6 @@
 /static/feed.xml
 /static/feed.json
 /static/articles/
+/static/assets/articles/
 /.svelte-kit/
 /build/

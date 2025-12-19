@@ -20,7 +20,7 @@ if (!fs.existsSync(markdownDir)) {
     console.log('No articles found, stopping...');
     process.exit(0);
 }
-const files = fs.readdirSync(markdownDir)
+const files = fs.readdirSync(markdownDir).filter(f => f.endsWith('.md'))
 
 console.log("Found files:")
 console.log(files.reduce((total, current) => {
