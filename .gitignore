@@ -8,3 +8,4 @@
 /static/feed.json
 /static/articles/
 /.svelte-kit/
+/build/
