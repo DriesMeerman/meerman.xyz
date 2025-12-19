@@ -29,7 +29,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: meerman-xyz-website
-          path: static/
+          path: build/
 
   publish-container:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: meerman-xyz-website
-          path: dist
+          path: build
 
       - name: Debug downloadartifact
         run: ls -r
@@ -87,4 +87,4 @@ jobs:
             docker rm $(docker stop $containerId)
             fi
             echo "Starting container"
-            docker run --name $containerName -d -p 4337:80 chrozera/meerman.xyz
+            docker run --name $containerName -d -p 4337:8080 chrozera/meerman.xyz
