@@ -1,8 +1,7 @@
 # Dependencies
 node_modules
 
-# Build output (will be generated inside container)
-build
+# Build output
 .svelte-kit
 
 # Git
