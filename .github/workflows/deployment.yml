@@ -21,7 +21,7 @@ jobs:
           node-version: '22'
 
       - name: Npm install
-        run: npm install
+        run: rm package-lock.json && npm install
 
       - name: Build website
         run: npm run build
