@@ -18,10 +18,10 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v4
         with:
-          node-version: '21'  # or any other version you prefer
+          node-version: '22'
 
       - name: Npm install
-        run: npm ci
+        run: rm package-lock.json && npm install
 
       - name: Build website
         run: npm run build
@@ -29,7 +29,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: meerman-xyz-website
-          path: static/
+          path: build/
 
   publish-container:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: meerman-xyz-website
-          path: dist
+          path: build
 
       - name: Debug downloadartifact
         run: ls -r
@@ -87,4 +87,4 @@ jobs:
             docker rm $(docker stop $containerId)
             fi
             echo "Starting container"
-            docker run --name $containerName -d -p 4337:80 chrozera/meerman.xyz
+            docker run --name $containerName -d -p 4337:8080 chrozera/meerman.xyz

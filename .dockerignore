@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+
+# Build output (will be generated inside container)
+build
+.svelte-kit
+
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.md
+!README.md
+LICENSE
+
