@@ -20,12 +20,12 @@
               {#if item.image}
                 <img src={item.image} alt={item.title} class="h-6 w-6 object-contain" />
               {/if}
-              <h3 class="text-lg font-semibold text-gray-100">{item.title}</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{item.title}</h3>
             </div>
-            {#if item.subtitle}<p class="text-sm opacity-80 md:text-right">{item.subtitle}</p>{/if}
-            {#if item.description}<p class="mt-2 mb-4 text-base font-normal text-gray-300 dark:text-gray-300 whitespace-pre-line md:text-right">{item.description}</p>{/if}
+            {#if item.subtitle}<p class="text-sm text-gray-600 dark:text-gray-400 md:text-right">{item.subtitle}</p>{/if}
+            {#if item.description}<p class="mt-2 mb-4 text-base font-normal text-gray-700 dark:text-gray-300 whitespace-pre-line md:text-right">{item.description}</p>{/if}
             {#if item.bullets?.length}
-              <ul class="list-disc pl-5 text-sm md:pl-0 md:pr-5 md:list-inside md:text-right">
+              <ul class="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300 md:pl-0 md:pr-5 md:list-inside md:text-right">
                 {#each item.bullets as b}
                   <li>{b}</li>
                 {/each}
@@ -34,7 +34,7 @@
             {#if item.attachments?.length}
               <div class="mt-2 flex flex-col gap-2 md:items-end">
                 {#each item.attachments as a}
-                  <a class="attachment-link flex items-center gap-2" href={a.url} target="_blank">
+                  <a class="attachment-link flex items-center gap-2 text-gray-700 dark:text-gray-300" href={a.url} target="_blank">
                     {#if a.image}
                       <img src={a.image} alt="" class="h-10 w-8 object-contain" />
                     {/if}
@@ -55,12 +55,12 @@
               {#if item.image}
                 <img src={item.image} alt={item.title} class="h-6 w-6 object-contain" />
               {/if}
-              <h3 class="text-lg font-semibold text-gray-100">{item.title}</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{item.title}</h3>
             </div>
-            {#if item.subtitle}<p class="text-sm opacity-80">{item.subtitle}</p>{/if}
-            {#if item.description}<p class="mt-2 mb-4 text-base font-normal text-gray-300 dark:text-gray-300 whitespace-pre-line">{item.description}</p>{/if}
+            {#if item.subtitle}<p class="text-sm text-gray-600 dark:text-gray-400">{item.subtitle}</p>{/if}
+            {#if item.description}<p class="mt-2 mb-4 text-base font-normal text-gray-700 dark:text-gray-300 whitespace-pre-line">{item.description}</p>{/if}
             {#if item.bullets?.length}
-              <ul class="list-disc pl-5 text-sm">
+              <ul class="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
                 {#each item.bullets as b}
                   <li>{b}</li>
                 {/each}
@@ -69,7 +69,7 @@
             {#if item.attachments?.length}
               <div class="mt-2 flex flex-col gap-2">
                 {#each item.attachments as a}
-                  <a class="attachment-link flex items-center gap-2" href={a.url} target="_blank">
+                  <a class="attachment-link flex items-center gap-2 text-gray-700 dark:text-gray-300" href={a.url} target="_blank">
                     {#if a.image}
                       <img src={a.image} alt="" class="h-10 w-8 object-contain" />
                     {/if}
