@@ -26,6 +26,12 @@ jobs:
       - name: Build website
         run: npm run build
 
+      - name: Validate optimized image artifacts
+        run: |
+          test -d build/g/assets
+          find build/g/assets -type f | grep -q .
+          test -f build/g/assets/servicenow_logo-400.png
+
       - uses: actions/upload-artifact@v4
         with:
           name: meerman-xyz-website

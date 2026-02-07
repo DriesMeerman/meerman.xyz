@@ -30,6 +30,12 @@ You can preview the production build with:
 npm run preview
 ```
 
+## CI dependency install strategy
+
+This project is developed on macOS and built in CI on Linux. Some dependencies (especially native/optional platform-specific ones) can resolve differently across those platforms when strictly reusing a lockfile generated on another OS.
+
+For that reason, CI intentionally runs `npm install` (and regenerates `package-lock.json`) instead of `npm ci`, so dependency resolution happens in the Linux environment where the artifact is produced.
+
 ## Docker
 
 ### Build and run with Docker
