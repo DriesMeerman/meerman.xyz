@@ -30,6 +30,22 @@ You can preview the production build with:
 npm run preview
 ```
 
+## CI dependency install strategy
+
+This project is developed on macOS and built in CI on Linux. Some dependencies (especially native/optional platform-specific ones) can resolve differently across those platforms when strictly reusing a lockfile generated on another OS.
+
+For that reason, CI intentionally runs `npm install` (and regenerates `package-lock.json`) instead of `npm ci`, so dependency resolution happens in the Linux environment where the artifact is produced.
+
+## Generated optimized images (`/g/assets`)
+
+The site references optimized image variants under `/g/assets/*` (for example `servicenow_logo-400.png` and `realm_db_logo-306.png`).
+
+Those files are generated from source files in `static/assets`, and written to `static/g/assets`:
+
+- Run generation with `npm run build:images` (used in CI and Docker build)
+- `static/g/` remains gitignored (generated artifact, not source)
+- CI validates that `build/g/assets` exists and contains required optimized files before publishing the container
+
 ## Docker
 
 ### Build and run with Docker
