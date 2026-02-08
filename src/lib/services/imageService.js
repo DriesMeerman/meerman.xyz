@@ -10,4 +10,3 @@ export function getImage(name, ext, size){
     const imageSize = size ? size : 400;
     return `/g/assets/${name}-${imageSize}.${extension}`;
 }
-
