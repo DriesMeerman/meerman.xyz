@@ -287,10 +287,10 @@ After a phase if the build succeeds still commit.
 
 ### Priority A: Direct-load visual bug on immersive article
 
-- [ ] Fix visual bug that appears when opening `/blog/dr-008` directly (refresh / deep-link), but not when navigating from blog index.
-- [ ] Reproduce on desktop and mobile and document exact trigger path.
-- [ ] Ensure first-load and refresh behavior match client-side navigation behavior.
-- [ ] Add an explicit acceptance check:
+- [x] Fix visual bug that appears when opening `/blog/dr-008` directly (refresh / deep-link), but not when navigating from blog index.
+- [x] Reproduce on desktop and mobile and document exact trigger path.
+- [x] Ensure first-load and refresh behavior match client-side navigation behavior.
+- [x] Add an explicit acceptance check:
   1. direct URL open on `/blog/dr-008` renders correctly first try,
   2. refresh on `/blog/dr-008` keeps correct layout and script behavior,
   3. no extra manual refresh needed.
@@ -300,7 +300,7 @@ After a phase if the build succeeds still commit.
 - [x] Remove dependence on `https://cdn.tailwindcss.com` for immersive article rendering.
 - [x] Replace runtime Tailwind CDN behavior with project-owned styling approach (build-time CSS or scoped static CSS bundle).
 - [x] Ensure no Tailwind CDN warning appears in console for article pages.
-- [ ] Add an explicit acceptance check:
+- [x] Add an explicit acceptance check:
   1. no `cdn.tailwindcss.com should not be used in production` warning,
   2. article visuals stay consistent with current intended look,
   3. static build and direct-load behavior remain stable.
