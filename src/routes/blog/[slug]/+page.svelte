@@ -76,7 +76,7 @@
     <title>{data.meta.title}</title>
     <meta name="description" content={data.meta.summary} />
     <meta name="author" content={data.meta.author} />
-    <meta name="keywords" content={(data.meta.tags || []).join(', ')} />
+    <meta name="keywords" content={(Array.isArray(data.meta.tags) ? data.meta.tags : []).join(', ')} />
   {/if}
 </svelte:head>
 
@@ -86,5 +86,4 @@
   :global(.prose img.enlarged) { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 90vw; max-height: 90vh; z-index: 1000; background: none; padding: 0; }
   :global(.dark .prose img) { background: #2a2a2a; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }
 </style>
-
 

@@ -20,6 +20,10 @@
   function formatId(id) {
     return String(id).padStart(3, '0');
   }
+
+  function postSlug(post) {
+    return post.slug || post.filename?.replace(/\.md$/, '');
+  }
 </script>
 
 <svelte:head>
@@ -37,7 +41,7 @@
     <div class="w-full">
       {#each posts as post, index}
         <article class={index === 0 ? '' : 'pt-6'}>
-          <a class="cursor-pointer" href={`/blog/${post.filename.replace(/\.md$/, '')}`}>
+          <a class="cursor-pointer" href={`/blog/${postSlug(post)}`}>
             <div class="flex flex-row justify-between">
               <h2 class="text-l hover:decoration-blue-400" title={post.summary}>{formatId(post.ID)} - {post.title}</h2>
               <p class="text-xs min-w-fit ml-4 lh-inherit">[{isoDate(post.date)}]</p>
@@ -74,5 +78,4 @@
   .lh-inherit { line-height: inherit; }
   :global(.prose img) { cursor: pointer; }
 </style>
-
 

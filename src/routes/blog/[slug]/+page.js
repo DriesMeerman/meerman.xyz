@@ -4,9 +4,8 @@ export async function load({ params, fetch }) {
   let meta = null;
   if (res.ok) {
     const items = await res.json();
-    meta = items.find((i) => i.filename.replace(/\.md$/, '') === slug) || null;
+    meta = items.find((i) => i.slug === slug || i.filename?.replace(/\.md$/, '') === slug) || null;
   }
   return { slug, meta };
 }
-
 

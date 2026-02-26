@@ -76,14 +76,21 @@ docker run -p 8080:80 meerman-xyz
 ## Project Structure
 
 - `src/` - SvelteKit application source
-- `content/blog/` - Markdown blog articles
+- `content/blog/` - Blog articles in folder-per-article format
 - `static/` - Static assets served directly
 
 ## Blog
 
-Blog articles are written in Markdown in `content/blog/`. The build process:
+Blog articles use this structure:
+
+`content/blog/<slug>/index.md` (required frontmatter + optional markdown body)
+`content/blog/<slug>/index.html` (optional raw HTML body; if present this is rendered instead of markdown body)
+`content/blog/<slug>/assets/*` (optional article-local assets)
+
+The build process:
 1. `generateBlogIndex.cjs` - Generates RSS feed and article data
 2. `convertMarkdown.cjs` - Converts markdown to HTML
+3. `scripts/validateBlogContent.cjs` - Validates required metadata, duplicate IDs, and duplicate slugs
 
 These run automatically before dev/build via npm scripts.
 

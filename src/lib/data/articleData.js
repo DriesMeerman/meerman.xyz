@@ -1,7 +1,9 @@
-// Generated at 2025-12-17T22:33:52.839Z
+// Generated at 2026-02-26T00:09:37.492Z
 const articlesString = `[
   {
+    "slug": "dr-001",
     "filename": "dr-001.md",
+    "sourceType": "md",
     "title": "The journey of starting a blog",
     "tags": [
       "svelte",
@@ -15,7 +17,9 @@ const articlesString = `[
     "url": "https://meerman.xyz/blog/dr-001"
   },
   {
+    "slug": "dr-002",
     "filename": "dr-002.md",
+    "sourceType": "md",
     "title": "Finishing projects",
     "tags": [
       "process"
@@ -27,7 +31,9 @@ const articlesString = `[
     "url": "https://meerman.xyz/blog/dr-002"
   },
   {
+    "slug": "dr-003",
     "filename": "dr-003.md",
+    "sourceType": "md",
     "title": "Hybrid automation for one-off tasks",
     "tags": [
       "process",
@@ -42,7 +48,9 @@ const articlesString = `[
     "url": "https://meerman.xyz/blog/dr-003"
   },
   {
+    "slug": "dr-004",
     "filename": "dr-004.md",
+    "sourceType": "md",
     "title": "Swift 5.9 - TL;DR",
     "tags": [
       "Swift"
@@ -54,7 +62,9 @@ const articlesString = `[
     "url": "https://meerman.xyz/blog/dr-004"
   },
   {
+    "slug": "dr-005",
     "filename": "dr-005.md",
+    "sourceType": "md",
     "title": "Artificially enhanced IDE's and sidequests",
     "tags": [
       "ai",
@@ -70,7 +80,9 @@ const articlesString = `[
     "url": "https://meerman.xyz/blog/dr-005"
   },
   {
+    "slug": "dr-006",
     "filename": "dr-006.md",
+    "sourceType": "md",
     "date": "2025-04-16T00:00:00.000Z",
     "title": "Exploring the Model Context Protocol",
     "tags": [
@@ -84,7 +96,9 @@ const articlesString = `[
     "url": "https://meerman.xyz/blog/dr-006"
   },
   {
+    "slug": "dr-007",
     "filename": "dr-007.md",
+    "sourceType": "md",
     "title": "30 bits of unsolicited advice",
     "tags": [
       "advice"

@@ -14,6 +14,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"build:index": "node generateBlogIndex.cjs",
 		"build:markdown": "node convertMarkdown.cjs",
+		"validate:blog": "node scripts/validateBlogContent.cjs",
 		"build:images": "./scripts/generate-optimized-images.sh"
 	},
 	"devDependencies": {
