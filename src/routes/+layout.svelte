@@ -1,5 +1,4 @@
 <script>
-  import favicon from '$lib/assets/favicon.svg';
   import '../app.css';
   import Menu from '$lib/Menu.svelte';
   import Particles from '$lib/Particles.svelte';
@@ -13,7 +12,7 @@
 </script>
 
 <svelte:head>
-  <link rel="icon" href={favicon} />
+  <link rel="icon" href="/favicon.ico" />
   <title>Meerman</title>
   <meta name="description" content="A website showcasing Dries Meerman's skills, education, and experience he has accumulated over the years.">
   <meta name="author" content="Dries Meerman">
