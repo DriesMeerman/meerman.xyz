@@ -206,6 +206,31 @@
     transform: none;
     left: auto;
     margin-top: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  :global(.article-page.md-source .article-content) {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  :global(.article-page.md-source .article-content.prose a),
+  :global(.article-page.md-source .article-content .footnotes a),
+  :global(.article-page.md-source .article-content .notes a) {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  :global(.article-page.md-source .article-content .footnotes),
+  :global(.article-page.md-source .article-content .footnotes li),
+  :global(.article-page.md-source .article-content .footnotes p),
+  :global(.article-page.md-source .article-content .notes),
+  :global(.article-page.md-source .article-content .notes li),
+  :global(.article-page.md-source .article-content .notes p) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .article-page.html-source {

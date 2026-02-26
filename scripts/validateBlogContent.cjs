@@ -20,8 +20,15 @@ const errors = [];
 const seenIds = new Map();
 const seenSlugs = new Set();
 
+function hasHtmlBody(html) {
+  const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  const content = bodyMatch ? bodyMatch[1] : html;
+  return content.replace(/<!--[\s\S]*?-->/g, '').trim().length > 0;
+}
+
 for (const slug of dirs) {
   const mdPath = path.join(contentDir, slug, 'index.md');
+  const htmlPath = path.join(contentDir, slug, 'index.html');
   if (!fs.existsSync(mdPath)) {
     errors.push(`[${slug}] missing index.md`);
     continue;
@@ -33,7 +40,7 @@ for (const slug of dirs) {
   seenSlugs.add(slug);
 
   const raw = fs.readFileSync(mdPath, 'utf-8');
-  const { data } = matter(raw);
+  const { data, content } = matter(raw);
 
   for (const field of REQUIRED_FIELDS) {
     if (data[field] === undefined || data[field] === null || data[field] === '') {
@@ -50,6 +57,14 @@ for (const slug of dirs) {
     errors.push(`[${slug}] tags must be an array or comma-separated string`);
   }
 
+  const markdownHasBody = content.trim().length > 0;
+  const htmlHasBody = fs.existsSync(htmlPath)
+    ? hasHtmlBody(fs.readFileSync(htmlPath, 'utf-8'))
+    : false;
+
+  if (!markdownHasBody && !htmlHasBody) {
+    errors.push(`[${slug}] missing article body: add markdown content in index.md or html body in index.html`);
+  }
   const idKey = String(data.ID);
   if (seenIds.has(idKey)) {
     errors.push(`[${slug}] duplicate ID ${data.ID} (also in ${seenIds.get(idKey)})`);
