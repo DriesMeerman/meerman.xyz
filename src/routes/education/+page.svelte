@@ -13,19 +13,66 @@
   <meta name="keywords" content="Dries Meerman, Meerman, Software Engineer, Software Engineering, Master, MSc, Bachelor, BSc, University of Amsterdam, UvA, HvA">
 </svelte:head>
 
-<div>
-  <Card class="pb-6 flex-col">
-    <h1 class="text-center my-4 font-bold text-lg">Education</h1>
+<div class="education-page">
+  <Card class="pb-6 px-4 md:px-7 flex-col">
+    <div class="page-head">
+      <h1>Education</h1>
+      <p>Formal education and focused learning tracks that shaped my engineering path.</p>
+    </div>
     <StyledTimeLine timeLineItems={timelineItems} />
   </Card>
-  <Card class="pb-6 flex-col mt-6">
-    <h1 class="text-center my-4">Internships</h1>
+
+  <Card class="pb-6 px-4 md:px-7 flex-col">
+    <div class="section-head">
+      <h2>Internships</h2>
+    </div>
     <StyledTimeLine timeLineItems={internships} />
   </Card>
 </div>
 
 <style>
-  :global(.timeline) {
-    padding: 0 !important;
+  .education-page {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .page-head,
+  .section-head {
+    text-align: center;
+    padding: 1.35rem 0.75rem 0.85rem;
+  }
+
+  .page-head h1,
+  .section-head h2 {
+    margin: 0;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    font-weight: 800;
+  }
+
+  .page-head h1 {
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+  }
+
+  .section-head h2 {
+    font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+  }
+
+  .page-head p,
+  .section-head p {
+    margin: 0.5rem auto 0;
+    max-width: 56ch;
+    color: #475569;
+    font-size: 0.92rem;
+  }
+
+  :global(.dark .page-head h1),
+  :global(.dark .section-head h2) {
+    color: #f8fafc;
+  }
+
+  :global(.dark .page-head p),
+  :global(.dark .section-head p) {
+    color: #cbd5e1;
   }
 </style>
