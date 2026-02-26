@@ -1,4 +1,4 @@
-// Generated at 2026-02-26T00:11:29.228Z
+// Generated at 2026-02-26T01:37:01.938Z
 const articlesString = `[
   {
     "slug": "dr-001",
@@ -113,14 +113,14 @@ const articlesString = `[
     "slug": "dr-008",
     "filename": "dr-008.md",
     "sourceType": "html",
-    "title": "Context-Based Engineering",
+    "title": "The model isn't the bottleneck. Your context is.",
     "tags": [
       "ai",
       "agentic-coding",
       "context-engineering",
       "claude-code"
     ],
-    "summary": "A long-form editorial guide about context engineering, agent harnesses, context decay, and practical workflows that make AI coding agents reliable in real repositories.",
+    "summary": "What I use to make AI coding reliable in real repos: harnesses, context shape, closed-loop validation, and practical Claude Code/CLI workflows.",
     "date": "2026-02-26T00:00:00.000Z",
     "author": "Dries Meerman",
     "ID": "008",

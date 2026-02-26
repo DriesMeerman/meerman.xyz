@@ -94,6 +94,45 @@ The build process:
 
 These run automatically before dev/build via npm scripts.
 
+### Creating a new article
+
+1. Create a new folder: `content/blog/<slug>/`
+2. Add `index.md` with required frontmatter:
+   - `title`
+   - `summary`
+   - `date`
+   - `author`
+   - `ID`
+   - `tags`
+3. Choose one body format:
+   - Markdown article: write body content in `index.md`
+   - HTML-backed article: add `index.html` and keep markdown body empty (frontmatter is still read from `index.md`)
+4. Add local media to `content/blog/<slug>/assets/` and reference them with relative paths in markdown/html.
+
+### HTML-backed article notes
+
+For `index.html` articles:
+1. The HTML body is copied into `static/articles/<slug>.html`
+2. Relative image paths are normalized to `/assets/articles/<slug>/...`
+3. If `index.html` contains Tailwind CDN usage (`https://cdn.tailwindcss.com` + `tailwind.config`), the converter generates a static CSS file at build time:
+   - `static/assets/articles/<slug>/tailwind.generated.css`
+   - The CDN script/config are removed from generated output and replaced with a stylesheet link.
+
+This keeps immersive/custom article styling while avoiding Tailwind CDN runtime warnings in production.
+
+### Article authoring commands
+
+```sh
+npm run validate:blog
+npm run build:index
+npm run build:markdown
+```
+
+Then run `npm run dev` and check:
+1. Blog list metadata/order
+2. `/blog/<slug>` rendering on desktop/mobile
+3. Console for unexpected errors
+
 ## Technologies
 
 - **Framework**: SvelteKit (Svelte 5)

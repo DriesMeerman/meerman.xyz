@@ -281,7 +281,7 @@ After a phase if the build succeeds still commit.
 - [ ] Add a dry-run command to preview parsed metadata and detected source type for every article.
 - [ ] Add CI gate for duplicate IDs/slugs and missing metadata.
 - [ ] Add CI gate that verifies each slug has either markdown body or html file body.
-- [ ] Add a small authoring guide for creating future HTML-backed posts.
+- [x] Add a small authoring guide for creating future HTML-backed posts.
 
 ## New Follow-Up Issues (Post-Phase)
 
@@ -297,9 +297,9 @@ After a phase if the build succeeds still commit.
 
 ### Priority A: Proper Tailwind runtime dependency fix for HTML article
 
-- [ ] Remove dependence on `https://cdn.tailwindcss.com` for immersive article rendering.
-- [ ] Replace runtime Tailwind CDN behavior with project-owned styling approach (build-time CSS or scoped static CSS bundle).
-- [ ] Ensure no Tailwind CDN warning appears in console for article pages.
+- [x] Remove dependence on `https://cdn.tailwindcss.com` for immersive article rendering.
+- [x] Replace runtime Tailwind CDN behavior with project-owned styling approach (build-time CSS or scoped static CSS bundle).
+- [x] Ensure no Tailwind CDN warning appears in console for article pages.
 - [ ] Add an explicit acceptance check:
   1. no `cdn.tailwindcss.com should not be used in production` warning,
   2. article visuals stay consistent with current intended look,

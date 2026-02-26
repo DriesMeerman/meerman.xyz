@@ -5,6 +5,7 @@
   export let data;
   let htmlContent = '';
   let errorMessage = '';
+  let readingMinutes = null;
   let enlargedImage = null;
   let articleContainer;
   let documentClickHandler;
@@ -26,6 +27,7 @@
       const res = await fetch(`/articles/${data.slug}.html`, { cache: 'no-store' });
       if (!res.ok) throw new Error('Failed to load article');
       htmlContent = await res.text();
+      readingMinutes = calculateReadingMinutes(htmlContent);
       await tick();
       if (isHtmlSource && customJsEnabled) {
         await activateEmbeddedScripts();
@@ -140,12 +142,28 @@
     };
     document.addEventListener('keydown', documentEscapeHandler);
   }
+
+  function calculateReadingMinutes(html) {
+    const text = html
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (!text) return null;
+    const words = text.split(' ').length;
+    return Math.max(1, Math.ceil(words / 220));
+  }
 </script>
 
 <section class={`article-page ${isHtmlSource ? 'html-source' : 'md-source'}`} in:fade={{ duration: 220 }} out:fade={{ duration: 160 }}>
   {#if errorMessage}
     <div class="error-message">{errorMessage}</div>
   {:else}
+    {#if readingMinutes}
+      <p class="reading-time">{readingMinutes} min read</p>
+    {/if}
     <div
       bind:this={articleContainer}
       class={`article-content ${!isHtmlSource ? 'prose dark:prose-invert max-w-none list-disc dark:marker:text-white' : ''}`}
@@ -169,6 +187,16 @@
     overflow: visible;
   }
 
+  .reading-time {
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    opacity: 0.65;
+    display: flex;
+    align-content: end;
+    justify-content: flex-end;
+    margin: 0.5rem;
+  }
+
   .article-page.md-source {
     background: transparent;
     width: 100%;
@@ -187,7 +215,7 @@
     color: #e4e4e7;
     box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
     width: min(1640px, calc(100vw - 14rem));
-    margin-top: -1.65rem;
+    margin-top: clamp(0.65rem, 1.5vw, 1rem);
     position: relative;
     left: 50%;
     transform: translateX(-50%);
@@ -199,24 +227,19 @@
     color: #c8f547;
   }
 
+  .article-page.html-source .reading-time {
+    color: #b7c25b;
+  }
+
   .article-page.html-source :global(main) {
     padding-inline: clamp(0.6rem, 1.4vw, 1.15rem);
-  }
-
-  .article-page.html-source :global(section#hero) {
-    min-height: auto !important;
-    padding-top: 0.25rem !important;
-  }
-
-  .article-page.html-source :global(section#hero > div.relative.max-w-6xl) {
-    padding-top: clamp(1rem, 2vw, 1.7rem) !important;
   }
 
   @media (max-width: 640px) {
     .article-page.html-source {
       --site-menu-offset: 3.05rem;
       width: calc(100vw - 2rem);
-      margin-top: -1.2rem;
+      margin-top: 0.6rem;
       border-radius: 0.7rem;
       left: 50%;
       transform: translateX(-50%);
