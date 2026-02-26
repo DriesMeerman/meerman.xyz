@@ -290,13 +290,14 @@
             <em class="text-accent">Your context is.</em>
           </h1>
           <p class="reveal reveal-delay-2 font-body text-lg md:text-xl text-textDim max-w-2xl leading-relaxed mb-8">
-            How to think about context engineering, agent harnesses, and making agentic coding actually work.
+            AI tools have flashy demos: one prompt, no more developer necessary. Then you try it on your own. The results are worse, the model does a lot you dont want it to do. The gap is mostly context handling, not model intelligence.
           </p>
           <p class="reveal reveal-delay-3 font-body text-sm text-textDim/70 max-w-2xl leading-relaxed mb-12">
-            This page walks through the ideas behind context-based engineering: what agent harnesses are and why they matter, how context shapes model output more than model capability does, why smaller context outperforms bigger context, how closed feedback loops prevent error cascades, and how these patterns play out in practice with tools like Claude Code. You don't need a specific tool to apply these ideas. A planning file and a terminal will get you surprisingly far.
+            This article is what I use in practice: what the harness layer does, why context quality beats raw context size, how closed loops keep output sane, and how plan-driven workflows make agents useful instead of chaotic.
+            I also discuss Windsurf vs Claude code as those has been my main tools recently.
           </p>
           <p class="reveal reveal-delay-4 font-body text-base text-textDim/80 max-w-2xl leading-relaxed mb-16">
-            You've seen the demos. An AI writes an entire app from a single prompt. Then you try it on your codebase and it hallucinates an import that doesn't exist, refactors a file that wasn't relevant, and burns through your context window arguing with a linter. The gap between the demo and reality isn't model capability. It's context management.
+            It also covers patterns you can apply with or without one specific tool: context files, validation hooks, and small terminal loops that keep progress predictable.
           </p>
         </div>
 
@@ -305,17 +306,17 @@
           <div class="bg-surface/80 border border-border rounded-lg p-4">
             <p class="font-mono text-[11px] uppercase tracking-widest text-textDim mb-3">Contents</p>
             <div class="grid grid-cols-2 md:grid-cols-6 gap-x-4 gap-y-2 text-xs font-mono">
-              <a href="#hero" class="text-accent hover:underline">Intro</a>
-              <a href="#harnesses" class="text-accent hover:underline">Harnesses</a>
-              <a href="#context" class="text-accent hover:underline">Context</a>
-              <a href="#decay" class="text-accent hover:underline">Decay</a>
-              <a href="#plans" class="text-accent hover:underline">Plans</a>
-              <a href="#loops" class="text-accent hover:underline">Loops</a>
-              <a href="#claude-code" class="text-accent hover:underline">Claude Code</a>
-              <a href="#cli" class="text-accent hover:underline">CLI/SDK</a>
-              <a href="#antipatterns" class="text-accent hover:underline">Anti-Patterns</a>
-              <a href="#conclusion" class="text-accent hover:underline">Conclusion</a>
-              <a href="#references" class="text-accent hover:underline">References</a>
+              <a href="#hero" class="text-accent hover:underline">01. Intro</a>
+              <a href="#harnesses" class="text-accent hover:underline">02. Harnesses</a>
+              <a href="#context" class="text-accent hover:underline">03. Context</a>
+              <a href="#decay" class="text-accent hover:underline">04. Decay</a>
+              <a href="#plans" class="text-accent hover:underline">05. Plans</a>
+              <a href="#loops" class="text-accent hover:underline">06. Loops</a>
+              <a href="#claude-code" class="text-accent hover:underline">07. Claude Code</a>
+              <a href="#cli" class="text-accent hover:underline">08. CLI/SDK</a>
+              <a href="#antipatterns" class="text-accent hover:underline">09. Anti-Patterns</a>
+              <a href="#conclusion" class="text-accent hover:underline">10. Conclusion</a>
+              <a href="#references" class="text-accent hover:underline">11. References</a>
             </div>
           </div>
         </div>
@@ -426,7 +427,7 @@
         <!-- Two Philosophies -->
         <div class="reveal mb-8">
           <h3 class="font-display text-2xl md:text-3xl text-white mb-3">Two philosophies</h3>
-          <p class="text-textDim max-w-2xl">The current landscape offers two fundamentally different approaches. They aren't competing features. They're competing philosophies.</p>
+          <p class="text-textDim max-w-2xl">Right now there are basically two approaches. Not just different features, actually different ways of working.</p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-6 mb-12">
@@ -504,7 +505,7 @@
           <div class="bg-surface border border-border rounded-lg p-6">
             <h4 class="font-mono text-xs text-warm uppercase tracking-widest mb-3">The economic layer nobody talks about</h4>
             <p class="text-sm text-textDim leading-relaxed">
-              Subscription-priced tools have an economic incentive to <em>minimize</em> context consumption because the business benefits from aggressive caching. Pay-as-you-go tools align revenue with value delivery. This isn't an accusation. It's physics. When you evaluate agent harnesses, look at the business model. It predicts the architectural decisions.
+              Pricing model matters more than people admit. Subscriptions push tools to save context aggressively. Usage-based pricing usually pushes the other direction. Not calling anyone good or bad here, just saying this shows up in product behavior.
             </p>
           </div>
         </div>
@@ -513,16 +514,16 @@
         <div class="reveal mt-16 max-w-full">
           <h3 class="font-display text-2xl md:text-3xl text-white mb-6">You don't need a specific tool</h3>
           <p class="text-sm text-textDim leading-relaxed mb-6">
-            Everything above might suggest you need a specific product to do agentic coding well. You don't. The minimum viable agent harness is a text file and a terminal.
+            If all this sounds like you need one specific product, good news: you don't. The minimum viable harness is literally a text file plus a terminal.
           </p>
           <p class="text-sm text-textDim leading-relaxed mb-6">
-            The pattern is called the RALPH loop (named, with affection, after Ralph Wiggum, the Simpsons character who never gives up). The loop itself is simple. The real leverage comes from what you put in the plan file.
+            I call this the RALPH loop. The loop is dead simple, the quality comes from the plan file you feed into it.
           </p>
 
           <!-- PROMPT.md with RPI structure -->
           <h4 class="font-mono text-xs text-accent uppercase tracking-widest mb-3">The plan as control surface</h4>
           <p class="text-sm text-textDim leading-relaxed mb-4">
-            A well-structured plan follows the RPI pattern: Role, Purpose, Instructions. When all three are present, the agent has everything it needs to work autonomously.
+            The plan format I like is RPI: Role, Purpose, Instructions. If those are clear, the agent usually does fine without constant nudging.
           </p>
           <div class="terminal max-w-full mb-6">
             <div class="terminal-bar">
@@ -568,12 +569,12 @@
 
           <!-- Progressive refinement -->
           <p class="text-sm text-textDim leading-relaxed mb-4">
-            The loop is simple. The plan is where the intelligence lives. Each time the agent drifts, you add a constraint to the plan. Over iterations, the plan accumulates your project's tribal knowledge into a specification so complete that the agent rarely needs correction. You are not debugging the agent. You are refining the spec.
+            The loop itself is boring on purpose. The power is in improving the plan each run. When it drifts, add one constraint and retry. After a few rounds the spec gets sharp and you stop repeating yourself.
           </p>
 
           <!-- Closing -->
           <p class="text-sm text-textDim leading-relaxed">
-            This works with any CLI-accessible model. Swap out the tool name and the pattern holds. The tools discussed later on this page (CLAUDE.md, hooks, skills, structured output) are accelerators built on this same foundation. But if you walked away with nothing but a PROMPT.md and a while loop, you would already be doing agentic coding.
+            This is tool-agnostic. Swap model or CLI and the pattern still works. If you only keep a good `PROMPT.md` and a simple loop, you already have a solid setup.
           </p>
         </div>
       </div>
@@ -637,7 +638,7 @@
               <!-- 2018 -->
               <div class="reveal-delay-3 flex gap-5 items-start">
                 <div class="flex-shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-full bg-surface border-2 border-accent flex items-center justify-center">
-                  <span class="font-mono text-[10px] text-accent">18</span>
+                  <span class="font-mono text-[10px] text-accent">2018</span>
                 </div>
                 <div>
                   <p class="font-mono text-xs text-accent mb-1"><a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf" target="_blank" rel="noopener" class="hover:underline">GPT-style pretraining</a></p>
@@ -703,7 +704,7 @@
             Think of it as a layered system. Your project-level context (architecture, conventions) changes rarely. Your session context (current task, recent decisions) changes every session. Your task list is a living checklist. Keeping these separate prevents context bloat because you can load only what's relevant.
           </p>
           <p class="text-sm text-textDim leading-relaxed">
-            This approach is tool-agnostic by design. A well-maintained CONTEXT.md works equally well whether you pipe it to Claude Code, paste it into Cursor, or upload it to any other tool. The investment in maintaining context files pays off regardless of which tool you use today or switch to tomorrow.
+            This is intentionally tool-agnostic. If your CONTEXT.md is good, you can reuse it across Claude Code, Cursor, or whatever comes next.
           </p>
         </div>
       </div>
@@ -720,7 +721,7 @@
         </div>
         <div class="reveal reveal-delay-1 max-w-full mb-16">
           <p class="text-lg text-textDim leading-relaxed">
-            A common assumption: bigger context window = better results. You have 200k tokens now, so load everything. This assumption is wrong, and we have the data to prove it.
+            Easy trap: bigger context window must mean better output, so you dump everything in. In practice that backfires, and the data is pretty clear on that.
           </p>
         </div>
 
@@ -807,7 +808,7 @@
               <text x="250" y="130" text-anchor="middle" fill="#ef4444" font-family="DM Mono" font-size="9">Lost here</text>
             </svg>
             <p class="mt-4 text-sm text-textDim leading-relaxed">
-              Models perform best when relevant information appears at the beginning or end of context. Middle-positioned content suffers from RoPE decay, softmax normalization, and training bias. This is architectural, not a bug to be patched.
+              Models do best when important info is near the start or end. Stuff in the middle gets missed more often. This is mostly architecture behavior, not some tiny bug that will disappear next release.
             </p>
           </div>
         </div>
@@ -859,10 +860,10 @@
         <!-- Core insight -->
         <div class="reveal max-w-full mb-12">
           <p class="text-sm text-textDim leading-relaxed mb-6">
-            The answer is a plan. Not a vague description of what you want. A structured specification that tells the agent what to build, how to validate it, and what constraints to respect. The better your plan, the longer the agent works autonomously.
+            The answer is a plan. Not vibes, not "just do OAuth." A concrete spec with what to build, how to validate it, and which constraints are non-negotiable. Better plan in means less babysitting later.
           </p>
           <p class="text-sm text-textDim leading-relaxed">
-            This pattern is called Research-Plan-Implement (RPI). Front-load context before writing code, capture decisions in a plan, then let the agent execute against that plan with built-in validation.
+            This pattern is called Research-Plan-Implement (RPI). Do the reading first, write the plan down, then let the agent execute with checks in between.
           </p>
         </div>
 
@@ -890,7 +891,7 @@
         <div class="reveal max-w-full mb-12">
           <h3 class="font-display text-2xl md:text-3xl text-white mb-6">Why plans enable autonomy</h3>
           <p class="text-sm text-textDim leading-relaxed mb-6">
-            A vague prompt like "add OAuth support" forces the agent to make dozens of assumptions. Each assumption is a coin flip. Enough coin flips and the result diverges from what you wanted. A structured plan eliminates those flips.
+            A vague prompt like "add OAuth support" forces lots of guesses. Enough guesses and output drifts away from what you wanted. A tighter plan removes most of that guesswork.
           </p>
           <div class="space-y-3">
             <div class="flex gap-3 items-start">
@@ -983,7 +984,7 @@
         </div>
         <div class="reveal reveal-delay-1 max-w-full mb-16">
           <p class="text-lg text-textDim leading-relaxed">
-            Without validation, errors compound. Each incorrect step pollutes the context and increases the probability of the next step being wrong. The fix is a closed feedback loop.
+            Without validation, mistakes stack fast. One bad step pollutes context and the next step gets worse. Closed loops fix that.
           </p>
         </div>
 
@@ -1062,7 +1063,7 @@
 
             <div>
               <p class="font-mono text-xs text-accent mb-3 uppercase tracking-widest">With hooks (deterministic validation)</p>
-              <p class="text-sm text-textDim">Tools like Claude Code support hooks that run shell commands after every file edit or before the agent declares "done." The linter runs automatically. Tests gate completion. These aren't suggestions to the model. They're guarantees enforced by the harness.</p>
+              <p class="text-sm text-textDim">Hooks run commands automatically after edits or before "done." So lint/tests become hard gates, not optional suggestions the model might ignore.</p>
             </div>
           </div>
         </div>
@@ -1071,24 +1072,24 @@
         <div class="reveal mt-16 max-w-full">
           <h3 class="font-display text-2xl md:text-3xl text-white mb-6">Tool-agnostic closed loops</h3>
           <p class="text-sm text-textDim leading-relaxed mb-6">
-            The plan-build-validate-correct cycle is a pattern, not a product feature. You can implement it with any tool and a shell script.
+            Plan-build-validate-correct is a pattern, not a brand feature. You can run it with any tool and a shell script.
           </p>
           <p class="text-sm text-textDim leading-relaxed mb-4">
-            <strong class="text-white">The simplest version is fully manual.</strong> Describe the task in a planning file. Let the agent generate code. Run your tests and review the diff yourself. Update the planning file with what went wrong. Re-run. This works with any tool, any model, any codebase. The cost is your attention.
+            <strong class="text-white">Simplest version is manual.</strong> Write the task down, let the agent code, run tests, review diff, feed failures back in, repeat.
           </p>
           <p class="text-sm text-textDim leading-relaxed mb-4">
-            <strong class="text-white">One step up: script-assisted validation.</strong> Write a shell script that runs your linter, tests, and type checker, then formats the output as a report. After the agent finishes, run the script. If it fails, pipe the output back to the agent as context for the next attempt.
+            <strong class="text-white">Next step: script-assisted validation.</strong> One script runs lint/tests/typecheck and you pass that output into the next iteration.
           </p>
           <p class="text-sm text-textDim leading-relaxed mb-4">
-            <strong class="text-white">The RALPH loop makes it automatic.</strong> Include validation instructions directly in your plan file: "Run npm test and ensure all tests pass. Run npm run lint with zero errors." Each iteration becomes a full plan-build-validate-correct cycle. The agent reads the plan, builds, validates against the criteria, and the next iteration corrects any failures.
+            <strong class="text-white">RALPH loop makes it repeatable.</strong> Put validation rules in the plan file so each run follows the same quality bar.
           </p>
           <p class="text-sm text-textDim leading-relaxed mb-6">
-            <strong class="text-white">The checklist-in-file pattern</strong> keeps a validation checklist in markdown. The agent reads it, performs the checks, and updates the checkboxes. Every AI coding tool can read markdown and understand checkbox syntax. No special integration needed.
+            <strong class="text-white">Checklist-in-file pattern</strong> is simple and reliable: keep checks in markdown, let the agent run them, tick boxes, move on.
           </p>
           <div class="bg-surface border border-border rounded-lg p-6">
             <p class="font-mono text-xs text-accent uppercase tracking-widest mb-3">Key insight</p>
             <p class="text-sm text-textDim leading-relaxed">
-              Validation is cheap, generation is expensive. Running <code class="text-accent/80">npm test</code> costs milliseconds. Having the agent re-generate code without knowing what failed costs tokens, time, and context window space. Any mechanism that feeds failure information back to the agent closes the loop. A tool-specific hook, a shell script, or a human copy-pasting an error message all accomplish the same thing.
+              Validation is cheap, blind regeneration is expensive. Fast feedback after each run keeps quality up and token waste down.
             </p>
           </div>
         </div>
@@ -1106,7 +1107,7 @@
         </div>
         <div class="reveal reveal-delay-1 max-w-full mb-16">
           <p class="text-lg text-textDim leading-relaxed">
-            Claude Code isn't a coding assistant. It's an agent harness with multiple layers of context control, each addressing a different aspect of the context management problem.
+            I treat Claude Code less like autocomplete and more like a harness with layered context controls.
           </p>
         </div>
 
@@ -1183,7 +1184,7 @@
         <div class="reveal mb-20">
           <h3 class="font-display text-2xl md:text-3xl text-white mb-6">CLAUDE.md: Persistent Context</h3>
           <p class="text-sm text-textDim leading-relaxed max-w-full mb-6">
-            CLAUDE.md is the onboarding document for your AI colleague. It tells Claude what it can't infer from code alone: build commands, style rules, workflow conventions, architectural decisions.
+            CLAUDE.md is basically onboarding notes for the agent: build commands, style rules, team conventions, and gotchas the code alone doesn't explain.
           </p>
 
           <div class="grid md:grid-cols-2 gap-6 max-w-full mb-8">
@@ -1219,7 +1220,7 @@
             </div>
           </div>
           <p class="text-sm text-textDim leading-relaxed max-w-full">
-            <strong class="text-white">The key insight:</strong> CLAUDE.md directly implements "context as control surface." By curating what Claude knows, you steer what it does. Treat it like code. Review it when things go wrong, prune it regularly.
+            <strong class="text-white">Key point:</strong> what you put in CLAUDE.md changes behavior a lot. Keep it short, practical, and updated when something breaks.
           </p>
         </div>
 
@@ -1227,7 +1228,7 @@
         <div class="reveal mb-20">
           <h3 class="font-display text-2xl md:text-3xl text-white mb-6">Skills: On-Demand Context</h3>
           <p class="text-sm text-textDim leading-relaxed max-w-full mb-6">
-            Skills solve context decay by loading only when relevant. Skill <em>descriptions</em> live in context permanently (small), but full skill <em>content</em> loads only on invocation. Progressive disclosure for AI context.
+            Skills help with context decay because you only load heavy instructions when needed, not all the time.
           </p>
 
           <div class="terminal max-w-full mb-6">
@@ -1265,7 +1266,7 @@
         <div class="reveal mb-20">
           <h3 class="font-display text-2xl md:text-3xl text-white mb-6">Hooks: Deterministic Control</h3>
           <p class="text-sm text-textDim leading-relaxed max-w-full mb-6">
-            CLAUDE.md is advisory. The model can choose to ignore it. Hooks are deterministic. They run shell commands at specific points in Claude's lifecycle and guarantee an action happens every time.
+            CLAUDE.md is guidance. Hooks are enforcement. They run at known moments and guarantee checks happen every time.
           </p>
           <div class="terminal max-w-full mb-4">
             <div class="terminal-bar">
