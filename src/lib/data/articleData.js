@@ -1,7 +1,9 @@
-// Generated at 2025-12-17T22:33:52.839Z
+// Generated at 2026-02-26T01:37:01.938Z
 const articlesString = `[
   {
+    "slug": "dr-001",
     "filename": "dr-001.md",
+    "sourceType": "md",
     "title": "The journey of starting a blog",
     "tags": [
       "svelte",
@@ -15,7 +17,9 @@ const articlesString = `[
     "url": "https://meerman.xyz/blog/dr-001"
   },
   {
+    "slug": "dr-002",
     "filename": "dr-002.md",
+    "sourceType": "md",
     "title": "Finishing projects",
     "tags": [
       "process"
@@ -27,7 +31,9 @@ const articlesString = `[
     "url": "https://meerman.xyz/blog/dr-002"
   },
   {
+    "slug": "dr-003",
     "filename": "dr-003.md",
+    "sourceType": "md",
     "title": "Hybrid automation for one-off tasks",
     "tags": [
       "process",
@@ -42,7 +48,9 @@ const articlesString = `[
     "url": "https://meerman.xyz/blog/dr-003"
   },
   {
+    "slug": "dr-004",
     "filename": "dr-004.md",
+    "sourceType": "md",
     "title": "Swift 5.9 - TL;DR",
     "tags": [
       "Swift"
@@ -54,7 +62,9 @@ const articlesString = `[
     "url": "https://meerman.xyz/blog/dr-004"
   },
   {
+    "slug": "dr-005",
     "filename": "dr-005.md",
+    "sourceType": "md",
     "title": "Artificially enhanced IDE's and sidequests",
     "tags": [
       "ai",
@@ -70,7 +80,9 @@ const articlesString = `[
     "url": "https://meerman.xyz/blog/dr-005"
   },
   {
+    "slug": "dr-006",
     "filename": "dr-006.md",
+    "sourceType": "md",
     "date": "2025-04-16T00:00:00.000Z",
     "title": "Exploring the Model Context Protocol",
     "tags": [
@@ -84,7 +96,9 @@ const articlesString = `[
     "url": "https://meerman.xyz/blog/dr-006"
   },
   {
+    "slug": "dr-007",
     "filename": "dr-007.md",
+    "sourceType": "md",
     "title": "30 bits of unsolicited advice",
     "tags": [
       "advice"
@@ -94,6 +108,26 @@ const articlesString = `[
     "ID": "007",
     "summary": "This blog post, written upon turning 30, is a reflection on lessons learned through trial, curiosity, and self-discovery in one’s 20s. It’s not a list of rigid rules, but a collection of practical and philosophical reminders—about acting instead of overthinking, creating without fear, nurturing curiosity, building habits that last, and embracing both the weird and the ordinary. It’s about realizing that growth comes from showing up, experimenting, and engaging with life, while learning to balance reflection with action.",
     "url": "https://meerman.xyz/blog/dr-007"
+  },
+  {
+    "slug": "dr-008",
+    "filename": "dr-008.md",
+    "sourceType": "html",
+    "title": "The model isn't the bottleneck. Your context is.",
+    "tags": [
+      "ai",
+      "agentic-coding",
+      "context-engineering",
+      "claude-code"
+    ],
+    "summary": "What I use to make AI coding reliable in real repos: harnesses, context shape, closed-loop validation, and practical Claude Code/CLI workflows.",
+    "date": "2026-02-26T00:00:00.000Z",
+    "author": "Dries Meerman",
+    "ID": "008",
+    "enableCustomJs": true,
+    "enableCustomCss": true,
+    "respectsDarkMode": false,
+    "url": "https://meerman.xyz/blog/dr-008"
   }
 ]`;
 export const articles = JSON.parse(articlesString);

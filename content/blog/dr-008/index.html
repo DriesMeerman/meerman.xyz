@@ -1,0 +1,2090 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Context-Based Engineering</title>
+  <meta name="description" content="Context engineering, agent harnesses, and making agentic coding actually work. The model isn't the bottleneck. Your context is.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=Satoshi:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0a0a0b',
+            surface: '#111113',
+            surfaceLight: '#1a1a1e',
+            border: '#2a2a30',
+            accent: '#c8f547',
+            accentDim: '#8aad2f',
+            warm: '#f5c842',
+            danger: '#ef4444',
+            muted: '#6b7280',
+            text: '#e4e4e7',
+            textDim: '#a1a1aa',
+          },
+          fontFamily: {
+            display: ['"Instrument Serif"', 'Georgia', 'serif'],
+            body: ['Satoshi', 'system-ui', 'sans-serif'],
+            mono: ['"DM Mono"', 'monospace'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    ::selection { background: #c8f547; color: #0a0a0b; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #0a0a0b;
+      color: #e4e4e7;
+      font-family: 'Satoshi', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0b; }
+    ::-webkit-scrollbar-thumb { background: #2a2a30; border-radius: 3px; }
+
+    /* Reveal animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Terminal styling */
+    .terminal {
+      background: #111113;
+      border: 1px solid #2a2a30;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .terminal-bar {
+      background: #1a1a1e;
+      padding: 8px 12px;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .terminal-body {
+      padding: 20px 24px;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+    .terminal-body.code-block {
+      white-space: pre-wrap;
+    }
+
+    /* Code syntax */
+    .kw { color: #c8f547; }
+    .str { color: #f5c842; }
+    .cm { color: #6b7280; }
+    .fn { color: #60a5fa; }
+    .op { color: #a1a1aa; }
+    .num { color: #fb923c; }
+    .err { color: #ef4444; }
+
+    /* Typing cursor */
+    .cursor::after {
+      content: '|';
+      animation: blink 1s step-end infinite;
+      color: #c8f547;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* Pull quote glow */
+    .pull-quote {
+      position: relative;
+      background: linear-gradient(135deg, #111113 0%, #0f1a0a 100%);
+      border: 1px solid #2a3a1a;
+    }
+    .pull-quote::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(200, 245, 71, 0.15), transparent 50%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Loop animation */
+    .loop-node {
+      transition: all 0.3s ease;
+    }
+    .loop-node:hover {
+      filter: brightness(1.3);
+      transform: scale(1.05);
+    }
+
+    /* Layer stack */
+    .layer-item {
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .layer-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Anti-pattern cards */
+    .antipattern-card {
+      transition: all 0.3s ease;
+    }
+    .antipattern-card:hover {
+      border-color: #ef4444;
+      background: #1a1113;
+    }
+    .antipattern-card .fix-text {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+    .antipattern-card:hover .fix-text,
+    .antipattern-card.expanded .fix-text {
+      max-height: 300px;
+      opacity: 1;
+    }
+
+    /* Plan task animation */
+    .plan-task {
+      display: block;
+      transition: background 0.3s ease;
+    }
+    .plan-task.completing {
+      background: rgba(200, 245, 71, 0.05);
+      border-radius: 2px;
+    }
+    .plan-task .task-check {
+      transition: color 0.3s ease;
+    }
+
+    /* Section number */
+    .section-num {
+      font-family: 'DM Mono', monospace;
+      color: #c8f547;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Reference cards */
+    .ref-card {
+      transition: all 0.2s ease;
+      border: 1px solid #2a2a30;
+    }
+    .ref-card:hover {
+      border-color: #c8f547;
+      background: #111113;
+    }
+
+    /* Gradient line */
+    .gradient-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #2a2a30 20%, #2a2a30 80%, transparent);
+    }
+
+    /* Table */
+    .data-table th {
+      background: #1a1a1e;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #c8f547;
+    }
+    .data-table td {
+      border-bottom: 1px solid #1a1a1e;
+    }
+
+    /* Noise texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.015;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <main>
+
+    <!-- ==================== SECTION 1: HERO ==================== -->
+    <section id="hero" class="min-h-screen flex items-center relative pt-16 overflow-hidden">
+      <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#c8f547]/[0.03] rounded-full blur-[120px] pointer-events-none"></div>
+      <div class="relative max-w-6xl mx-auto px-6 w-full">
+        <div class="max-w-full">
+          <div class="reveal">
+            <p class="section-num mb-6">Context-Based Engineering</p>
+          </div>
+          <h1 class="reveal reveal-delay-1 font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.95] mb-8 text-white">
+            The model isn't the bottleneck.<br>
+            <em class="text-accent">Your context is.</em>
+          </h1>
+          <p class="reveal reveal-delay-2 font-body text-lg md:text-xl text-textDim max-w-2xl leading-relaxed mb-8">
+            AI tools have flashy demos: one prompt, no more developer necessary. Then you try it on your own. The results are worse, the model does a lot you dont want it to do. The gap is mostly context handling, not model intelligence.
+          </p>
+          <p class="reveal reveal-delay-3 font-body text-sm text-textDim/70 max-w-2xl leading-relaxed mb-12">
+            This article is what I use in practice: what the harness layer does, why context quality beats raw context size, how closed loops keep output sane, and how plan-driven workflows make agents useful instead of chaotic.
+            I also discuss Windsurf vs Claude code as those has been my main tools recently.
+          </p>
+          <p class="reveal reveal-delay-4 font-body text-base text-textDim/80 max-w-2xl leading-relaxed mb-16">
+            It also covers patterns you can apply with or without one specific tool: context files, validation hooks, and small terminal loops that keep progress predictable.
+          </p>
+        </div>
+
+        <!-- Top TOC -->
+        <div class="reveal reveal-delay-4 mb-10 max-w-5xl">
+          <div class="bg-surface/80 border border-border rounded-lg p-4">
+            <p class="font-mono text-[11px] uppercase tracking-widest text-textDim mb-3">Contents</p>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-x-4 gap-y-2 text-xs font-mono">
+              <a href="#hero" class="text-accent hover:underline">01. Intro</a>
+              <a href="#harnesses" class="text-accent hover:underline">02. Harnesses</a>
+              <a href="#context" class="text-accent hover:underline">03. Context</a>
+              <a href="#decay" class="text-accent hover:underline">04. Decay</a>
+              <a href="#plans" class="text-accent hover:underline">05. Plans</a>
+              <a href="#loops" class="text-accent hover:underline">06. Loops</a>
+              <a href="#claude-code" class="text-accent hover:underline">07. Claude Code</a>
+              <a href="#cli" class="text-accent hover:underline">08. CLI/SDK</a>
+              <a href="#antipatterns" class="text-accent hover:underline">09. Anti-Patterns</a>
+              <a href="#conclusion" class="text-accent hover:underline">10. Conclusion</a>
+              <a href="#references" class="text-accent hover:underline">11. References</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Terminal Visual -->
+        <div class="reveal reveal-delay-4 grid md:grid-cols-2 gap-6 max-w-5xl">
+          <!-- Focused prompt -->
+          <div class="terminal" id="hero-term-left">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-green-500"></div>
+              <div class="terminal-dot bg-green-500/30"></div>
+              <div class="terminal-dot bg-green-500/30"></div>
+              <span class="font-mono text-[11px] text-green-400/60 ml-2">focused-context</span>
+            </div>
+            <div class="terminal-body text-green-400/90" id="term-left-content">
+              <div class="typing-line"><span class="cm">$</span> <span class="kw">claude</span> -p <span class="str">"Add rate limiting<br>&nbsp;&nbsp;to the auth middleware"</span></div>
+              <div class="typing-line mt-4 text-textDim/40">&#8203;</div>
+              <div class="typing-line text-green-400"><span class="cm">//</span> middleware/auth.ts</div>
+              <div class="typing-line"><span class="kw">import</span> { rateLimit } <span class="kw">from</span> <span class="str">'./utils'</span></div>
+              <div class="typing-line"><span class="kw">export const</span> <span class="fn">authMiddleware</span> = ...</div>
+              <div class="typing-line mt-4 text-green-400">&#10003; Tests passing &middot; 5 tokens context</div>
+            </div>
+          </div>
+          <!-- Bloated prompt -->
+          <div class="terminal" id="hero-term-right">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-red-500"></div>
+              <div class="terminal-dot bg-red-500/30"></div>
+              <div class="terminal-dot bg-red-500/30"></div>
+              <span class="font-mono text-[11px] text-red-400/60 ml-2">bloated-context</span>
+            </div>
+            <div class="terminal-body text-red-400/80" id="term-right-content">
+              <div class="typing-line"><span class="cm">$</span> <span class="kw">claude</span> -p <span class="str">"Ok so earlier we were<br>&nbsp;&nbsp;working on the login page animations,<br>&nbsp;&nbsp;I had a question about the CSS<br>&nbsp;&nbsp;transition timing on the modal fade-in,<br>&nbsp;&nbsp;also the dashboard grid layout is<br>&nbsp;&nbsp;breaking on mobile, can you check the<br>&nbsp;&nbsp;flexbox setup in DashboardPanel.tsx,<br>&nbsp;&nbsp;oh and we also need rate limiting<br>&nbsp;&nbsp;on the auth middleware, here's the<br>&nbsp;&nbsp;full conversation history..."</span></div>
+              <div class="typing-line mt-4 text-textDim/40">&#8203;</div>
+              <div class="typing-line text-red-400"><span class="err">ERROR</span> Cannot find './components/Modal'</div>
+              <div class="typing-line"><span class="err">ERROR</span> Editing wrong file: Dashboard.tsx</div>
+              <div class="typing-line"><span class="err">WARN</span> Added CSS keyframes to auth.ts</div>
+              <div class="typing-line mt-4 text-red-400">&#10007; 4 errors &middot; 87k tokens context</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Decorative gradient -->
+      <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-bg to-transparent pointer-events-none"></div>
+    </section>
+
+    <div class="gradient-line max-w-6xl mx-auto"></div>
+
+    <!-- ==================== SECTION 2: AGENT HARNESSES ==================== -->
+    <section id="harnesses" class="py-24 md:py-32">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal">
+          <p class="section-num mb-4">01 // Agent Harnesses</p>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6">The Missing Layer</h2>
+        </div>
+        <div class="reveal reveal-delay-1 max-w-full mb-16">
+          <p class="text-lg text-textDim leading-relaxed">
+            Between the language model and your code sits a layer that most teams never think about. The model doesn't decide which files to read, how to validate its work, or when to stop. Something else does. That something is the <strong class="text-white">agent harness</strong>.
+          </p>
+        </div>
+
+        <!-- Architecture Diagram -->
+        <div class="reveal-scale mb-20">
+          <div class="max-w-full">
+            <!-- Language Model Layer -->
+            <div class="bg-surfaceLight/50 border border-border rounded-lg p-5 text-center mb-3">
+              <p class="font-mono text-xs text-textDim uppercase tracking-widest mb-1">Language Model</p>
+              <p class="text-sm text-textDim/60">GPT-5.3 &middot; Claude Opus &middot; Gemini</p>
+            </div>
+            <!-- Arrows -->
+            <div class="flex justify-center my-1">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m0 0l-4-4m4 4l4-4" stroke="#c8f547" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <!-- Agent Harness Layer (prominent) -->
+            <div class="bg-gradient-to-r from-[#111a08] to-[#0a1108] border-2 border-accent/30 rounded-xl p-6 mb-3">
+              <p class="font-mono text-xs text-accent uppercase tracking-widest mb-5 text-center">Agent Harness</p>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="bg-bg/60 border border-accent/20 rounded-lg p-3 text-center">
+                  <p class="font-mono text-[11px] text-accent mb-1">Context</p>
+                  <p class="text-[11px] text-textDim">What the model sees</p>
+                </div>
+                <div class="bg-bg/60 border border-accent/20 rounded-lg p-3 text-center">
+                  <p class="font-mono text-[11px] text-accent mb-1">Tools</p>
+                  <p class="text-[11px] text-textDim">What the model can do</p>
+                </div>
+                <div class="bg-bg/60 border border-accent/20 rounded-lg p-3 text-center">
+                  <p class="font-mono text-[11px] text-accent mb-1">Feedback</p>
+                  <p class="text-[11px] text-textDim">How it validates work</p>
+                </div>
+                <div class="bg-bg/60 border border-accent/20 rounded-lg p-3 text-center">
+                  <p class="font-mono text-[11px] text-accent mb-1">State</p>
+                  <p class="text-[11px] text-textDim">What persists across windows</p>
+                </div>
+              </div>
+            </div>
+            <!-- Arrows -->
+            <div class="flex justify-center my-1">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m0 0l-4-4m4 4l4-4" stroke="#c8f547" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <!-- Codebase Layer -->
+            <div class="bg-surface border border-border rounded-lg p-5 text-center">
+              <p class="font-mono text-xs text-textDim uppercase tracking-widest mb-1">Your Codebase</p>
+              <p class="text-sm text-textDim/60">Files &middot; Tests &middot; Config &middot; Git</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Philosophies -->
+        <div class="reveal mb-8">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-3">Two philosophies</h3>
+          <p class="text-textDim max-w-2xl">Right now there are basically two approaches. Not just different features, actually different ways of working.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-12">
+          <!-- IDE-embedded -->
+          <div class="reveal-left terminal">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-blue-500"></div>
+              <div class="terminal-dot bg-blue-500/30"></div>
+              <div class="terminal-dot bg-blue-500/30"></div>
+              <span class="font-mono text-[11px] text-blue-400/60 ml-2">IDE-embedded harness</span>
+            </div>
+            <div class="p-6">
+              <h4 class="font-body font-bold text-white mb-3">"The editor IS the harness"</h4>
+              <p class="text-sm text-textDim leading-relaxed mb-4">
+                Tools like Windsurf embed the entire harness into the IDE. Context comes from RAG-indexed codebases, open files, and real-time editor events. The developer interacts through a chat panel.
+              </p>
+              <div class="flex items-center gap-2 text-xs font-mono">
+                <span class="text-green-400">+</span> <span class="text-textDim">Low friction</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs font-mono">
+                <span class="text-red-400">-</span> <span class="text-textDim">Opaque context control</span>
+              </div>
+            </div>
+          </div>
+          <!-- Unix-native -->
+          <div class="reveal-right terminal">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-accent"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <span class="font-mono text-[11px] text-accent/60 ml-2">Unix-native harness</span>
+            </div>
+            <div class="p-6">
+              <h4 class="font-body font-bold text-white mb-3">"The terminal IS the harness"</h4>
+              <p class="text-sm text-textDim leading-relaxed mb-4">
+                Claude Code is a CLI tool that reads from stdin, writes to stdout, and composes with other tools via pipes. Context is explicit. The harness is transparent.
+              </p>
+              <div class="flex items-center gap-2 text-xs font-mono">
+                <span class="text-green-400">+</span> <span class="text-textDim">Full visibility and composability</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs font-mono">
+                <span class="text-red-400">-</span> <span class="text-textDim">Higher learning curve</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Convergence Table -->
+        <div class="reveal max-w-full mb-12">
+          <div class="text-center mb-6">
+            <p class="font-mono text-xs text-accent uppercase tracking-widest">Convergent Evolution</p>
+            <p class="text-sm text-textDim mt-2">Both tools independently arrived at the same abstractions</p>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm data-table">
+              <thead>
+                <tr>
+                  <th class="text-left p-3 rounded-tl-lg">Concept</th>
+                  <th class="text-left p-3">Windsurf</th>
+                  <th class="text-left p-3 rounded-tr-lg">Claude Code</th>
+                </tr>
+              </thead>
+              <tbody class="text-textDim">
+                <tr><td class="p-3 text-white">Reusable workflows</td><td class="p-3">Workflows (.md)</td><td class="p-3">Skills (.md)</td></tr>
+                <tr><td class="p-3 text-white">Persistent context</td><td class="p-3">Memories (auto)</td><td class="p-3">CLAUDE.md (manual)</td></tr>
+                <tr><td class="p-3 text-white">Behavioral rules</td><td class="p-3">Rules</td><td class="p-3">CLAUDE.md instructions</td></tr>
+                <tr><td class="p-3 text-white">Multi-step planning</td><td class="p-3">Cascade agent</td><td class="p-3">Subagent orchestration</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Economic layer -->
+        <div class="reveal max-w-full">
+          <div class="bg-surface border border-border rounded-lg p-6">
+            <h4 class="font-mono text-xs text-warm uppercase tracking-widest mb-3">The economic layer nobody talks about</h4>
+            <p class="text-sm text-textDim leading-relaxed">
+              Pricing model matters more than people admit. Subscriptions push tools to save context aggressively. Usage-based pricing usually pushes the other direction. Not calling anyone good or bad here, just saying this shows up in product behavior.
+            </p>
+          </div>
+        </div>
+
+        <!-- You don't need a specific tool -->
+        <div class="reveal mt-16 max-w-full">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-6">You don't need a specific tool</h3>
+          <p class="text-sm text-textDim leading-relaxed mb-6">
+            If all this sounds like you need one specific product, good news: you don't. The minimum viable harness is literally a text file plus a terminal.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed mb-6">
+            I call this the RALPH loop. The loop is dead simple, the quality comes from the plan file you feed into it.
+          </p>
+
+          <!-- PROMPT.md with RPI structure -->
+          <h4 class="font-mono text-xs text-accent uppercase tracking-widest mb-3">The plan as control surface</h4>
+          <p class="text-sm text-textDim leading-relaxed mb-4">
+            The plan format I like is RPI: Role, Purpose, Instructions. If those are clear, the agent usually does fine without constant nudging.
+          </p>
+          <div class="terminal max-w-full mb-6">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-accent"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <span class="font-mono text-[11px] text-textDim/40 ml-2">PROMPT.md</span>
+            </div>
+            <div class="terminal-body code-block text-xs">
+<span class="cm">## Role</span>
+<span class="text-textDim">You are working on a Node.js payment service using</span>
+<span class="text-textDim">Express and Stripe. The codebase uses TypeScript with</span>
+<span class="text-textDim">strict mode enabled.</span>
+
+<span class="cm">## Purpose</span>
+<span class="text-textDim">Implement the webhook handler for invoice.paid events.</span>
+<span class="text-textDim">Update the customer record and trigger a confirmation email.</span>
+
+<span class="cm">## Instructions</span>
+<span class="text-textDim">- Use the existing ApiClient wrapper in src/lib/api.ts</span>
+<span class="text-textDim">- Do not modify the Customer model</span>
+<span class="text-textDim">- Follow existing error handling patterns in src/handlers/</span>
+
+<span class="cm">## Validation</span>
+<span class="text-textDim">- Run: </span><span class="fn">npm test</span><span class="text-textDim"> (all tests pass)</span>
+<span class="text-textDim">- Run: </span><span class="fn">npm run lint</span><span class="text-textDim"> (zero errors)</span>
+<span class="text-textDim">- The file src/handlers/webhook.ts must exist</span>
+            </div>
+          </div>
+
+          <!-- The loop -->
+          <div class="terminal max-w-full mb-6">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-accent"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <span class="font-mono text-[11px] text-textDim/40 ml-2">ralph-wiggum-flow.sh</span>
+            </div>
+            <div class="terminal-body text-xs">
+<span class="cm">$</span> <span class="kw">while</span> :; <span class="kw">do</span> cat PROMPT.md | claude -p ; <span class="kw">done</span>
+            </div>
+          </div>
+
+          <!-- Progressive refinement -->
+          <p class="text-sm text-textDim leading-relaxed mb-4">
+            The loop itself is boring on purpose. The power is in improving the plan each run. When it drifts, add one constraint and retry. After a few rounds the spec gets sharp and you stop repeating yourself.
+          </p>
+
+          <!-- Closing -->
+          <p class="text-sm text-textDim leading-relaxed">
+            This is tool-agnostic. Swap model or CLI and the pattern still works. If you only keep a good `PROMPT.md` and a simple loop, you already have a solid setup.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="gradient-line max-w-6xl mx-auto"></div>
+
+    <!-- ==================== SECTION 3: CONTEXT FOUNDATIONS ==================== -->
+    <section id="context" class="py-24 md:py-32">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal">
+          <p class="section-num mb-4">02 // Context Foundations</p>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6">Why Context &gt; Model Capability</h2>
+        </div>
+        <div class="reveal reveal-delay-1 max-w-full mb-20">
+          <p class="text-lg text-textDim leading-relaxed">
+            Here's the mental model that changes everything:
+          </p>
+        </div>
+
+        <!-- The Pull Quote -->
+        <div class="reveal-scale max-w-full mb-20">
+          <div class="pull-quote rounded-xl p-8 md:p-12">
+            <p class="relative z-10 font-mono text-base md:text-lg lg:text-xl text-accent leading-relaxed tracking-wide">
+              An LLM is a highly capable pattern completer operating over a finite, decaying context window.
+            </p>
+            <p class="relative z-10 mt-6 text-sm text-textDim/60 font-mono">
+              Not a reasoner. Not a thinker. A pattern completer. The "intelligence" comes from what's in the context window at inference time.
+            </p>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="reveal mb-20">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-8">How we got here</h3>
+          <div class="relative max-w-full">
+            <!-- Timeline line -->
+            <div class="absolute left-[18px] top-0 bottom-0 w-px bg-border md:left-[22px]"></div>
+
+            <div class="reveal space-y-8">
+              <!-- 2013 -->
+              <div class="reveal-delay-1 flex gap-5 items-start">
+                <div class="flex-shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-full bg-surface border-2 border-accent flex items-center justify-center">
+                  <span class="font-mono text-[10px] text-accent">2013</span>
+                </div>
+                <div>
+                  <p class="font-mono text-xs text-accent mb-1"><a href="https://arxiv.org/abs/1301.3781" target="_blank" rel="noopener" class="hover:underline">Word2Vec</a></p>
+                  <p class="text-sm text-textDim leading-relaxed">Dense vector representations replaced keyword matching with semantic similarity. Words became points in space. This made context <em>meaningful</em> rather than lexical.</p>
+                </div>
+              </div>
+              <!-- 2017 -->
+              <div class="reveal-delay-2 flex gap-5 items-start">
+                <div class="flex-shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-full bg-surface border-2 border-accent flex items-center justify-center">
+                  <span class="font-mono text-[10px] text-accent">2017</span>
+                </div>
+                <div>
+                  <p class="font-mono text-xs text-accent mb-1"><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener" class="hover:underline">Transformers: "Attention Is All You Need"</a></p>
+                  <p class="text-sm text-textDim leading-relaxed">Every token can attend to every other token. The model dynamically weighs relationships between all tokens. This is why context <em>matters</em>: it's the input to the attention mechanism.</p>
+                </div>
+              </div>
+              <!-- 2018 -->
+              <div class="reveal-delay-3 flex gap-5 items-start">
+                <div class="flex-shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-full bg-surface border-2 border-accent flex items-center justify-center">
+                  <span class="font-mono text-[10px] text-accent">2018</span>
+                </div>
+                <div>
+                  <p class="font-mono text-xs text-accent mb-1"><a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf" target="_blank" rel="noopener" class="hover:underline">GPT-style pretraining</a></p>
+                  <p class="text-sm text-textDim leading-relaxed">Large-scale next-token prediction generalized across domains. The model doesn't "know" Python or English. It predicts the most likely next token given the context.</p>
+                </div>
+              </div>
+            </div>
+            <p class="mt-8 ml-16 text-sm text-textDim/60 italic">These advances made agentic coding possible. They also made context the primary steering mechanism.</p>
+          </div>
+        </div>
+
+        <!-- Group Chat Analogy -->
+        <div class="reveal">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-6">The group chat analogy</h3>
+          <div class="grid md:grid-cols-2 gap-6 max-w-full mb-8">
+            <!-- Focused DM -->
+            <div class="bg-surface border border-green-900/40 rounded-lg p-5">
+              <p class="font-mono text-xs text-green-400 mb-4 uppercase tracking-widest">Focused DM</p>
+              <div class="space-y-2">
+                <div class="bg-bg rounded px-3 py-2 text-sm text-text border-l-2 border-green-500">Can you review the auth PR?</div>
+                <div class="bg-bg rounded px-3 py-2 text-sm text-text border-l-2 border-green-500">Looks good, one issue on line 42</div>
+                <div class="bg-bg rounded px-3 py-2 text-sm text-text border-l-2 border-green-500">Fixed, PTAL</div>
+              </div>
+              <p class="mt-4 text-xs text-green-400/60 font-mono">100% signal, every token attended</p>
+            </div>
+            <!-- Noisy group chat -->
+            <div class="bg-surface border border-red-900/40 rounded-lg p-5">
+              <p class="font-mono text-xs text-red-400 mb-4 uppercase tracking-widest">Noisy Group Chat</p>
+              <div class="space-y-2">
+                <div class="bg-bg rounded px-3 py-2 text-sm text-textDim/30 border-l-2 border-border">anyone tried that new ramen place?</div>
+                <div class="bg-bg rounded px-3 py-2 text-sm text-textDim/30 border-l-2 border-border">lol check this meme</div>
+                <div class="bg-bg rounded px-3 py-2 text-sm text-textDim/30 border-l-2 border-border">standup in 5 min</div>
+                <div class="bg-bg rounded px-3 py-2 text-sm text-text border-l-2 border-red-500/50 opacity-50">Can you review the auth PR?</div>
+                <div class="bg-bg rounded px-3 py-2 text-sm text-textDim/30 border-l-2 border-border">happy birthday Mike!</div>
+                <div class="bg-bg rounded px-3 py-2 text-sm text-textDim/30 border-l-2 border-border">who moved the staging config?</div>
+              </div>
+              <p class="mt-4 text-xs text-red-400/60 font-mono">Signal buried, attention diluted</p>
+            </div>
+          </div>
+          <div class="max-w-full">
+            <p class="text-sm text-textDim leading-relaxed">
+              LLMs have the same problem, but worse. They can't <em>choose</em> to ignore noise. Every token in the context window participates in the attention computation. Your job when working with a coding agent is to make the correct next action the most likely continuation, remove irrelevant information aggressively, and structure work so validation happens early.
+            </p>
+          </div>
+        </div>
+
+        <!-- Session bootstrapping with context files -->
+        <div class="reveal mt-16 max-w-full">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-6">Session bootstrapping with context files</h3>
+          <p class="text-sm text-textDim leading-relaxed mb-4">
+            AI coding agents have no persistent memory. Every new session starts from zero. You're onboarding a new developer every single time, and that developer will forget everything when the session ends.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed mb-4">
+            The fix is simple: keep a file that captures your project's current state. Call it CONTEXT.md, SESSION.md, or whatever fits your workflow. Structure it for the agent, not for humans. Include what the project is (briefly), key architecture decisions, what you're working on right now, recent decisions and their rationale, known gotchas, and the exact commands to build, test, and lint.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed mb-4">
+            At the start of every session, feed this file to whatever tool you're using. With Claude Code, it's automatic if you name it CLAUDE.md. With any CLI tool, it's <code class="text-accent/80">cat CONTEXT.md | &lt;tool&gt;</code>. With an IDE-based tool, paste it or reference it.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed mb-4">
+            The real power comes from the end-of-session ritual. Before closing out, ask the agent to update the context file with what was accomplished, what's still pending, and any discoveries made during the session. This creates a handoff document for the next session, whether that session uses the same tool or a completely different one.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed mb-4">
+            Think of it as a layered system. Your project-level context (architecture, conventions) changes rarely. Your session context (current task, recent decisions) changes every session. Your task list is a living checklist. Keeping these separate prevents context bloat because you can load only what's relevant.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed">
+            This is intentionally tool-agnostic. If your CONTEXT.md is good, you can reuse it across Claude Code, Cursor, or whatever comes next.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="gradient-line max-w-6xl mx-auto"></div>
+
+    <!-- ==================== SECTION 4: CONTEXT DECAY ==================== -->
+    <section id="decay" class="py-24 md:py-32">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal">
+          <p class="section-num mb-4">03 // Context Decay</p>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6">Why Smaller Is Better</h2>
+        </div>
+        <div class="reveal reveal-delay-1 max-w-full mb-16">
+          <p class="text-lg text-textDim leading-relaxed">
+            Easy trap: bigger context window must mean better output, so you dump everything in. In practice that backfires, and the data is pretty clear on that.
+          </p>
+        </div>
+
+        <!-- Decay Chart SVG -->
+        <div class="reveal-scale max-w-xl mx-auto mb-16">
+          <div class="bg-surface border border-border rounded-xl p-6 md:p-8">
+            <p class="font-mono text-xs text-accent uppercase tracking-widest mb-6">Performance vs Context Size</p>
+            <svg viewBox="0 0 600 300" class="w-full" aria-label="Chart showing task performance declining as context size increases">
+              <!-- Grid -->
+              <line x1="60" y1="20" x2="60" y2="250" stroke="#2a2a30" stroke-width="1"/>
+              <line x1="60" y1="250" x2="580" y2="250" stroke="#2a2a30" stroke-width="1"/>
+              <line x1="60" y1="80" x2="580" y2="80" stroke="#1a1a1e" stroke-width="1" stroke-dasharray="4"/>
+              <line x1="60" y1="140" x2="580" y2="140" stroke="#1a1a1e" stroke-width="1" stroke-dasharray="4"/>
+              <line x1="60" y1="200" x2="580" y2="200" stroke="#1a1a1e" stroke-width="1" stroke-dasharray="4"/>
+              <!-- Y axis labels -->
+              <text x="50" y="84" text-anchor="end" fill="#6b7280" font-family="DM Mono" font-size="10">High</text>
+              <text x="50" y="254" text-anchor="end" fill="#6b7280" font-family="DM Mono" font-size="10">Low</text>
+              <text x="15" y="160" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="9" transform="rotate(-90 15 160)">Task Performance</text>
+              <!-- X axis labels -->
+              <text x="100" y="270" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="9">~300</text>
+              <text x="520" y="270" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="9">~113k</text>
+              <text x="320" y="290" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="9">Context Size (tokens)</text>
+              <!-- Decay curve -->
+              <path d="M100 55 C180 60 250 120 320 170 C390 210 460 225 520 235" fill="none" stroke="#c8f547" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Shaded area -->
+              <path d="M100 55 C180 60 250 120 320 170 C390 210 460 225 520 235 L520 250 L100 250 Z" fill="url(#decayGrad)" opacity="0.15"/>
+              <defs>
+                <linearGradient id="decayGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#c8f547"/>
+                  <stop offset="100%" stop-color="#c8f547" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- Data points -->
+              <circle cx="100" cy="55" r="6" fill="#0a0a0b" stroke="#22c55e" stroke-width="2.5"/>
+              <circle cx="520" cy="235" r="6" fill="#0a0a0b" stroke="#ef4444" stroke-width="2.5"/>
+              <!-- Labels -->
+              <text x="115" y="48" fill="#22c55e" font-family="DM Mono" font-size="10">~300 tokens</text>
+              <text x="400" y="228" fill="#ef4444" font-family="DM Mono" font-size="10">~113k tokens</text>
+              <!-- Performance gap bracket -->
+              <line x1="85" y1="55" x2="85" y2="235" stroke="#f5c842" stroke-width="1" stroke-dasharray="3"/>
+              <text x="78" y="150" text-anchor="end" fill="#f5c842" font-family="DM Mono" font-size="8" transform="rotate(-90 78 150)">Performance gap</text>
+            </svg>
+            <p class="mt-4 text-[11px] text-textDim/40 font-mono">Source: Chroma Research, "Context Rot" (2025)</p>
+          </div>
+        </div>
+
+        <!-- Key findings -->
+        <div class="grid md:grid-cols-2 gap-6 max-w-full mb-16">
+          <div class="reveal bg-surface border border-border rounded-lg p-5">
+            <p class="font-mono text-xs text-warm mb-2">Finding 1</p>
+            <p class="text-sm text-textDim leading-relaxed">Distractors degrade performance non-uniformly. A single piece of misleading info in context significantly reduced accuracy.</p>
+          </div>
+          <div class="reveal reveal-delay-1 bg-surface border border-border rounded-lg p-5">
+            <p class="font-mono text-xs text-warm mb-2">Finding 2 (surprising)</p>
+            <p class="text-sm text-textDim leading-relaxed">Shuffled context outperformed structured context across all 18 models. Distinct information stands out when structure doesn't mask it.</p>
+          </div>
+          <div class="reveal reveal-delay-2 bg-surface border border-border rounded-lg p-5">
+            <p class="font-mono text-xs text-warm mb-2">Finding 3</p>
+            <p class="text-sm text-textDim leading-relaxed">Position matters. Accuracy was highest when relevant information appeared near the beginning. This effect intensified with length.</p>
+          </div>
+          <div class="reveal reveal-delay-3 bg-surface border border-border rounded-lg p-5">
+            <p class="font-mono text-xs text-warm mb-2">Finding 4</p>
+            <p class="text-sm text-textDim leading-relaxed">Substantial performance gaps between focused (~300 tokens) and full prompts (~113k tokens). Focused context dramatically outperformed bloated context.</p>
+          </div>
+        </div>
+
+        <!-- U-shaped curve -->
+        <div class="reveal max-w-xl mx-auto mb-16">
+          <h3 class="font-display text-2xl text-white mb-6">Lost in the Middle</h3>
+          <div class="bg-surface border border-border rounded-xl p-6 md:p-8">
+            <svg viewBox="0 0 500 200" class="w-full" aria-label="U-shaped curve showing retrieval accuracy is lowest in the middle of context">
+              <line x1="50" y1="170" x2="450" y2="170" stroke="#2a2a30" stroke-width="1"/>
+              <!-- U curve -->
+              <path d="M70 50 C120 50 160 150 250 155 C340 150 380 50 430 50" fill="none" stroke="#c8f547" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Shaded area under curve -->
+              <path d="M70 50 C120 50 160 150 250 155 C340 150 380 50 430 50 L430 170 L70 170 Z" fill="#c8f547" opacity="0.05"/>
+              <!-- Labels -->
+              <text x="70" y="190" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="9">Beginning</text>
+              <text x="250" y="190" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="9">Middle</text>
+              <text x="430" y="190" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="9">End</text>
+              <text x="25" y="110" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="8" transform="rotate(-90 25 110)">Retrieval Accuracy</text>
+              <!-- Annotation -->
+              <line x1="250" y1="155" x2="250" y2="135" stroke="#ef4444" stroke-width="1"/>
+              <text x="250" y="130" text-anchor="middle" fill="#ef4444" font-family="DM Mono" font-size="9">Lost here</text>
+            </svg>
+            <p class="mt-4 text-sm text-textDim leading-relaxed">
+              Models do best when important info is near the start or end. Stuff in the middle gets missed more often. This is mostly architecture behavior, not some tiny bug that will disappear next release.
+            </p>
+          </div>
+        </div>
+
+        <!-- Practical rules -->
+        <div class="reveal max-w-full">
+          <h3 class="font-display text-2xl text-white mb-6">What this means in practice</h3>
+          <div class="space-y-3">
+            <div class="flex gap-3 items-start">
+              <span class="font-mono text-accent text-sm mt-0.5">1</span>
+              <p class="text-sm text-textDim"><strong class="text-white">Front-load critical context.</strong> Put the most important instructions at the beginning of the context window.</p>
+            </div>
+            <div class="flex gap-3 items-start">
+              <span class="font-mono text-accent text-sm mt-0.5">2</span>
+              <p class="text-sm text-textDim"><strong class="text-white">Keep sessions short and focused.</strong> One task per session. When you finish, start fresh.</p>
+            </div>
+            <div class="flex gap-3 items-start">
+              <span class="font-mono text-accent text-sm mt-0.5">3</span>
+              <p class="text-sm text-textDim"><strong class="text-white">Prefer stateless sessions</strong> with explicit memory loading over long-running conversations.</p>
+            </div>
+            <div class="flex gap-3 items-start">
+              <span class="font-mono text-accent text-sm mt-0.5">4</span>
+              <p class="text-sm text-textDim"><strong class="text-white">Compact aggressively.</strong> Strip tool outputs, intermediate reasoning, stale information. Preserve decisions.</p>
+            </div>
+            <div class="flex gap-3 items-start">
+              <span class="font-mono text-accent text-sm mt-0.5">5</span>
+              <p class="text-sm text-textDim"><strong class="text-white">Use sub-agents for deep exploration.</strong> A sub-agent reads 50 files and returns a 500-token summary. Main context stays clean.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="gradient-line max-w-6xl mx-auto"></div>
+
+    <!-- ==================== SECTION: PLAN-DRIVEN DEVELOPMENT ==================== -->
+    <section id="plans" class="py-24 md:py-32">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal">
+          <p class="section-num mb-4">04 // Plan-Driven Development</p>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6">Let the Plan Do the Managing</h2>
+        </div>
+        <div class="reveal reveal-delay-1 max-w-full mb-16">
+          <p class="text-lg text-textDim leading-relaxed">
+            Your context is clean. Your sessions are focused. Now the question is: how do you structure work so the agent runs longer without you?
+          </p>
+        </div>
+
+        <!-- Core insight -->
+        <div class="reveal max-w-full mb-12">
+          <p class="text-sm text-textDim leading-relaxed mb-6">
+            The answer is a plan. Not vibes, not "just do OAuth." A concrete spec with what to build, how to validate it, and which constraints are non-negotiable. Better plan in means less babysitting later.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed">
+            This pattern is called Research-Plan-Implement (RPI). Do the reading first, write the plan down, then let the agent execute with checks in between.
+          </p>
+        </div>
+
+        <!-- RPI phases -->
+        <div class="grid md:grid-cols-2 gap-6 max-w-full mb-16">
+          <div class="reveal bg-surface border border-border rounded-lg p-5">
+            <p class="font-mono text-xs text-accent mb-2 uppercase tracking-widest">Research</p>
+            <p class="text-sm text-textDim leading-relaxed">Before writing a single line of code, the agent investigates your codebase. It finds relevant files, understands existing patterns, and maps the architecture. This phase produces a research document with file paths, conventions, and recommendations.</p>
+          </div>
+          <div class="reveal reveal-delay-1 bg-surface border border-border rounded-lg p-5">
+            <p class="font-mono text-xs text-accent mb-2 uppercase tracking-widest">Plan</p>
+            <p class="text-sm text-textDim leading-relaxed">Research feeds into a detailed implementation plan. Each phase has specific file modifications, success criteria, and verification steps. You iterate on this plan until it captures what "done" looks like. The plan becomes the executable spec.</p>
+          </div>
+          <div class="reveal reveal-delay-2 bg-surface border border-border rounded-lg p-5">
+            <p class="font-mono text-xs text-accent mb-2 uppercase tracking-widest">Implement</p>
+            <p class="text-sm text-textDim leading-relaxed">The agent executes phase by phase. After each phase, it runs verification steps and updates task checkboxes. When it hits a blocker, it stops and tells you what it needs instead of guessing.</p>
+          </div>
+          <div class="reveal reveal-delay-3 bg-surface border border-border rounded-lg p-5">
+            <p class="font-mono text-xs text-accent mb-2 uppercase tracking-widest">Validate</p>
+            <p class="text-sm text-textDim leading-relaxed">Comprehensive verification that implementation matches the plan. Automated tests, code review against the spec, manual checklists for what automation can't catch.</p>
+          </div>
+        </div>
+
+        <!-- Why plans enable autonomy -->
+        <div class="reveal max-w-full mb-12">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-6">Why plans enable autonomy</h3>
+          <p class="text-sm text-textDim leading-relaxed mb-6">
+            A vague prompt like "add OAuth support" forces lots of guesses. Enough guesses and output drifts away from what you wanted. A tighter plan removes most of that guesswork.
+          </p>
+          <div class="space-y-3">
+            <div class="flex gap-3 items-start">
+              <span class="font-mono text-accent text-sm mt-0.5">1</span>
+              <p class="text-sm text-textDim"><strong class="text-white">The agent knows what "done" looks like.</strong> Each phase has explicit success criteria. No ambiguity about when to stop.</p>
+            </div>
+            <div class="flex gap-3 items-start">
+              <span class="font-mono text-accent text-sm mt-0.5">2</span>
+              <p class="text-sm text-textDim"><strong class="text-white">Failures get caught early.</strong> Verification gates between phases mean a bug in Phase 1 gets caught before Phase 2 builds on it.</p>
+            </div>
+            <div class="flex gap-3 items-start">
+              <span class="font-mono text-accent text-sm mt-0.5">3</span>
+              <p class="text-sm text-textDim"><strong class="text-white">Blockers get reported, not guessed around.</strong> When the agent hits a missing config or unclear requirement, the plan gives it a clear way to pause and ask.</p>
+            </div>
+            <div class="flex gap-3 items-start">
+              <span class="font-mono text-accent text-sm mt-0.5">4</span>
+              <p class="text-sm text-textDim"><strong class="text-white">Context resets stay productive.</strong> Research and plans persist as files. When a session ends or context decays, the next session picks up the plan and keeps going.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Animated plan example -->
+        <div class="reveal-scale max-w-full mb-16">
+          <div class="terminal">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-accent"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <span class="font-mono text-[11px] text-textDim/40 ml-2">plans/oauth-integration.md</span>
+            </div>
+            <div class="terminal-body text-xs leading-relaxed" id="plan-animation">
+              <!-- Research context -->
+              <div class="mb-5">
+                <div class="cm">## Research</div>
+                <span class="text-textDim" style="display:block;">Auth stack uses Express + Passport.js with session-based auth (<span class="fn">src/middleware/auth.ts</span>)</span>
+                <span class="text-textDim" style="display:block;">Sessions stored via <span class="fn">src/lib/session.ts</span> using connect-redis, 24h TTL</span>
+                <span class="text-textDim" style="display:block;">Database: Prisma ORM, User model has email + passwordHash fields (<span class="fn">prisma/schema.prisma</span>)</span>
+                <span class="text-textDim" style="display:block;">Routes follow REST convention: <span class="fn">src/routes/auth.ts</span> handles /auth/* endpoints</span>
+                <span class="text-textDim" style="display:block;">No existing OAuth support. Need new OAuthAccount model linked to User via userId FK</span>
+              </div>
+              <!-- Implementation phases -->
+              <div class="mb-5">
+                <div class="cm">## Phase 1: Database Schema</div>
+                <span class="plan-task" data-delay="400"><span class="task-check text-muted">[&nbsp;]</span> Add OAuthAccount model to <span class="fn">prisma/schema.prisma</span></span>
+                <span class="plan-task" data-delay="1200"><span class="task-check text-muted">[&nbsp;]</span> Run migration: <span class="fn">npx prisma migrate dev</span></span>
+              </div>
+              <div class="mb-5">
+                <div class="cm">## Phase 2: Auth Flow</div>
+                <span class="plan-task" data-delay="2200"><span class="task-check text-muted">[&nbsp;]</span> Add Passport.js Google strategy in <span class="fn">src/lib/passport.ts</span></span>
+                <span class="plan-task" data-delay="3000"><span class="task-check text-muted">[&nbsp;]</span> Add callback route at <span class="str">/auth/google/callback</span></span>
+              </div>
+              <div class="mb-5">
+                <div class="cm">## Phase 3: UI Integration</div>
+                <span class="plan-task" data-delay="4000"><span class="task-check text-muted">[&nbsp;]</span> Add "Sign in with Google" button to <span class="fn">src/pages/login.tsx</span></span>
+                <span class="plan-task" data-delay="4800"><span class="task-check text-muted">[&nbsp;]</span> Display linked accounts in <span class="fn">src/pages/settings.tsx</span></span>
+              </div>
+              <!-- Rules / verification -->
+              <div>
+                <div class="cm" style="color: #f5c842;">## Rules</div>
+                <span class="text-textDim" style="display:block; padding-left: 2px;">After completing each phase:</span>
+                <span class="text-textDim" style="display:block; padding-left: 2px;">- Run <span class="fn">npm test</span> and fix any failures before proceeding</span>
+                <span class="text-textDim" style="display:block; padding-left: 2px;">- Run <span class="fn">npm run lint</span> with zero errors</span>
+                <span class="text-textDim" style="display:block; padding-left: 2px;">- Do not modify <span class="fn">src/lib/session.ts</span> or the User model</span>
+              </div>
+            </div>
+          </div>
+          <p class="mt-4 text-xs text-textDim/60 font-mono text-center">Research provides context. The agent executes phases against it. Rules enforce verification.</p>
+        </div>
+
+        <!-- Closing -->
+        <div class="reveal max-w-full">
+          <p class="text-sm text-textDim leading-relaxed mb-4">
+            The plan separates "watch the agent and course-correct every two minutes" from "write a spec and check back in an hour." You are still the architect. The plan captures your intent. The agent executes against it. When something breaks, you refine the plan, not re-explain the task.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed">
+            This maps directly to the closed loop covered next: plan, build, validate, correct. RPI makes each phase explicit with files and structure.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="gradient-line max-w-6xl mx-auto"></div>
+
+    <!-- ==================== SECTION 5: CLOSED LOOPS ==================== -->
+    <section id="loops" class="py-24 md:py-32">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal">
+          <p class="section-num mb-4">05 // Closed Loops</p>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6">How Agentic Work Stays Correct</h2>
+        </div>
+        <div class="reveal reveal-delay-1 max-w-full mb-16">
+          <p class="text-lg text-textDim leading-relaxed">
+            Without validation, mistakes stack fast. One bad step pollutes context and the next step gets worse. Closed loops fix that.
+          </p>
+        </div>
+
+        <!-- Loop Diagram -->
+        <div class="reveal-scale max-w-md mx-auto mb-20">
+          <svg viewBox="0 0 400 400" class="w-full" aria-label="Circular diagram: Plan, Build, Validate, Correct">
+            <defs>
+              <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                <polygon points="0 0, 8 3, 0 6" fill="#c8f547"/>
+              </marker>
+            </defs>
+            <!-- Circle path (faint) -->
+            <circle cx="200" cy="200" r="120" fill="none" stroke="#2a2a30" stroke-width="1" stroke-dasharray="4"/>
+
+            <!-- Arrows between nodes -->
+            <path d="M260 90 Q310 130 310 180" fill="none" stroke="#c8f547" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+            <path d="M300 250 Q270 310 220 320" fill="none" stroke="#c8f547" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+            <path d="M160 320 Q100 290 90 240" fill="none" stroke="#c8f547" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+            <path d="M95 160 Q120 100 170 85" fill="none" stroke="#c8f547" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+            <!-- PLAN node -->
+            <g class="loop-node" style="cursor:pointer">
+              <circle cx="200" cy="75" r="36" fill="#111113" stroke="#c8f547" stroke-width="1.5"/>
+              <text x="200" y="79" text-anchor="middle" fill="#c8f547" font-family="DM Mono" font-size="12" font-weight="500">Plan</text>
+            </g>
+            <!-- BUILD node -->
+            <g class="loop-node" style="cursor:pointer">
+              <circle cx="325" cy="200" r="36" fill="#111113" stroke="#c8f547" stroke-width="1.5"/>
+              <text x="325" y="204" text-anchor="middle" fill="#c8f547" font-family="DM Mono" font-size="12" font-weight="500">Build</text>
+            </g>
+            <!-- VALIDATE node (emphasized) -->
+            <g class="loop-node" style="cursor:pointer">
+              <circle cx="200" cy="325" r="42" fill="#111a08" stroke="#c8f547" stroke-width="2.5"/>
+              <text x="200" y="329" text-anchor="middle" fill="#c8f547" font-family="DM Mono" font-size="12" font-weight="700">Validate</text>
+            </g>
+            <!-- CORRECT node -->
+            <g class="loop-node" style="cursor:pointer">
+              <circle cx="75" cy="200" r="36" fill="#111113" stroke="#c8f547" stroke-width="1.5"/>
+              <text x="75" y="204" text-anchor="middle" fill="#c8f547" font-family="DM Mono" font-size="11" font-weight="500">Correct</text>
+            </g>
+            <!-- Center text -->
+            <text x="200" y="198" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="9">Shorter loops</text>
+            <text x="200" y="212" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="9">= fewer errors</text>
+          </svg>
+        </div>
+
+        <!-- Why shorter loops win -->
+        <div class="reveal max-w-full mb-16">
+          <h3 class="font-display text-2xl text-white mb-4">Why shorter loops win</h3>
+          <div class="bg-surface border border-border rounded-lg p-6 font-mono text-sm space-y-2">
+            <p><span class="text-accent">shorter loops</span> <span class="text-textDim">=</span> less context accumulation between validation</p>
+            <p><span class="text-accent">less accumulation</span> <span class="text-textDim">=</span> cleaner context when errors are caught</p>
+            <p><span class="text-accent">cleaner context</span> <span class="text-textDim">=</span> higher probability the correction is correct</p>
+            <p><span class="text-accent">correct corrections</span> <span class="text-textDim">=</span> compounding <em class="text-green-400">accuracy</em> instead of compounding <em class="text-red-400">errors</em></p>
+          </div>
+        </div>
+
+        <!-- Implementation examples -->
+        <div class="reveal max-w-full">
+          <h3 class="font-display text-2xl text-white mb-6">Implementing closed loops</h3>
+
+          <div class="space-y-6">
+            <div>
+              <p class="font-mono text-xs text-accent mb-3 uppercase tracking-widest">With testing tools</p>
+              <div class="terminal">
+                <div class="terminal-bar">
+                  <div class="terminal-dot bg-accent"></div>
+                  <div class="terminal-dot bg-accent/30"></div>
+                  <div class="terminal-dot bg-accent/30"></div>
+                </div>
+                <div class="terminal-body">
+                  <span class="cm">$</span> <span class="kw">claude</span> -p <span class="str">"Implement the authentication middleware, then run<br>&nbsp;&nbsp;the test suite and fix any failures. Do not stop until all<br>&nbsp;&nbsp;tests pass."</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <p class="font-mono text-xs text-accent mb-3 uppercase tracking-widest">With hooks (deterministic validation)</p>
+              <p class="text-sm text-textDim">Hooks run commands automatically after edits or before "done." So lint/tests become hard gates, not optional suggestions the model might ignore.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tool-agnostic closed loops -->
+        <div class="reveal mt-16 max-w-full">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-6">Tool-agnostic closed loops</h3>
+          <p class="text-sm text-textDim leading-relaxed mb-6">
+            Plan-build-validate-correct is a pattern, not a brand feature. You can run it with any tool and a shell script.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed mb-4">
+            <strong class="text-white">Simplest version is manual.</strong> Write the task down, let the agent code, run tests, review diff, feed failures back in, repeat.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed mb-4">
+            <strong class="text-white">Next step: script-assisted validation.</strong> One script runs lint/tests/typecheck and you pass that output into the next iteration.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed mb-4">
+            <strong class="text-white">RALPH loop makes it repeatable.</strong> Put validation rules in the plan file so each run follows the same quality bar.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed mb-6">
+            <strong class="text-white">Checklist-in-file pattern</strong> is simple and reliable: keep checks in markdown, let the agent run them, tick boxes, move on.
+          </p>
+          <div class="bg-surface border border-border rounded-lg p-6">
+            <p class="font-mono text-xs text-accent uppercase tracking-widest mb-3">Key insight</p>
+            <p class="text-sm text-textDim leading-relaxed">
+              Validation is cheap, blind regeneration is expensive. Fast feedback after each run keeps quality up and token waste down.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="gradient-line max-w-6xl mx-auto"></div>
+
+    <!-- ==================== SECTION 6: CLAUDE CODE AS A HARNESS ==================== -->
+    <section id="claude-code" class="py-24 md:py-32">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal">
+          <p class="section-num mb-4">06 // Claude Code</p>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6">The Harness In Practice</h2>
+        </div>
+        <div class="reveal reveal-delay-1 max-w-full mb-16">
+          <p class="text-lg text-textDim leading-relaxed">
+            I treat Claude Code less like autocomplete and more like a harness with layered context controls.
+          </p>
+        </div>
+
+        <!-- Layer Stack Diagram -->
+        <div class="max-w-full mb-20">
+          <div class="space-y-2" id="layer-stack">
+            <div class="layer-item">
+              <div class="bg-gradient-to-r from-[#0d1a08] to-surface border border-accent/20 rounded-lg px-5 py-4 flex items-center gap-4">
+                <span class="font-mono text-[11px] text-accent/50 w-6">07</span>
+                <div>
+                  <p class="font-mono text-sm text-accent">Agent SDK</p>
+                  <p class="text-xs text-textDim">Programmability: custom agents, production automation</p>
+                </div>
+              </div>
+            </div>
+            <div class="layer-item">
+              <div class="bg-gradient-to-r from-[#0d1808] to-surface border border-accent/20 rounded-lg px-5 py-4 flex items-center gap-4">
+                <span class="font-mono text-[11px] text-accent/50 w-6">06</span>
+                <div>
+                  <p class="font-mono text-sm text-accent">Subagents / Teams</p>
+                  <p class="text-xs text-textDim">Context isolation: focused workers with clean context</p>
+                </div>
+              </div>
+            </div>
+            <div class="layer-item">
+              <div class="bg-gradient-to-r from-[#0d1608] to-surface border border-accent/20 rounded-lg px-5 py-4 flex items-center gap-4">
+                <span class="font-mono text-[11px] text-accent/50 w-6">05</span>
+                <div>
+                  <p class="font-mono text-sm text-accent">MCP Servers</p>
+                  <p class="text-xs text-textDim">External integration: tools, databases, APIs</p>
+                </div>
+              </div>
+            </div>
+            <div class="layer-item">
+              <div class="bg-gradient-to-r from-[#0d1408] to-surface border border-accent/20 rounded-lg px-5 py-4 flex items-center gap-4">
+                <span class="font-mono text-[11px] text-accent/50 w-6">04</span>
+                <div>
+                  <p class="font-mono text-sm text-accent">Hooks</p>
+                  <p class="text-xs text-textDim">Deterministic control: guardrails, quality gates</p>
+                </div>
+              </div>
+            </div>
+            <div class="layer-item">
+              <div class="bg-gradient-to-r from-[#0d1208] to-surface border border-accent/20 rounded-lg px-5 py-4 flex items-center gap-4">
+                <span class="font-mono text-[11px] text-accent/50 w-6">03</span>
+                <div>
+                  <p class="font-mono text-sm text-accent">Skills</p>
+                  <p class="text-xs text-textDim">On-demand context: reusable workflows, loaded when relevant</p>
+                </div>
+              </div>
+            </div>
+            <div class="layer-item">
+              <div class="bg-gradient-to-r from-[#0d1008] to-surface border border-accent/20 rounded-lg px-5 py-4 flex items-center gap-4">
+                <span class="font-mono text-[11px] text-accent/50 w-6">02</span>
+                <div>
+                  <p class="font-mono text-sm text-accent">CLAUDE.md</p>
+                  <p class="text-xs text-textDim">Persistent context: project-level onboarding and conventions</p>
+                </div>
+              </div>
+            </div>
+            <div class="layer-item">
+              <div class="bg-gradient-to-r from-[#0d0e08] to-surface border border-accent/20 rounded-lg px-5 py-4 flex items-center gap-4">
+                <span class="font-mono text-[11px] text-accent/50 w-6">01</span>
+                <div>
+                  <p class="font-mono text-sm text-accent">CLI / Unix Pipes</p>
+                  <p class="text-xs text-textDim">Composability: integration into any workflow</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Layer 1: CLAUDE.md -->
+        <div class="reveal mb-20">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-6">CLAUDE.md: Persistent Context</h3>
+          <p class="text-sm text-textDim leading-relaxed max-w-full mb-6">
+            CLAUDE.md is basically onboarding notes for the agent: build commands, style rules, team conventions, and gotchas the code alone doesn't explain.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-6 max-w-full mb-8">
+            <div>
+              <p class="font-mono text-xs text-accent mb-3">Hierarchy & Precedence</p>
+              <div class="terminal">
+                <div class="terminal-body code-block text-xs">
+<span class="textDim">~/.claude/CLAUDE.md</span>          <span class="cm"># Global (all projects)</span>
+<span class="text-white">./CLAUDE.md</span>                   <span class="cm"># Project root (shared)</span>
+<span class="textDim">./CLAUDE.local.md</span>             <span class="cm"># Personal (gitignored)</span>
+<span class="textDim">../CLAUDE.md</span>                  <span class="cm"># Parent dir (monorepo)</span>
+<span class="textDim">./packages/foo/CLAUDE.md</span>      <span class="cm"># Child dir (on-demand)</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="font-mono text-xs text-accent mb-3">Example</p>
+              <div class="terminal">
+                <div class="terminal-body code-block text-xs">
+<span class="cm"># Code style</span>
+<span class="text-textDim">- Use ES modules, not CommonJS</span>
+<span class="text-textDim">- Destructure imports</span>
+
+<span class="cm"># Testing</span>
+<span class="text-textDim">- Run: </span><span class="kw">npm run test -- --filter=&lt;name&gt;</span>
+<span class="text-textDim">- Always typecheck: </span><span class="kw">npx tsc --noEmit</span>
+
+<span class="cm"># Architecture</span>
+<span class="text-textDim">- Never modify migration runner</span>
+<span class="text-textDim">- </span><span class="err">legacy/</span><span class="text-textDim"> is deprecated. Do not import.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="text-sm text-textDim leading-relaxed max-w-full">
+            <strong class="text-white">Key point:</strong> what you put in CLAUDE.md changes behavior a lot. Keep it short, practical, and updated when something breaks.
+          </p>
+        </div>
+
+        <!-- Layer 2: Skills -->
+        <div class="reveal mb-20">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-6">Skills: On-Demand Context</h3>
+          <p class="text-sm text-textDim leading-relaxed max-w-full mb-6">
+            Skills help with context decay because you only load heavy instructions when needed, not all the time.
+          </p>
+
+          <div class="terminal max-w-full mb-6">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-accent"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <span class="font-mono text-[11px] text-textDim/40 ml-2">.claude/skills/pr-summary/SKILL.md</span>
+            </div>
+            <div class="terminal-body code-block text-xs">
+<span class="cm">---</span>
+<span class="kw">name</span>: pr-summary
+<span class="kw">description</span>: Summarize changes in a pull request
+<span class="kw">context</span>: fork
+<span class="kw">agent</span>: Explore
+<span class="cm">---</span>
+
+<span class="cm">## Pull request context</span>
+<span class="text-textDim">- PR diff: </span><span class="fn">!`gh pr diff`</span>
+<span class="text-textDim">- PR comments: </span><span class="fn">!`gh pr view --comments`</span>
+
+<span class="cm">## Your task</span>
+<span class="text-textDim">Summarize this PR for the team. Focus on:</span>
+<span class="text-textDim">1. What changed and why</span>
+<span class="text-textDim">2. Risks or areas needing review</span>
+<span class="text-textDim">3. Testing coverage</span>
+            </div>
+          </div>
+          <p class="text-xs text-textDim/60 max-w-full">
+            The <code class="text-accent/80">!`command`</code> syntax runs shell commands before sending the skill to Claude. The <code class="text-accent/80">context: fork</code> setting runs it in a subagent, keeping main context clean.
+          </p>
+        </div>
+
+        <!-- Layer 3: Hooks -->
+        <div class="reveal mb-20">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-6">Hooks: Deterministic Control</h3>
+          <p class="text-sm text-textDim leading-relaxed max-w-full mb-6">
+            CLAUDE.md is guidance. Hooks are enforcement. They run at known moments and guarantee checks happen every time.
+          </p>
+          <div class="terminal max-w-full mb-4">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-accent"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <span class="font-mono text-[11px] text-textDim/40 ml-2">.claude/settings.json</span>
+            </div>
+            <div class="terminal-body code-block text-xs"><span class="op">{</span>
+  <span class="str">"hooks"</span>: <span class="op">{</span>
+    <span class="str">"PostToolUse"</span>: <span class="op">[{</span>
+      <span class="str">"matcher"</span>: <span class="str">"Edit|Write"</span>,
+      <span class="str">"hooks"</span>: <span class="op">[{</span>
+        <span class="str">"type"</span>: <span class="str">"command"</span>,
+        <span class="str">"command"</span>: <span class="str">"npm run lint -- --quiet"</span>
+      <span class="op">}]</span>
+    <span class="op">}]</span>
+  <span class="op">}</span>
+<span class="op">}</span></div>
+          </div>
+          <p class="text-xs text-textDim/60 max-w-full">
+            This runs the linter after every file edit. Not a suggestion. A guarantee. Hooks fire on events like <code class="text-accent/80">PreToolUse</code>, <code class="text-accent/80">PostToolUse</code>, and <code class="text-accent/80">Stop</code>, and they can block actions, inject feedback, or prevent the agent from declaring "done" prematurely.
+          </p>
+        </div>
+
+        <!-- Layer 4: MCP -->
+        <div class="reveal mb-20">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-6">MCP: External Integration</h3>
+          <p class="text-sm text-textDim leading-relaxed max-w-full mb-6">
+            The Model Context Protocol connects Claude Code to external tools, databases, and APIs.
+          </p>
+          <div class="terminal max-w-full">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-accent"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+            </div>
+            <div class="terminal-body code-block text-xs">
+<span class="cm"># Connect to Sentry for error monitoring</span>
+<span class="cm">$</span> <span class="kw">claude</span> mcp add --transport http sentry https://mcp.sentry.dev/mcp
+
+<span class="cm"># Connect to a PostgreSQL database</span>
+<span class="cm">$</span> <span class="kw">claude</span> mcp add --transport stdio db -- npx -y @bytebase/dbhub \
+  --dsn <span class="str">"postgresql://readonly:pass@prod.db.com:5432/analytics"</span>
+
+<span class="cm"># Connect to GitHub</span>
+<span class="cm">$</span> <span class="kw">claude</span> mcp add --transport http github https://api.githubcopilot.com/mcp/
+            </div>
+          </div>
+        </div>
+
+        <!-- Layer 5: Subagents -->
+        <div class="reveal mb-20">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-6">Subagents: Context Isolation</h3>
+          <p class="text-sm text-textDim leading-relaxed max-w-full mb-8">
+            Subagents run in their own context windows and report results back. This is the architectural solution to context decay.
+          </p>
+
+          <!-- Subagent diagram -->
+          <div class="max-w-full">
+            <svg viewBox="0 0 600 280" class="w-full" aria-label="Diagram showing main agent delegating to subagents with context isolation">
+              <!-- Main agent -->
+              <rect x="210" y="20" width="180" height="60" rx="8" fill="#111113" stroke="#c8f547" stroke-width="1.5"/>
+              <text x="300" y="48" text-anchor="middle" fill="#c8f547" font-family="DM Mono" font-size="11">Main Agent</text>
+              <text x="300" y="64" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="9">Clean context</text>
+
+              <!-- Arrows down -->
+              <line x1="240" y1="80" x2="120" y2="140" stroke="#c8f547" stroke-width="1" stroke-dasharray="4"/>
+              <line x1="300" y1="80" x2="300" y2="140" stroke="#c8f547" stroke-width="1" stroke-dasharray="4"/>
+              <line x1="360" y1="80" x2="480" y2="140" stroke="#c8f547" stroke-width="1" stroke-dasharray="4"/>
+
+              <!-- Thick arrows down labels -->
+              <text x="165" y="118" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="8">50 files</text>
+              <text x="435" y="118" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="8">full diff</text>
+
+              <!-- Subagent 1 -->
+              <rect x="40" y="140" width="160" height="55" rx="6" fill="#111113" stroke="#2a2a30" stroke-width="1"/>
+              <text x="120" y="164" text-anchor="middle" fill="#60a5fa" font-family="DM Mono" font-size="10">Explorer</text>
+              <text x="120" y="180" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="8">Read, Glob, Grep</text>
+
+              <!-- Subagent 2 -->
+              <rect x="220" y="140" width="160" height="55" rx="6" fill="#111113" stroke="#2a2a30" stroke-width="1"/>
+              <text x="300" y="164" text-anchor="middle" fill="#fb923c" font-family="DM Mono" font-size="10">Security Reviewer</text>
+              <text x="300" y="180" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="8">Read, Grep, Bash</text>
+
+              <!-- Subagent 3 -->
+              <rect x="400" y="140" width="160" height="55" rx="6" fill="#111113" stroke="#2a2a30" stroke-width="1"/>
+              <text x="480" y="164" text-anchor="middle" fill="#a78bfa" font-family="DM Mono" font-size="10">Test Validator</text>
+              <text x="480" y="180" text-anchor="middle" fill="#6b7280" font-family="DM Mono" font-size="8">Bash, Read</text>
+
+              <!-- Return arrows -->
+              <line x1="120" y1="195" x2="240" y2="240" stroke="#22c55e" stroke-width="1.5"/>
+              <line x1="300" y1="195" x2="300" y2="240" stroke="#22c55e" stroke-width="1.5"/>
+              <line x1="480" y1="195" x2="360" y2="240" stroke="#22c55e" stroke-width="1.5"/>
+
+              <!-- Return labels -->
+              <text x="165" y="228" text-anchor="middle" fill="#22c55e" font-family="DM Mono" font-size="8">500 tokens</text>
+              <text x="435" y="228" text-anchor="middle" fill="#22c55e" font-family="DM Mono" font-size="8">summary</text>
+
+              <!-- Result box -->
+              <rect x="210" y="240" width="180" height="30" rx="6" fill="#111a08" stroke="#22c55e" stroke-width="1"/>
+              <text x="300" y="260" text-anchor="middle" fill="#22c55e" font-family="DM Mono" font-size="9">Context stays clean</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- AGENTS.md -->
+        <div class="reveal mb-16">
+          <h3 class="font-display text-2xl md:text-3xl text-white mb-6">AGENTS.md: one file for every tool</h3>
+          <p class="text-sm text-textDim leading-relaxed max-w-full mb-4">
+            Every AI coding tool invented its own instruction file. Claude Code uses CLAUDE.md. Cursor uses .cursorrules. Windsurf uses .windsurfrules. GitHub Copilot uses .github/copilot-instructions.md. They all serve the exact same purpose: persistent context about project conventions, build commands, and architectural decisions.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed max-w-full mb-4">
+            AGENTS.md is an emerging open standard that solves this fragmentation. It's plain markdown with no required schema or special syntax. Just write what the agent needs to know. Stewarded by the Agentic AI Foundation under the Linux Foundation, it's already present in over 60,000 GitHub repositories and supported by 20+ tools including Claude Code, Cursor, Google Jules, and GitHub Copilot.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed max-w-full mb-6">
+            The simplest way to use it: write your instructions once in AGENTS.md, then symlink for each tool.
+          </p>
+          <div class="terminal max-w-full mb-6">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-accent"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <span class="font-mono text-[11px] text-textDim/40 ml-2">symlink setup</span>
+            </div>
+            <div class="terminal-body code-block text-xs">
+<span class="cm">$</span> <span class="kw">ln</span> -sf AGENTS.md CLAUDE.md
+<span class="cm">$</span> <span class="kw">ln</span> -sf AGENTS.md .cursorrules
+<span class="cm">$</span> <span class="kw">ln</span> -sf AGENTS.md .windsurfrules
+            </div>
+          </div>
+          <p class="text-sm text-textDim leading-relaxed max-w-full mb-4">
+            Now every tool reads the same file. Edit one place, all tools see the update. Zero drift. Symlinks are tracked by git and work across clones, so your whole team gets the same context regardless of which editor they prefer.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed max-w-full mb-4">
+            For tool-specific features that don't translate across tools (Claude Code hooks, Cursor rule scoping, skill definitions), keep those in the tool's own config directory. The shared context (80%+ of what you write) lives in AGENTS.md. The tool-specific 20% lives where each tool expects it.
+          </p>
+          <p class="text-sm text-textDim leading-relaxed max-w-full">
+            This is a practical application of the same principle behind everything on this page: invest in tool-agnostic context, and it pays off across every tool you use.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="gradient-line max-w-6xl mx-auto"></div>
+
+    <!-- ==================== SECTION 7: CLI/SDK PATTERNS ==================== -->
+    <section id="cli" class="py-24 md:py-32">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal">
+          <p class="section-num mb-4">07 // CLI &amp; SDK Patterns</p>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6">Theory Meets Your Terminal</h2>
+        </div>
+        <div class="reveal reveal-delay-1 max-w-full mb-16">
+          <p class="text-lg text-textDim leading-relaxed">
+            Claude Code's CLI transforms it from an interactive assistant into a composable Unix citizen. Data in, structured data out, piped to the next step.
+          </p>
+        </div>
+
+        <!-- Print mode -->
+        <div class="reveal mb-12">
+          <h3 class="font-display text-2xl text-white mb-4">Print mode: the foundation</h3>
+          <p class="text-sm text-textDim mb-4 max-w-full">The <code class="text-accent">-p</code> flag runs Claude headless. No REPL, just stdin/stdout.</p>
+          <div class="terminal max-w-full">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-accent"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+            </div>
+            <div class="terminal-body code-block text-xs">
+<span class="cm"># One-off query</span>
+<span class="cm">$</span> <span class="kw">claude</span> -p <span class="str">"Explain what this project does"</span>
+
+<span class="cm"># Pipe in context</span>
+<span class="cm">$</span> <span class="kw">cat</span> error.log | <span class="kw">claude</span> -p <span class="str">"Explain these errors and suggest fixes"</span>
+
+<span class="cm"># Pipe in a diff</span>
+<span class="cm">$</span> <span class="kw">git diff</span> | <span class="kw">claude</span> -p <span class="str">"Review this diff for security issues"</span>
+
+<span class="cm"># Pipe in test output</span>
+<span class="cm">$</span> <span class="kw">npm test</span> 2&gt;&amp;1 | <span class="kw">claude</span> -p <span class="str">"Explain the failures and suggest fixes"</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- JSON schema -->
+        <div class="reveal mb-12">
+          <h3 class="font-display text-2xl text-white mb-4">Structured output: <code class="text-accent">--json-schema</code></h3>
+          <p class="text-sm text-textDim mb-4 max-w-full">
+            Constrained decoding: the model literally <em>cannot</em> produce tokens that violate the schema. This isn't "please format as JSON." It's a guarantee.
+          </p>
+          <div class="terminal max-w-full border-accent/30 border-2">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-accent"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <span class="font-mono text-[11px] text-accent/60 ml-2">structured output</span>
+            </div>
+            <div class="terminal-body code-block text-xs">
+<span class="cm">$</span> <span class="kw">claude</span> -p --json-schema <span class="str">'{
+  "type": "object",
+  "properties": {
+    "bugs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file": {"type": "string"},
+          "line": {"type": "number"},
+          "severity": {
+            "type": "string",
+            "enum": ["low", "medium", "high", "critical"]
+          },
+          "description": {"type": "string"},
+          "suggested_fix": {"type": "string"}
+        },
+        "required": ["file", "line", "severity", "description"]
+      }
+    }
+  },
+  "required": ["bugs"]
+}'</span> <span class="str">"Find bugs in src/auth.py"</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pipeline examples -->
+        <div class="reveal mb-12">
+          <h3 class="font-display text-2xl text-white mb-6">Pipeline examples</h3>
+          <div class="grid md:grid-cols-2 gap-6 max-w-full">
+            <div>
+              <p class="font-mono text-xs text-warm mb-3">PR Review Pipeline</p>
+              <div class="terminal">
+                <div class="terminal-body code-block text-xs">
+<span class="cm">$</span> <span class="kw">gh pr diff</span> 42 | \
+  <span class="kw">claude</span> -p <span class="str">"Review this PR"</span> \
+    --output-format json | \
+  <span class="kw">jq</span> -r <span class="str">'.result'</span> | \
+  <span class="kw">gh pr comment</span> 42 --body-file -
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="font-mono text-xs text-warm mb-3">Error Analysis Pipeline</p>
+              <div class="terminal">
+                <div class="terminal-body code-block text-xs">
+<span class="cm">$</span> <span class="kw">tail</span> -1000 /var/log/app.log | \
+  <span class="kw">claude</span> -p <span class="str">"Categorize errors"</span> \
+    --output-format json | \
+  <span class="kw">jq</span> <span class="str">'.result'</span> | \
+  <span class="kw">psql</span> -c <span class="str">"COPY error_categories FROM STDIN"</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fan-out -->
+        <div class="reveal mb-12">
+          <h3 class="font-display text-2xl text-white mb-4">Fan-out: parallel processing</h3>
+          <div class="terminal max-w-full">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-accent"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+              <div class="terminal-dot bg-accent/30"></div>
+            </div>
+            <div class="terminal-body code-block text-xs">
+<span class="cm"># Process files in parallel</span>
+<span class="cm">$</span> <span class="kw">cat</span> files-to-migrate.txt | <span class="kw">xargs</span> -P 4 -I {} \
+  <span class="kw">claude</span> -p <span class="str">"Migrate {} from React to Vue"</span> \
+    --allowedTools <span class="str">"Edit,Read"</span> \
+    --max-turns <span class="num">5</span>
+
+<span class="cm"># GNU parallel for more control</span>
+<span class="cm">$</span> <span class="kw">parallel</span> -j 8 \
+  <span class="str">'claude -p "Add type annotations to {}" --allowedTools "Edit,Read"'</span> \
+  ::: src/*.js
+            </div>
+          </div>
+        </div>
+
+        <!-- Safety flags -->
+        <div class="reveal mb-12">
+          <h3 class="font-display text-2xl text-white mb-4">Safety flags for automation</h3>
+          <div class="terminal max-w-full">
+            <div class="terminal-body code-block text-xs">
+<span class="cm"># Limit turns (prevent runaway agents)</span>
+<span class="cm">$</span> <span class="kw">claude</span> -p <span class="str">"Refactor auth"</span> --max-turns <span class="num">10</span>
+
+<span class="cm"># Cap spending</span>
+<span class="cm">$</span> <span class="kw">claude</span> -p <span class="str">"Review codebase"</span> --max-budget-usd <span class="num">5.00</span>
+
+<span class="cm"># Restrict tools</span>
+<span class="cm">$</span> <span class="kw">claude</span> -p <span class="str">"Review this file"</span> --allowedTools <span class="str">"Read,Glob,Grep"</span>
+
+<span class="cm"># Skip permissions (sandboxed only!)</span>
+<span class="cm">$</span> <span class="kw">claude</span> -p <span class="str">"Fix lint errors"</span> --dangerously-skip-permissions
+            </div>
+          </div>
+        </div>
+
+        <!-- SDK -->
+        <div class="reveal">
+          <h3 class="font-display text-2xl text-white mb-4">The Agent SDK: Claude Code as a library</h3>
+          <p class="text-sm text-textDim mb-6 max-w-full">For production automation, the Claude Agent SDK provides programmatic access in Python and TypeScript.</p>
+          <div class="terminal max-w-full mb-8">
+            <div class="terminal-bar">
+              <div class="terminal-dot bg-blue-500"></div>
+              <div class="terminal-dot bg-blue-500/30"></div>
+              <div class="terminal-dot bg-blue-500/30"></div>
+              <span class="font-mono text-[11px] text-blue-400/60 ml-2">review_pr.py</span>
+            </div>
+            <div class="terminal-body code-block text-xs">
+<span class="kw">import</span> asyncio
+<span class="kw">from</span> claude_agent_sdk <span class="kw">import</span> query, ClaudeAgentOptions
+
+<span class="kw">async def</span> <span class="fn">review_pr</span>(pr_number: <span class="fn">int</span>):
+    <span class="kw">async for</span> message <span class="kw">in</span> query(
+        prompt=<span class="str">f"Review PR #{pr_number} for security issues"</span>,
+        options=ClaudeAgentOptions(
+            allowed_tools=[<span class="str">"Read"</span>, <span class="str">"Glob"</span>, <span class="str">"Grep"</span>],
+            json_schema={
+                <span class="str">"type"</span>: <span class="str">"object"</span>,
+                <span class="str">"properties"</span>: {
+                    <span class="str">"issues"</span>: {
+                        <span class="str">"type"</span>: <span class="str">"array"</span>,
+                        <span class="str">"items"</span>: {
+                            <span class="str">"type"</span>: <span class="str">"object"</span>,
+                            <span class="str">"properties"</span>: {
+                                <span class="str">"file"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>},
+                                <span class="str">"severity"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>},
+                                <span class="str">"description"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>}
+                            }
+                        }
+                    }
+                }
+            },
+        ),
+    ):
+        <span class="kw">if</span> hasattr(message, <span class="str">"result"</span>):
+            <span class="kw">return</span> message.result
+
+asyncio.run(review_pr(<span class="num">142</span>))
+            </div>
+          </div>
+
+          <!-- SDK vs CLI table -->
+          <div class="overflow-x-auto max-w-full">
+            <table class="w-full text-sm data-table">
+              <thead>
+                <tr>
+                  <th class="text-left p-3 rounded-tl-lg">Use case</th>
+                  <th class="text-left p-3 rounded-tr-lg">Best choice</th>
+                </tr>
+              </thead>
+              <tbody class="text-textDim">
+                <tr><td class="p-3 text-white">Interactive development</td><td class="p-3">CLI</td></tr>
+                <tr><td class="p-3 text-white">Shell scripts and pipelines</td><td class="p-3">CLI with <code class="text-accent">-p</code></td></tr>
+                <tr><td class="p-3 text-white">CI/CD integration</td><td class="p-3">SDK</td></tr>
+                <tr><td class="p-3 text-white">Custom applications</td><td class="p-3">SDK</td></tr>
+                <tr><td class="p-3 text-white">Production automation</td><td class="p-3">SDK</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="gradient-line max-w-6xl mx-auto"></div>
+
+    <!-- ==================== SECTION 8: ANTI-PATTERNS ==================== -->
+    <section id="antipatterns" class="py-24 md:py-32">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal">
+          <p class="section-num mb-4">08 // Anti-Patterns</p>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6">What Fails and Why</h2>
+        </div>
+        <div class="reveal reveal-delay-1 max-w-full mb-16">
+          <p class="text-lg text-textDim leading-relaxed">
+            Knowing what works is half the picture. These are the patterns that waste the most time and tokens.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-5 max-w-5xl">
+          <!-- AP 1 -->
+          <div class="reveal antipattern-card bg-surface border border-border rounded-lg p-5 cursor-pointer" onclick="this.classList.toggle('expanded')">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-red-500 text-lg leading-none mt-0.5">&#10007;</span>
+              <div>
+                <h4 class="font-body font-bold text-white text-sm">Maximum context loading</h4>
+                <p class="text-xs text-textDim mt-1">"We have 200k tokens. Let's load everything."</p>
+              </div>
+            </div>
+            <div class="fix-text ml-7">
+              <p class="text-xs text-red-400/80 mb-2">Context quality decays as quantity grows. More tokens = more diluted attention per token.</p>
+              <p class="text-xs text-green-400/80"><strong>Fix:</strong> Load only what's needed. Use sub-agents for exploration. Compact aggressively.</p>
+            </div>
+          </div>
+          <!-- AP 2 -->
+          <div class="reveal reveal-delay-1 antipattern-card bg-surface border border-border rounded-lg p-5 cursor-pointer" onclick="this.classList.toggle('expanded')">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-red-500 text-lg leading-none mt-0.5">&#10007;</span>
+              <div>
+                <h4 class="font-body font-bold text-white text-sm">Long unvalidated sessions</h4>
+                <p class="text-xs text-textDim mt-1">500 lines across 6 files without a single test.</p>
+              </div>
+            </div>
+            <div class="fix-text ml-7">
+              <p class="text-xs text-red-400/80 mb-2">Errors compound. Each incorrect step pollutes context and makes the next step more likely to be wrong.</p>
+              <p class="text-xs text-green-400/80"><strong>Fix:</strong> Closed feedback loops. Test after every meaningful change. Use hooks to enforce validation.</p>
+            </div>
+          </div>
+          <!-- AP 3 -->
+          <div class="reveal reveal-delay-2 antipattern-card bg-surface border border-border rounded-lg p-5 cursor-pointer" onclick="this.classList.toggle('expanded')">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-red-500 text-lg leading-none mt-0.5">&#10007;</span>
+              <div>
+                <h4 class="font-body font-bold text-white text-sm">Bloated CLAUDE.md</h4>
+                <p class="text-xs text-textDim mt-1">Comprehensive documentation instead of focused onboarding.</p>
+              </div>
+            </div>
+            <div class="fix-text ml-7">
+              <p class="text-xs text-red-400/80 mb-2">Bloated CLAUDE.md consumes context for the actual task. When everything is emphasized, nothing is.</p>
+              <p class="text-xs text-green-400/80"><strong>Fix:</strong> Only include what Claude cannot infer from code. Think onboarding notes, not a wiki.</p>
+            </div>
+          </div>
+          <!-- AP 4 -->
+          <div class="reveal reveal-delay-3 antipattern-card bg-surface border border-border rounded-lg p-5 cursor-pointer" onclick="this.classList.toggle('expanded')">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-red-500 text-lg leading-none mt-0.5">&#10007;</span>
+              <div>
+                <h4 class="font-body font-bold text-white text-sm">No harness, just prompts</h4>
+                <p class="text-xs text-textDim mt-1">Every session starts from zero with no persistent context.</p>
+              </div>
+            </div>
+            <div class="fix-text ml-7">
+              <p class="text-xs text-red-400/80 mb-2">Rebuilding context from scratch every time. No feedback loop, no guardrails, no institutional knowledge.</p>
+              <p class="text-xs text-green-400/80"><strong>Fix:</strong> Invest in your harness. Start with CLAUDE.md. Add hooks. Build skills for repeated workflows.</p>
+            </div>
+          </div>
+          <!-- AP 5 -->
+          <div class="reveal reveal-delay-4 antipattern-card bg-surface border border-border rounded-lg p-5 cursor-pointer" onclick="this.classList.toggle('expanded')">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-red-500 text-lg leading-none mt-0.5">&#10007;</span>
+              <div>
+                <h4 class="font-body font-bold text-white text-sm">Treating the agent as a black box</h4>
+                <p class="text-xs text-textDim mt-1">"Just tell it what to do and it'll figure it out."</p>
+              </div>
+            </div>
+            <div class="fix-text ml-7">
+              <p class="text-xs text-red-400/80 mb-2">You can't debug what you can't see. No mental model for understanding why the agent hallucinates.</p>
+              <p class="text-xs text-green-400/80"><strong>Fix:</strong> Develop a mental model of context. Watch the agent work. Treat context management as engineering.</p>
+            </div>
+          </div>
+          <!-- AP 6 -->
+          <div class="reveal reveal-delay-4 antipattern-card bg-surface border border-border rounded-lg p-5 cursor-pointer" onclick="this.classList.toggle('expanded')">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-red-500 text-lg leading-none mt-0.5">&#10007;</span>
+              <div>
+                <h4 class="font-body font-bold text-white text-sm">The "just add more tools" trap</h4>
+                <p class="text-xs text-textDim mt-1">Connect every possible MCP server. Maximum optionality.</p>
+              </div>
+            </div>
+            <div class="fix-text ml-7">
+              <p class="text-xs text-red-400/80 mb-2">Tool definitions consume context. More tools = more tokens on capability descriptions, not the task.</p>
+              <p class="text-xs text-green-400/80"><strong>Fix:</strong> Enable only needed tools. Use MCP Tool Search for large registries. Focused > cluttered.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="gradient-line max-w-6xl mx-auto"></div>
+
+    <!-- ==================== SECTION 8.5: CONCLUSION ==================== -->
+    <section id="conclusion" class="py-24 md:py-32">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal">
+          <p class="section-num mb-4">09 // Conclusion</p>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6">Where This Leaves You</h2>
+        </div>
+        <div class="reveal reveal-delay-1 max-w-full mb-8">
+          <p class="text-lg text-textDim leading-relaxed">
+            The model will keep getting better. Context windows will keep growing. New tools will keep launching. None of that changes the fundamental dynamic: what the model sees determines what it does.
+          </p>
+        </div>
+        <div class="reveal reveal-delay-2 max-w-full mb-8">
+          <p class="text-sm text-textDim leading-relaxed">
+            If you take one thing from this page, make it this: start simple. You don't need a sophisticated agent harness on day one. A planning file that describes your task, a terminal to run it, and a habit of keeping sessions short and focused will get you further than any amount of tooling bolted onto a vague prompt.
+          </p>
+        </div>
+        <div class="reveal reveal-delay-3 max-w-full mb-8">
+          <p class="text-sm text-textDim leading-relaxed">
+            When you're ready, tool-specific features like hooks, skills, and structured output become genuine accelerators. They encode patterns you'd otherwise implement by hand. But they're the second step, not the first.
+          </p>
+        </div>
+        <div class="reveal reveal-delay-4 max-w-full mb-8">
+          <p class="text-sm text-textDim leading-relaxed">
+            Context management is an engineering discipline. It deserves the same rigor you'd give to testing strategy or deployment architecture. Curate what the model sees. Validate early and often. Keep feedback loops tight. Persist decisions across sessions so you're not starting from scratch every time.
+          </p>
+        </div>
+        <div class="reveal reveal-delay-4 max-w-full">
+          <div class="pull-quote rounded-xl p-8">
+            <p class="relative z-10 font-mono text-base md:text-lg text-accent leading-relaxed tracking-wide">
+              These ideas apply whether you use Claude Code, Cursor, Windsurf, or a text editor and an API key. The tool matters less than the practice. Invest in your context, and every tool you use gets better at its job.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="gradient-line max-w-6xl mx-auto"></div>
+
+    <!-- ==================== SECTION 9: FURTHER READING ==================== -->
+    <section id="references" class="py-24 md:py-32">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="reveal">
+          <p class="section-num mb-4">10 // References</p>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-6">Further Reading</h2>
+        </div>
+
+        <!-- Foundational Papers -->
+        <div class="reveal mb-12">
+          <h3 class="font-mono text-xs text-accent uppercase tracking-widest mb-6">Foundational Papers</h3>
+          <div class="space-y-2 max-w-full">
+            <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">"Attention Is All You Need"</p>
+                  <p class="text-xs text-textDim mt-1">Vaswani et al., 2017. The transformer architecture paper</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+            <a href="https://arxiv.org/abs/1301.3781" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">"Efficient Estimation of Word Representations in Vector Space"</p>
+                  <p class="text-xs text-textDim mt-1">Mikolov et al., 2013. Word2Vec. Dense semantic representations.</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+            <a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">"Improving Language Understanding by Generative Pre-Training"</p>
+                  <p class="text-xs text-textDim mt-1">Radford et al., 2018. GPT pretraining</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+            <a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">"Lost in the Middle"</p>
+                  <p class="text-xs text-textDim mt-1">Liu et al., 2023. The U-shaped attention curve</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Context Research -->
+        <div class="reveal mb-12">
+          <h3 class="font-mono text-xs text-accent uppercase tracking-widest mb-6">Context &amp; Decay Research</h3>
+          <div class="space-y-2 max-w-full">
+            <a href="https://research.trychroma.com/context-rot" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">Chroma Research: "Context Rot"</p>
+                  <p class="text-xs text-textDim mt-1">Empirical study across 18 LLMs on context degradation</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+            <a href="https://openreview.net/pdf?id=7JbSwX6bNL" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">ACON: Agent Context Optimization</p>
+                  <p class="text-xs text-textDim mt-1">Reducing memory usage by 26-54%</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+            <a href="https://venturebeat.com/ai/microsofts-differential-transformer-cancels-attention-noise-in-llms" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">Microsoft's Differential Transformer</p>
+                  <p class="text-xs text-textDim mt-1">Architectural approach to attention noise</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Engineering Posts -->
+        <div class="reveal mb-12">
+          <h3 class="font-mono text-xs text-warm uppercase tracking-widest mb-2">Recommended Reading</h3>
+          <p class="text-xs text-textDim/60 mb-6">Engineering posts worth bookmarking</p>
+          <div class="space-y-2 max-w-full">
+            <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">Effective Context Engineering for AI Agents</p>
+                  <p class="text-xs text-textDim mt-1">Anthropic. The definitive engineering guide</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+            <a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">Effective Harnesses for Long-Running Agents</p>
+                  <p class="text-xs text-textDim mt-1">Anthropic. The initializer + coder pattern</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+            <a href="https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">Building Agents with the Claude Agent SDK</p>
+                  <p class="text-xs text-textDim mt-1">Anthropic. SDK architecture and patterns</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+            <a href="https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">Context Engineering for AI Agents</p>
+                  <p class="text-xs text-textDim mt-1">Manus. Lessons from building a production agent</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+            <a href="https://blog.jetbrains.com/research/2025/12/efficient-context-management/" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">Efficient Context Management</p>
+                  <p class="text-xs text-textDim mt-1">JetBrains Research. Observation masking and compaction</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+            <a href="https://newsletter.pragmaticengineer.com/p/how-claude-code-is-built" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">How Claude Code is Built</p>
+                  <p class="text-xs text-textDim mt-1">Pragmatic Engineer. Internal architecture deep-dive</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Claude Code Docs -->
+        <div class="reveal mb-12">
+          <h3 class="font-mono text-xs text-accent uppercase tracking-widest mb-6">Claude Code Documentation</h3>
+          <div class="grid sm:grid-cols-2 gap-2 max-w-full">
+            <a href="https://claude.com/blog/using-claude-md-files" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-3 bg-surface">
+              <p class="text-sm text-white">CLAUDE.md files <span class="text-textDim">&rarr;</span></p>
+            </a>
+            <a href="https://code.claude.com/docs/en/skills" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-3 bg-surface">
+              <p class="text-sm text-white">Skills reference <span class="text-textDim">&rarr;</span></p>
+            </a>
+            <a href="https://code.claude.com/docs/en/hooks" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-3 bg-surface">
+              <p class="text-sm text-white">Hooks reference <span class="text-textDim">&rarr;</span></p>
+            </a>
+            <a href="https://code.claude.com/docs/en/mcp" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-3 bg-surface">
+              <p class="text-sm text-white">MCP integration <span class="text-textDim">&rarr;</span></p>
+            </a>
+            <a href="https://code.claude.com/docs/en/agent-teams" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-3 bg-surface">
+              <p class="text-sm text-white">Agent teams <span class="text-textDim">&rarr;</span></p>
+            </a>
+            <a href="https://code.claude.com/docs/en/cli-reference" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-3 bg-surface">
+              <p class="text-sm text-white">CLI reference <span class="text-textDim">&rarr;</span></p>
+            </a>
+            <a href="https://platform.claude.com/docs/en/agent-sdk/overview" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-3 bg-surface">
+              <p class="text-sm text-white">Agent SDK <span class="text-textDim">&rarr;</span></p>
+            </a>
+            <a href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-3 bg-surface">
+              <p class="text-sm text-white">Best practices <span class="text-textDim">&rarr;</span></p>
+            </a>
+          </div>
+        </div>
+
+        <!-- Community -->
+        <div class="reveal">
+          <h3 class="font-mono text-xs text-accent uppercase tracking-widest mb-6">Community &amp; Standards</h3>
+          <div class="space-y-2 max-w-full">
+            <a href="https://agentskills.io" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">Agent Skills Open Standard</p>
+                  <p class="text-xs text-textDim mt-1">Cross-tool skill format for AI coding agents</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+            <a href="https://modelcontextprotocol.io/introduction" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">Model Context Protocol</p>
+                  <p class="text-xs text-textDim mt-1">Open standard for connecting AI to external tools</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+            <a href="https://docs.windsurf.com/windsurf/cascade/cascade" target="_blank" rel="noopener noreferrer" class="ref-card block rounded-lg p-4 bg-surface">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-white font-medium">Windsurf Cascade Documentation</p>
+                  <p class="text-xs text-textDim mt-1">IDE-embedded agent harness architecture</p>
+                </div>
+                <span class="text-textDim text-sm ml-4">&rarr;</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <script>
+    // IntersectionObserver for scroll reveals
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all reveal elements
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Layer stack staggered reveal
+    const layerObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const items = entry.target.querySelectorAll('.layer-item');
+          items.forEach((item, i) => {
+            setTimeout(() => {
+              item.classList.add('visible');
+            }, (items.length - 1 - i) * 120); // Bottom to top
+          });
+          layerObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    const layerStack = document.getElementById('layer-stack');
+    if (layerStack) layerObserver.observe(layerStack);
+
+    // Plan animation - tasks check off sequentially when scrolled into view
+    function initPlanAnimation() {
+      const planEl = document.getElementById('plan-animation');
+      if (!planEl) return;
+
+      let running = false;
+
+      function resetTasks() {
+        const tasks = planEl.querySelectorAll('.plan-task');
+        tasks.forEach((task) => {
+          task.classList.remove('completing', 'completed');
+          const check = task.querySelector('.task-check');
+          check.innerHTML = '[&nbsp;]';
+          check.classList.remove('text-green-400');
+          check.classList.add('text-muted');
+        });
+      }
+
+      function runAnimation() {
+        if (running) return;
+        running = true;
+        resetTasks();
+        const tasks = planEl.querySelectorAll('.plan-task');
+        let maxDelay = 0;
+        tasks.forEach((task) => {
+          const delay = parseInt(task.dataset.delay) || 0;
+          if (delay > maxDelay) maxDelay = delay;
+          setTimeout(() => {
+            task.classList.add('completing');
+            const check = task.querySelector('.task-check');
+            check.innerHTML = '[<span class="text-green-400">x</span>]';
+            check.classList.remove('text-muted');
+            check.classList.add('text-green-400');
+            setTimeout(() => {
+              task.classList.remove('completing');
+              task.classList.add('completed');
+            }, 300);
+          }, delay);
+        });
+        // After all tasks complete, pause then restart
+        setTimeout(() => {
+          running = false;
+          setTimeout(runAnimation, 2000);
+        }, maxDelay + 500);
+      }
+
+      const planObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !running) {
+            runAnimation();
+          }
+        });
+      }, { threshold: 0.5 });
+
+      planObserver.observe(planEl);
+    }
+
+    initPlanAnimation();
+  </script>
+</body>
+</html>
