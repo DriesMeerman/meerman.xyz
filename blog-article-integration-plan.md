@@ -282,3 +282,35 @@ After a phase if the build succeeds still commit.
 - [ ] Add CI gate for duplicate IDs/slugs and missing metadata.
 - [ ] Add CI gate that verifies each slug has either markdown body or html file body.
 - [ ] Add a small authoring guide for creating future HTML-backed posts.
+
+## New Follow-Up Issues (Post-Phase)
+
+### Priority A: Direct-load visual bug on immersive article
+
+- [ ] Fix visual bug that appears when opening `/blog/dr-008` directly (refresh / deep-link), but not when navigating from blog index.
+- [ ] Reproduce on desktop and mobile and document exact trigger path.
+- [ ] Ensure first-load and refresh behavior match client-side navigation behavior.
+- [ ] Add an explicit acceptance check:
+  1. direct URL open on `/blog/dr-008` renders correctly first try,
+  2. refresh on `/blog/dr-008` keeps correct layout and script behavior,
+  3. no extra manual refresh needed.
+
+### Priority A: Proper Tailwind runtime dependency fix for HTML article
+
+- [ ] Remove dependence on `https://cdn.tailwindcss.com` for immersive article rendering.
+- [ ] Replace runtime Tailwind CDN behavior with project-owned styling approach (build-time CSS or scoped static CSS bundle).
+- [ ] Ensure no Tailwind CDN warning appears in console for article pages.
+- [ ] Add an explicit acceptance check:
+  1. no `cdn.tailwindcss.com should not be used in production` warning,
+  2. article visuals stay consistent with current intended look,
+  3. static build and direct-load behavior remain stable.
+
+### Priority B: Markdown footnote long-URL overflow on mobile
+
+- [ ] Fix long footnote URL wrapping/overflow in markdown-rendered articles.
+- [ ] Prevent horizontal overflow and incorrect mobile scroll behavior from long links.
+- [ ] Add prose/link CSS rules for safe break behavior in footnotes and notes sections.
+- [ ] Add an explicit acceptance check:
+  1. long footnote URLs wrap on small screens,
+  2. no horizontal page drift/overflow,
+  3. footnote links remain readable and clickable.
