@@ -29,6 +29,7 @@ function hasHtmlBody(html) {
 for (const slug of dirs) {
   const mdPath = path.join(contentDir, slug, 'index.md');
   const htmlPath = path.join(contentDir, slug, 'index.html');
+
   if (!fs.existsSync(mdPath)) {
     errors.push(`[${slug}] missing index.md`);
     continue;
@@ -65,6 +66,7 @@ for (const slug of dirs) {
   if (!markdownHasBody && !htmlHasBody) {
     errors.push(`[${slug}] missing article body: add markdown content in index.md or html body in index.html`);
   }
+
   const idKey = String(data.ID);
   if (seenIds.has(idKey)) {
     errors.push(`[${slug}] duplicate ID ${data.ID} (also in ${seenIds.get(idKey)})`);
