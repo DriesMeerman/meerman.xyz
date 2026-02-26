@@ -1,4 +1,4 @@
-// Generated at 2026-02-26T00:09:37.492Z
+// Generated at 2026-02-26T00:11:29.228Z
 const articlesString = `[
   {
     "slug": "dr-001",
@@ -108,6 +108,26 @@ const articlesString = `[
     "ID": "007",
     "summary": "This blog post, written upon turning 30, is a reflection on lessons learned through trial, curiosity, and self-discovery in one’s 20s. It’s not a list of rigid rules, but a collection of practical and philosophical reminders—about acting instead of overthinking, creating without fear, nurturing curiosity, building habits that last, and embracing both the weird and the ordinary. It’s about realizing that growth comes from showing up, experimenting, and engaging with life, while learning to balance reflection with action.",
     "url": "https://meerman.xyz/blog/dr-007"
+  },
+  {
+    "slug": "dr-008",
+    "filename": "dr-008.md",
+    "sourceType": "html",
+    "title": "Context-Based Engineering",
+    "tags": [
+      "ai",
+      "agentic-coding",
+      "context-engineering",
+      "claude-code"
+    ],
+    "summary": "A long-form editorial guide about context engineering, agent harnesses, context decay, and practical workflows that make AI coding agents reliable in real repositories.",
+    "date": "2026-02-26T00:00:00.000Z",
+    "author": "Dries Meerman",
+    "ID": "008",
+    "enableCustomJs": true,
+    "enableCustomCss": true,
+    "respectsDarkMode": false,
+    "url": "https://meerman.xyz/blog/dr-008"
   }
 ]`;
 export const articles = JSON.parse(articlesString);

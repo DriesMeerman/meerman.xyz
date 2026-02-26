@@ -5,6 +5,13 @@
   let htmlContent = '';
   let errorMessage = '';
   let enlargedImage = null;
+  let articleContainer;
+  let documentClickHandler;
+  let documentEscapeHandler;
+  const imageListeners = [];
+
+  const isHtmlSource = data?.meta?.sourceType === 'html';
+  const customJsEnabled = data?.meta?.enableCustomJs !== false;
 
   onMount(async () => {
     // Disable particles on blog article pages for better readability
@@ -15,35 +22,70 @@
       if (!res.ok) throw new Error('Failed to load article');
       htmlContent = await res.text();
       await tick();
-      setTimeout(() => {
-        addImageClickListeners();
-        addEscapeKeyListener();
-      }, 100);
+      if (isHtmlSource && customJsEnabled) {
+        activateEmbeddedScripts();
+      }
+      addImageClickListeners();
+      addEscapeKeyListener();
     } catch (e) {
       errorMessage = e.message;
     }
   });
 
   onDestroy(() => {
+    removeImageClickListeners();
+    if (documentClickHandler) document.removeEventListener('click', documentClickHandler);
+    if (documentEscapeHandler) document.removeEventListener('keydown', documentEscapeHandler);
+
     // Re-enable particles when leaving the blog article
     particlesEnabled.set(true);
   });
 
+  function activateEmbeddedScripts() {
+    if (!articleContainer) return;
+
+    const scriptNodes = articleContainer.querySelectorAll('script');
+    scriptNodes.forEach((oldScript) => {
+      const newScript = document.createElement('script');
+      for (const { name, value } of oldScript.attributes) {
+        newScript.setAttribute(name, value);
+      }
+      if (oldScript.textContent) {
+        newScript.textContent = oldScript.textContent;
+      }
+      oldScript.parentNode?.replaceChild(newScript, oldScript);
+    });
+  }
+
   function addImageClickListeners() {
-    const images = document.querySelectorAll('.prose img');
+    if (!articleContainer) return;
+
+    const images = articleContainer.querySelectorAll('img');
     images.forEach((img) => {
-      img.addEventListener('click', (event) => {
+      const onClick = (event) => {
         if (enlargedImage) {
           closeEnlargedImage();
         } else {
           enlargeImage(img);
         }
         event.stopPropagation();
-      });
+      };
+
+      img.addEventListener('click', onClick);
+      imageListeners.push({ img, onClick });
     });
-    document.addEventListener('click', () => {
+
+    documentClickHandler = () => {
       if (enlargedImage) closeEnlargedImage();
+    };
+    document.addEventListener('click', documentClickHandler);
+  }
+
+  function removeImageClickListeners() {
+    imageListeners.forEach(({ img, onClick }) => {
+      img.removeEventListener('click', onClick);
     });
+    imageListeners.length = 0;
   }
 
   function enlargeImage(img) {
@@ -56,17 +98,22 @@
       enlargedImage = null;
     }
   }
+
   function addEscapeKeyListener() {
-    document.addEventListener('keydown', (event) => {
+    documentEscapeHandler = (event) => {
       if (event.key === 'Escape' && enlargedImage) closeEnlargedImage();
-    });
+    };
+    document.addEventListener('keydown', documentEscapeHandler);
   }
 </script>
 
 {#if errorMessage}
   <div class="error-message">{errorMessage}</div>
 {:else}
-  <div class="prose dark:prose-invert max-w-none list-disc dark:marker:text-white">
+  <div
+    bind:this={articleContainer}
+    class={`article-content ${!isHtmlSource ? 'prose dark:prose-invert max-w-none list-disc dark:marker:text-white' : ''}`}
+  >
     {@html htmlContent}
   </div>
 {/if}
@@ -82,8 +129,8 @@
 
 <style>
   @media (min-width: 768px) { .prose :global(img) { max-width: 30rem; margin: 1.5rem auto; } }
-  :global(.prose img) { cursor: pointer; transition: all 0.3s ease; border-radius: 15px; background: #f0f0f0; box-shadow: 0 10px 25px rgba(0,0,0,.5); padding: 1px; }
-  :global(.prose img.enlarged) { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 90vw; max-height: 90vh; z-index: 1000; background: none; padding: 0; }
+  :global(.article-content img) { cursor: pointer; transition: all 0.3s ease; border-radius: 15px; background: #f0f0f0; box-shadow: 0 10px 25px rgba(0,0,0,.5); padding: 1px; }
+  :global(.article-content img.enlarged) { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 90vw; max-height: 90vh; z-index: 1000; background: none; padding: 0; }
   :global(.dark .prose img) { background: #2a2a2a; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }
+  :global(.dark .article-content img) { background: #2a2a2a; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }
 </style>
-

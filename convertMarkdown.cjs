@@ -101,7 +101,20 @@ function renderMarkdownArticle(slug, mdPath) {
 
 function renderHtmlArticle(slug, htmlPath) {
   const htmlContent = fs.readFileSync(htmlPath, 'utf-8');
-  const normalized = normalizeAssetSrc(htmlContent, slug);
+
+  // If this is a full HTML document, keep head resources (styles/scripts/links)
+  // and render body content only so it works inside the blog route shell.
+  const headMatch = htmlContent.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
+  const bodyMatch = htmlContent.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+
+  let extracted = htmlContent;
+  if (headMatch || bodyMatch) {
+    const head = headMatch ? headMatch[1] : '';
+    const body = bodyMatch ? bodyMatch[1] : htmlContent;
+    extracted = `${head}\n${body}`;
+  }
+
+  const normalized = normalizeAssetSrc(extracted, slug);
   writeHtmlOutput(slug, normalized);
 }
 
