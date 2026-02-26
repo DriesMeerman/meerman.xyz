@@ -40,10 +40,10 @@
 
 <section class="blog-index" in:fade={{ duration: 250 }} out:fade={{ duration: 180 }}>
   <header class="blog-hero" in:fly={{ y: 14, duration: 280 }}>
-    <p class="eyebrow">Meerman Lab Notes</p>
+    <p class="eyebrow">Blog</p>
     <h1>Digital Reflections</h1>
     <p class="dek">
-      Experiments, engineering notes, and long-form explorations. Markdown posts and immersive HTML essays live together here.
+      Experiments, engineering notes, and long-form explorations. And various thoughts.
     </p>
     <a class="rss-pill" href="/feed.xml" aria-label="RSS feed">RSS feed</a>
   </header>
@@ -73,48 +73,54 @@
 
 <style>
   .blog-index {
-    --blog-bg: #f3efe7;
-    --blog-panel: #fffdf8;
-    --blog-border: #ddd2c2;
-    --blog-ink: #261d12;
-    --blog-muted: #67594a;
-    --blog-accent: #ac2b1d;
-    --blog-accent-soft: #f4d6ce;
+    --blog-bg: #eef3fb;
+    --blog-panel: #ffffff;
+    --blog-panel-2: #f8fbff;
+    --blog-border: #d5deec;
+    --blog-ink: #1f2937;
+    --blog-muted: #5e6b82;
+    --blog-accent: #168fc7;
+    --blog-accent-soft: rgba(22, 143, 199, 0.1);
+    --blog-glow: rgba(56, 189, 248, 0.1);
     min-height: 70vh;
-    padding: clamp(1rem, 1vw + 0.8rem, 1.5rem);
+    padding: clamp(1rem, 1.4vw + 0.75rem, 1.65rem);
     background:
-      radial-gradient(circle at 12% 10%, rgba(172, 43, 29, 0.08), transparent 35%),
-      linear-gradient(130deg, #f8f2e8 0%, var(--blog-bg) 52%, #efe9dd 100%);
+      radial-gradient(circle at 14% 6%, var(--blog-glow), transparent 42%),
+      radial-gradient(circle at 88% 12%, rgba(20, 184, 166, 0.09), transparent 44%),
+      linear-gradient(140deg, #f9fbff 0%, var(--blog-bg) 55%, #edf2fb 100%);
     color: var(--blog-ink);
     border: 1px solid var(--blog-border);
     border-radius: 1rem;
-    box-shadow: 0 20px 50px rgba(38, 29, 18, 0.12);
+    box-shadow: 0 18px 38px rgba(32, 62, 101, 0.08);
   }
 
   :global(html.dark) .blog-index {
-    --blog-bg: #17171a;
-    --blog-panel: #1f2025;
-    --blog-border: #30323a;
-    --blog-ink: #f4f4f4;
-    --blog-muted: #b4b7c2;
-    --blog-accent: #f39a7e;
-    --blog-accent-soft: rgba(243, 154, 126, 0.2);
+    --blog-bg: #1f2230;
+    --blog-panel: #262a39;
+    --blog-panel-2: #282d3c;
+    --blog-border: #3d4354;
+    --blog-ink: #e7ebf3;
+    --blog-muted: #bcc4d4;
+    --blog-accent: #5cb7db;
+    --blog-accent-soft: rgba(92, 183, 219, 0.1);
+    --blog-glow: rgba(92, 183, 219, 0.08);
     background:
-      radial-gradient(circle at 18% 12%, rgba(243, 154, 126, 0.1), transparent 35%),
-      linear-gradient(130deg, #121217 0%, var(--blog-bg) 58%, #191b20 100%);
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+      radial-gradient(circle at 16% 8%, rgba(92, 183, 219, 0.09), transparent 45%),
+      radial-gradient(circle at 84% 10%, rgba(99, 102, 241, 0.08), transparent 46%),
+      linear-gradient(138deg, #1e2230 0%, var(--blog-bg) 60%, #232838 100%);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
   }
 
   .blog-hero {
-    padding: clamp(0.4rem, 0.8vw, 0.8rem) clamp(0.2rem, 0.9vw, 0.6rem) 1rem;
+    padding: clamp(0.45rem, 0.8vw, 0.9rem) clamp(0.2rem, 0.9vw, 0.7rem) 1.1rem;
   }
 
   .eyebrow {
     margin: 0;
     text-transform: uppercase;
-    letter-spacing: 0.16em;
-    font-size: 0.72rem;
-    color: var(--blog-muted);
+    letter-spacing: 0.2em;
+    font-size: 0.68rem;
+    color: var(--blog-accent);
     font-weight: 700;
   }
 
@@ -130,14 +136,14 @@
     margin: 0;
     max-width: 58ch;
     color: var(--blog-muted);
-    line-height: 1.55;
+    line-height: 1.62;
   }
 
   .rss-pill {
     display: inline-block;
-    margin-top: 1rem;
+    margin-top: 1.05rem;
     border: 1px solid var(--blog-border);
-    background: var(--blog-accent-soft);
+    background: linear-gradient(140deg, rgba(14, 165, 233, 0.12), rgba(20, 184, 166, 0.04));
     color: var(--blog-ink);
     text-decoration: none;
     font-size: 0.78rem;
@@ -150,22 +156,30 @@
   }
 
   .rss-pill:hover {
-    transform: translateY(-1px);
+    transform: translateY(-0.5px);
     border-color: var(--blog-accent);
+    box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.14) inset;
   }
 
   .posts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 0.8rem;
-    margin-top: 0.6rem;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 0.95rem;
+    margin-top: 0.65rem;
   }
 
   .post-card {
     border: 1px solid var(--blog-border);
-    background: var(--blog-panel);
+    background: linear-gradient(160deg, var(--blog-panel) 0%, var(--blog-panel-2) 100%);
     border-radius: 0.9rem;
     overflow: hidden;
+    transition: border-color 180ms ease, transform 180ms ease, box-shadow 220ms ease, background-color 200ms ease;
+  }
+
+  .post-card:hover {
+    border-color: color-mix(in oklab, var(--blog-accent), var(--blog-border) 72%);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.13);
   }
 
   .post-link {
@@ -178,7 +192,7 @@
   }
 
   .post-link:hover {
-    background: color-mix(in oklab, var(--blog-accent-soft), transparent 55%);
+    background: color-mix(in oklab, var(--blog-accent-soft), transparent 82%);
   }
 
   .post-topline {
@@ -214,6 +228,7 @@
     font-size: 1.1rem;
     line-height: 1.2;
     letter-spacing: -0.01em;
+    text-wrap: balance;
   }
 
   .post-summary {
@@ -234,5 +249,19 @@
     padding: 0.8rem;
     color: var(--blog-muted);
     background: var(--blog-panel);
+  }
+
+  @media (max-width: 640px) {
+    .blog-index {
+      padding: 0.85rem;
+    }
+
+    .blog-hero h1 {
+      font-size: clamp(1.75rem, 8vw, 2.2rem);
+    }
+
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
