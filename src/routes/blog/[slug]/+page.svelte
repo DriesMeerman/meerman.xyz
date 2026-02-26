@@ -1,5 +1,6 @@
 <script>
   import { onMount, onDestroy, tick } from 'svelte';
+  import { fade } from 'svelte/transition';
   import { particlesEnabled } from '$lib/state';
   export let data;
   let htmlContent = '';
@@ -107,16 +108,18 @@
   }
 </script>
 
-{#if errorMessage}
-  <div class="error-message">{errorMessage}</div>
-{:else}
-  <div
-    bind:this={articleContainer}
-    class={`article-content ${!isHtmlSource ? 'prose dark:prose-invert max-w-none list-disc dark:marker:text-white' : ''}`}
-  >
-    {@html htmlContent}
-  </div>
-{/if}
+<section class={`article-page ${isHtmlSource ? 'html-source' : 'md-source'}`} in:fade={{ duration: 220 }} out:fade={{ duration: 160 }}>
+  {#if errorMessage}
+    <div class="error-message">{errorMessage}</div>
+  {:else}
+    <div
+      bind:this={articleContainer}
+      class={`article-content ${!isHtmlSource ? 'prose dark:prose-invert max-w-none list-disc dark:marker:text-white' : ''}`}
+    >
+      {@html htmlContent}
+    </div>
+  {/if}
+</section>
 
 <svelte:head>
   {#if data?.meta}
@@ -128,6 +131,57 @@
 </svelte:head>
 
 <style>
+  .article-page {
+    border-radius: 1rem;
+    border: 1px solid rgba(30, 41, 59, 0.22);
+    overflow: hidden;
+  }
+
+  .article-page.md-source {
+    background: transparent;
+  }
+
+  .article-page.html-source {
+    --site-menu-offset: clamp(3.4rem, 5vw, 4.1rem);
+    background: #0a0a0b;
+    border-color: #202229;
+    color: #e4e4e7;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
+    width: min(1640px, calc(100vw - 1.1rem));
+    margin-inline: auto;
+  }
+
+  .article-page.html-source :global(a) {
+    color: #c8f547;
+  }
+
+  .article-page.html-source :global(nav.fixed.top-0.left-0.right-0) {
+    position: sticky !important;
+    top: var(--site-menu-offset) !important;
+    z-index: 20 !important;
+  }
+
+  .article-page.html-source :global(main) {
+    padding-inline: clamp(0.6rem, 1.4vw, 1.15rem);
+  }
+
+  @media (max-width: 640px) {
+    .article-page.html-source {
+      --site-menu-offset: 3.05rem;
+      width: calc(100vw - 0.45rem);
+      border-radius: 0.7rem;
+    }
+
+    .article-page.html-source :global(main) {
+      padding-inline: 0.35rem;
+    }
+
+    .article-page.html-source :global(nav.fixed.top-0.left-0.right-0 .max-w-6xl) {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+
   @media (min-width: 768px) { .prose :global(img) { max-width: 30rem; margin: 1.5rem auto; } }
   :global(.article-content img) { cursor: pointer; transition: all 0.3s ease; border-radius: 15px; background: #f0f0f0; box-shadow: 0 10px 25px rgba(0,0,0,.5); padding: 1px; }
   :global(.article-content img.enlarged) { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 90vw; max-height: 90vh; z-index: 1000; background: none; padding: 0; }
