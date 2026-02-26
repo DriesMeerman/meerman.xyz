@@ -275,26 +275,6 @@
 </head>
 <body class="antialiased">
 
-  <!-- Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border/50">
-    <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-      <a href="#hero" class="font-mono text-sm text-accent tracking-wider">CBE</a>
-      <div class="hidden md:flex gap-6 text-xs font-mono text-textDim">
-        <a href="#hero">Intro</a>
-        <a href="#harnesses">Harnesses</a>
-        <a href="#context">Context</a>
-        <a href="#decay">Decay</a>
-        <a href="#plans">Plans</a>
-        <a href="#loops">Loops</a>
-        <a href="#claude-code">Claude Code</a>
-        <a href="#cli">CLI/SDK</a>
-        <a href="#antipatterns">Anti-Patterns</a>
-        <a href="#conclusion">Conclusion</a>
-        <a href="#references">References</a>
-      </div>
-    </div>
-  </nav>
-
   <main>
 
     <!-- ==================== SECTION 1: HERO ==================== -->
@@ -318,6 +298,26 @@
           <p class="reveal reveal-delay-4 font-body text-base text-textDim/80 max-w-2xl leading-relaxed mb-16">
             You've seen the demos. An AI writes an entire app from a single prompt. Then you try it on your codebase and it hallucinates an import that doesn't exist, refactors a file that wasn't relevant, and burns through your context window arguing with a linter. The gap between the demo and reality isn't model capability. It's context management.
           </p>
+        </div>
+
+        <!-- Top TOC -->
+        <div class="reveal reveal-delay-4 mb-10 max-w-5xl">
+          <div class="bg-surface/80 border border-border rounded-lg p-4">
+            <p class="font-mono text-[11px] uppercase tracking-widest text-textDim mb-3">Contents</p>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-x-4 gap-y-2 text-xs font-mono">
+              <a href="#hero" class="text-accent hover:underline">Intro</a>
+              <a href="#harnesses" class="text-accent hover:underline">Harnesses</a>
+              <a href="#context" class="text-accent hover:underline">Context</a>
+              <a href="#decay" class="text-accent hover:underline">Decay</a>
+              <a href="#plans" class="text-accent hover:underline">Plans</a>
+              <a href="#loops" class="text-accent hover:underline">Loops</a>
+              <a href="#claude-code" class="text-accent hover:underline">Claude Code</a>
+              <a href="#cli" class="text-accent hover:underline">CLI/SDK</a>
+              <a href="#antipatterns" class="text-accent hover:underline">Anti-Patterns</a>
+              <a href="#conclusion" class="text-accent hover:underline">Conclusion</a>
+              <a href="#references" class="text-accent hover:underline">References</a>
+            </div>
+          </div>
         </div>
 
         <!-- Hero Terminal Visual -->
@@ -617,7 +617,7 @@
               <!-- 2013 -->
               <div class="reveal-delay-1 flex gap-5 items-start">
                 <div class="flex-shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-full bg-surface border-2 border-accent flex items-center justify-center">
-                  <span class="font-mono text-[10px] text-accent">13</span>
+                  <span class="font-mono text-[10px] text-accent">2013</span>
                 </div>
                 <div>
                   <p class="font-mono text-xs text-accent mb-1"><a href="https://arxiv.org/abs/1301.3781" target="_blank" rel="noopener" class="hover:underline">Word2Vec</a></p>
@@ -627,7 +627,7 @@
               <!-- 2017 -->
               <div class="reveal-delay-2 flex gap-5 items-start">
                 <div class="flex-shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-full bg-surface border-2 border-accent flex items-center justify-center">
-                  <span class="font-mono text-[10px] text-accent">17</span>
+                  <span class="font-mono text-[10px] text-accent">2017</span>
                 </div>
                 <div>
                   <p class="font-mono text-xs text-accent mb-1"><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener" class="hover:underline">Transformers: "Attention Is All You Need"</a></p>

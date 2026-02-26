@@ -182,7 +182,7 @@ After a phase if the build succeeds still commit.
 
 ### Phase 0: Baseline and Safety Snapshot (before changes)
 
-- [ ] Run and log baseline outputs:
+- [x] Run and log baseline outputs:
   1. `npm run build:index`
   2. `npm run build:markdown`
   3. `npm run build`
@@ -190,78 +190,78 @@ After a phase if the build succeeds still commit.
   1. Existing markdown article list ordering.
   2. Existing article rendering for at least `dr-001`, `dr-006`, `dr-007`.
   3. RSS and feed generation validity (`feed.json`, `feed.xml` present and parseable).
-- [ ] Add/confirm a quick validation script (or checklist) that checks:
+- [x] Add/confirm a quick validation script (or checklist) that checks:
   1. duplicate IDs,
   2. duplicate slugs,
   3. missing required metadata fields.
 
 ### Phase 1: Content Structure Migration
 
-- [ ] Introduce folder-based content structure for articles.
-- [ ] Migrate existing flat markdown files to `content/blog/<slug>/index.md`.
-- [ ] Move existing article image folders to `content/blog/<slug>/assets/`.
-- [ ] Add migration notes in this plan file (or README) so future authoring is consistent.
-- [ ] Confirm no URL changes in `/blog/<slug>`.
+- [x] Introduce folder-based content structure for articles.
+- [x] Migrate existing flat markdown files to `content/blog/<slug>/index.md`.
+- [x] Move existing article image folders to `content/blog/<slug>/assets/`.
+- [x] Add migration notes in this plan file (or README) so future authoring is consistent.
+- [x] Confirm no URL changes in `/blog/<slug>`.
 
 ### Phase 2: Build Script Refactor
 
-- [ ] Refactor `generateBlogIndex.cjs` to discover `content/blog/*/index.md`.
-- [ ] Add `sourceType` inference (`html` if `index.html` exists).
-- [ ] Keep generated output files unchanged in location:
+- [x] Refactor `generateBlogIndex.cjs` to discover `content/blog/*/index.md`.
+- [x] Add `sourceType` inference (`html` if `index.html` exists).
+- [x] Keep generated output files unchanged in location:
   1. `static/feed.json`
   2. `static/feed.xml`
   3. `src/lib/data/articleData.js`
-- [ ] Refactor `convertMarkdown.cjs`:
+- [x] Refactor `convertMarkdown.cjs`:
   1. render markdown when no `index.html`,
   2. use `index.html` when present,
   3. copy `assets/` for each slug,
   4. normalize asset references.
-- [ ] Add stale artifact cleanup strategy and guardrails.
+- [x] Add stale artifact cleanup strategy and guardrails.
 
 ### Phase 3: Route and Rendering Compatibility
 
-- [ ] Update `src/routes/blog/[slug]/+page.js` to consume enriched metadata fields.
-- [ ] Update `src/routes/blog/[slug]/+page.svelte` to support the new source model.
-- [ ] Keep current image enlarge UX working for both article types.
-- [ ] Ensure metadata-driven `<svelte:head>` remains correct for SEO.
-- [ ] Confirm graceful handling for missing article html file.
+- [x] Update `src/routes/blog/[slug]/+page.js` to consume enriched metadata fields.
+- [x] Update `src/routes/blog/[slug]/+page.svelte` to support the new source model.
+- [x] Keep current image enlarge UX working for both article types.
+- [x] Ensure metadata-driven `<svelte:head>` remains correct for SEO.
+- [x] Confirm graceful handling for missing article html file.
 
 ### Phase 4: Blog Redesign Foundation
 
-- [ ] Introduce blog-specific token system (CSS variables + typography choices).
+- [x] Introduce blog-specific token system (CSS variables + typography choices).
 - [ ] Create a new blog shell layout component for:
   1. article pages,
   2. blog listing page.
-- [ ] Update `src/routes/blog/+page.svelte` to match the redesigned style.
-- [ ] Ensure both old markdown and new HTML article output look good in the same shell.
-- [ ] Keep non-blog routes visually unchanged.
+- [x] Update `src/routes/blog/+page.svelte` to match the redesigned style.
+- [x] Ensure both old markdown and new HTML article output look good in the same shell.
+- [x] Keep non-blog routes visually unchanged.
 
 ### Phase 5: Transition and Motion Improvements
 
-- [ ] Add route transitions for entering/leaving blog pages.
-- [ ] Add article load animation for long-form readability.
+- [x] Add route transitions for entering/leaving blog pages.
+- [x] Add article load animation for long-form readability.
 - [ ] Add reduced-motion fallback behavior.
 - [ ] Verify no layout shift/jank on first paint.
 
 ### Phase 6: Context-Based-Engineering Article Import
 
-- [ ] Create new article folder `content/blog/<new-slug>/`.
-- [ ] Add `index.md` with full frontmatter.
-- [ ] Add `index.html` adapted from `/Users/dries/Downloads/context-based-engineering/index.html`.
+- [x] Create new article folder `content/blog/<new-slug>/`.
+- [x] Add `index.md` with full frontmatter.
+- [x] Add `index.html` adapted from `/Users/dries/Downloads/context-based-engineering/index.html`.
 - [ ] Migrate required assets/fonts strategy into project-owned assets where needed.
 - [ ] Normalize external dependencies so the article is reliable in static build output.
 
 ### Phase 7: Validation and Regression Tasks (after changes)
 
-- [ ] Build and pipeline checks:
+- [x] Build and pipeline checks:
   1. `npm run build:index`
   2. `npm run build:markdown`
   3. `npm run build`
-- [ ] Content checks:
+- [x] Content checks:
   1. markdown-only article renders correctly,
   2. html-backed article renders correctly,
   3. mixed list ordering by date is correct.
-- [ ] Feed checks:
+- [x] Feed checks:
   1. all articles appear in `feed.json`,
   2. RSS XML validates and includes new article,
   3. title/summary/date/author fields are accurate.
@@ -269,7 +269,7 @@ After a phase if the build succeeds still commit.
   1. transitions between blog and non-blog pages are smooth,
   2. menu, dark mode, and particles toggles still behave correctly,
   3. no console errors during navigation.
-- [ ] Asset checks:
+- [x] Asset checks:
   1. article-local images resolve in both md and html modes,
   2. no broken references in build output.
 - [ ] Performance checks:

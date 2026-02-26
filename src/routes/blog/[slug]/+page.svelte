@@ -11,6 +11,10 @@
   let documentEscapeHandler;
   const imageListeners = [];
 
+  if (typeof window !== 'undefined') {
+    window.__blogExternalScriptPromises ||= new Map();
+  }
+
   const isHtmlSource = data?.meta?.sourceType === 'html';
   const customJsEnabled = data?.meta?.enableCustomJs !== false;
 
@@ -24,7 +28,7 @@
       htmlContent = await res.text();
       await tick();
       if (isHtmlSource && customJsEnabled) {
-        activateEmbeddedScripts();
+        await activateEmbeddedScripts();
       }
       addImageClickListeners();
       addEscapeKeyListener();
@@ -42,20 +46,50 @@
     particlesEnabled.set(true);
   });
 
-  function activateEmbeddedScripts() {
+  async function activateEmbeddedScripts() {
     if (!articleContainer) return;
 
-    const scriptNodes = articleContainer.querySelectorAll('script');
-    scriptNodes.forEach((oldScript) => {
+    const scriptNodes = Array.from(articleContainer.querySelectorAll('script'));
+    for (const oldScript of scriptNodes) {
+      const src = oldScript.getAttribute('src');
+      if (src) {
+        await loadExternalScript(src, oldScript);
+        oldScript.remove();
+        continue;
+      }
+
+      const code = oldScript.textContent || '';
+      const wrappedCode = `(function(){\n${code}\n})();`;
       const newScript = document.createElement('script');
-      for (const { name, value } of oldScript.attributes) {
-        newScript.setAttribute(name, value);
-      }
-      if (oldScript.textContent) {
-        newScript.textContent = oldScript.textContent;
-      }
+      newScript.textContent = wrappedCode;
       oldScript.parentNode?.replaceChild(newScript, oldScript);
+    }
+  }
+
+  function loadExternalScript(src, oldScript) {
+    if (typeof window === 'undefined') return Promise.resolve();
+
+    window.__blogExternalScriptPromises ||= new Map();
+    const existing = window.__blogExternalScriptPromises.get(src);
+    if (existing) return existing;
+
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = false;
+
+    for (const { name, value } of oldScript.attributes) {
+      if (name === 'src') continue;
+      script.setAttribute(name, value);
+    }
+
+    const promise = new Promise((resolve, reject) => {
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
     });
+
+    window.__blogExternalScriptPromises.set(src, promise);
+    document.head.appendChild(script);
+    return promise;
   }
 
   function addImageClickListeners() {
@@ -132,13 +166,18 @@
 
 <style>
   .article-page {
-    border-radius: 1rem;
-    border: 1px solid rgba(30, 41, 59, 0.22);
-    overflow: hidden;
+    overflow: visible;
   }
 
   .article-page.md-source {
     background: transparent;
+    width: 100%;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    transform: none;
+    left: auto;
+    margin-top: 0;
   }
 
   .article-page.html-source {
@@ -147,38 +186,44 @@
     border-color: #202229;
     color: #e4e4e7;
     box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
-    width: min(1640px, calc(100vw - 1.1rem));
-    margin-inline: auto;
+    width: min(1640px, calc(100vw - 14rem));
+    margin-top: -1.65rem;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 1rem;
+    overflow: hidden;
   }
 
   .article-page.html-source :global(a) {
     color: #c8f547;
   }
 
-  .article-page.html-source :global(nav.fixed.top-0.left-0.right-0) {
-    position: sticky !important;
-    top: var(--site-menu-offset) !important;
-    z-index: 20 !important;
-  }
-
   .article-page.html-source :global(main) {
     padding-inline: clamp(0.6rem, 1.4vw, 1.15rem);
+  }
+
+  .article-page.html-source :global(section#hero) {
+    min-height: auto !important;
+    padding-top: 0.25rem !important;
+  }
+
+  .article-page.html-source :global(section#hero > div.relative.max-w-6xl) {
+    padding-top: clamp(1rem, 2vw, 1.7rem) !important;
   }
 
   @media (max-width: 640px) {
     .article-page.html-source {
       --site-menu-offset: 3.05rem;
-      width: calc(100vw - 0.45rem);
+      width: calc(100vw - 2rem);
+      margin-top: -1.2rem;
       border-radius: 0.7rem;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .article-page.html-source :global(main) {
       padding-inline: 0.35rem;
-    }
-
-    .article-page.html-source :global(nav.fixed.top-0.left-0.right-0 .max-w-6xl) {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
     }
   }
 
