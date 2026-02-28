@@ -101,3 +101,6 @@ jobs:
             fi
             echo "Starting container"
             docker run --name $containerName -d -p 4337:8080 chrozera/meerman.xyz
+
+      - name: Post-deploy health check
+        run: curl --retry 5 --retry-delay 5 --retry-all-errors -f https://meerman.xyz/

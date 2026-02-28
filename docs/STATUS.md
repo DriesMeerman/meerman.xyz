@@ -76,8 +76,8 @@ Requires: Phase 1 + Phase 3 complete.
 
 No hard dependencies. Can start after Phase 3 (for the pipeline changes).
 
-- [ ] Add post-deploy health check (`curl -f https://meerman.xyz/`)
-- [ ] Create tagged-release workflow — on version tag, build + push versioned Docker image
+- [x] Add post-deploy health check (`curl -f https://meerman.xyz/`) — completed 2026-02-28
+- [x] Create tagged-release workflow — on version tag, build + push versioned Docker image — completed 2026-02-28
 
 ---
 
@@ -103,6 +103,7 @@ Tasks that came up during implementation. Add items here as they're discovered.
 | 2026-02-28 | Replace `particles.js` with a local canvas engine and remove `particle.config.json` | Phase 2 | Done |
 | 2026-02-28 | Replace legacy blog/image build scripts with the `tools/` TypeScript pipeline | Phase 3 | Done |
 | 2026-02-28 | Route homepage/cat images through the generated asset pipeline and localize skill logos | Phase 4 | Done |
+| 2026-02-28 | Add deploy health check and tagged Docker release workflow | Phase 5 | Done |
 | 2026-02-28 | Add content-hash cache for incremental article and image builds | Phase 6 | Done |
 
 ---
@@ -118,5 +119,6 @@ Record completed phases and any notable outcomes.
 | Phase 2 | 2026-02-28 | Custom canvas particle renderer replaces `particles.js`; smoke and visual regression suites passed |
 | Phase 3 | 2026-02-28 | TypeScript `tools/` pipeline replaces legacy CJS/bash build scripts; build, validation, and sitemap generation pass |
 | Phase 4 | 2026-02-28 | Cat/avatar images now use generated AVIF/WebP fallbacks, skill logos are localized, and visual regression passed |
+| Phase 5 | 2026-02-28 | Deploys now verify the live site and version tags publish both versioned and latest Docker images |
 | Phase 5 | | |
 | Phase 6 | | |
