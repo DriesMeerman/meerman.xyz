@@ -48,15 +48,15 @@ Requires: Phase 1 complete.
 
 Independent of Phase 2. Can run in parallel.
 
-- [ ] Scaffold `tools/` directory — `tsconfig.json`, `lib/types.ts`, `lib/config.ts`, `lib/articles.ts`
-- [ ] Port validation → `commands/validate.ts`
-- [ ] Port blog index generation → `commands/generate-index.ts`
-- [ ] Port markdown conversion → `commands/convert-articles.ts` (use `cheerio` for HTML parsing)
-- [ ] Port image optimization → `commands/optimize-images.ts` (introduces `sharp`, WebP + AVIF) — D7
-- [ ] Add sitemap generation → `commands/generate-sitemap.ts` — D4
-- [ ] Add external asset fetcher → `commands/fetch-external-assets.ts` — D9
-- [ ] Add orchestrator (`build.ts`), update npm scripts, delete old CJS files + bash script
-- [ ] Update CI pipeline — remove `apt-get install imagemagick webp`, update README for macOS dev
+- [x] Scaffold `tools/` directory — `tsconfig.json`, `lib/types.ts`, `lib/config.ts`, `lib/articles.ts` — completed 2026-02-28
+- [x] Port validation → `commands/validate.ts` — completed 2026-02-28
+- [x] Port blog index generation → `commands/generate-index.ts` — completed 2026-02-28
+- [x] Port markdown conversion → `commands/convert-articles.ts` (use `cheerio` for HTML parsing) — completed 2026-02-28
+- [x] Port image optimization → `commands/optimize-images.ts` (introduces `sharp`, WebP + AVIF) — D7 — completed 2026-02-28
+- [x] Add sitemap generation → `commands/generate-sitemap.ts` — D4 — completed 2026-02-28
+- [x] Add external asset fetcher → `commands/fetch-external-assets.ts` — D9 — completed 2026-02-28 (command added; not executed yet)
+- [x] Add orchestrator (`build.ts`), update npm scripts, delete old CJS files + bash script — completed 2026-02-28
+- [x] Update CI pipeline — remove `apt-get install imagemagick webp`, update README for macOS dev — completed 2026-02-28
 
 ---
 
@@ -87,7 +87,7 @@ Low priority. Pick up as time allows.
 
 - [ ] Add responsive `srcset` for different screen densities
 - [ ] Change `articleData.js` generation to export data directly instead of JSON.parse trick
-- [ ] Add incremental builds (content hashing) to tools pipeline
+- [x] Add incremental builds (content hashing) to tools pipeline — completed 2026-02-28 (`.cache/build-hashes.json` now skips unchanged article and image work)
 - [ ] Enhance image service — return structured data for `<picture>` elements (srcset, width, height)
 
 ---
@@ -101,6 +101,8 @@ Tasks that came up during implementation. Add items here as they're discovered.
 | 2026-02-28 | Fix flaky visual regression tests — particles canvas bled through in light-mode screenshots; replaced MutationObserver-based hiding with CSS + DOM removal of canvas after navigation | Phase 1 | Done |
 | 2026-02-28 | Regenerate baseline screenshots after bug fix | Phase 1 | Done |
 | 2026-02-28 | Replace `particles.js` with a local canvas engine and remove `particle.config.json` | Phase 2 | Done |
+| 2026-02-28 | Replace legacy blog/image build scripts with the `tools/` TypeScript pipeline | Phase 3 | Done |
+| 2026-02-28 | Add content-hash cache for incremental article and image builds | Phase 6 | Done |
 
 ---
 
@@ -113,7 +115,7 @@ Record completed phases and any notable outcomes.
 | Phase 0 | | |
 | Phase 1 | | |
 | Phase 2 | 2026-02-28 | Custom canvas particle renderer replaces `particles.js`; smoke and visual regression suites passed |
-| Phase 3 | | |
+| Phase 3 | 2026-02-28 | TypeScript `tools/` pipeline replaces legacy CJS/bash build scripts; build, validation, and sitemap generation pass |
 | Phase 4 | | |
 | Phase 5 | | |
 | Phase 6 | | |

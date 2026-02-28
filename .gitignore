@@ -9,6 +9,7 @@
 /static/articles/
 /static/assets/articles/
 /.svelte-kit/
+/.cache/
 /build/
 /e2e/screenshots/
 /e2e/report/

@@ -3,9 +3,6 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Install build dependencies for native modules
-RUN apk add --no-cache python3 make g++ imagemagick libwebp-tools
-
 # Copy package files
 COPY package*.json ./
 
@@ -14,9 +11,6 @@ RUN npm install
 
 # Copy source files
 COPY . .
-
-# Generate optimized images used by the runtime (`/g/assets/*`)
-RUN npm run build:images
 
 # Build the static site
 RUN npm run build
