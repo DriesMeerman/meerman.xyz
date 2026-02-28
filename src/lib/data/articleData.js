@@ -1,5 +1,5 @@
-// Generated at 2026-02-28T20:40:36.417Z
-const articlesString = `[
+// Generated at 2026-02-28T20:52:58.828Z
+export const articles = [
   {
     "slug": "dr-001",
     "filename": "dr-001.md",
@@ -177,5 +177,4 @@ const articlesString = `[
     "enableCustomCss": true,
     "respectsDarkMode": false
   }
-]`;
-export const articles = JSON.parse(articlesString);
+];

@@ -21,8 +21,9 @@ export const siteConfig = {
 	articleDataModulePath: process.env.BLOG_DATA_OUT_DIR
 		? path.join(process.env.BLOG_DATA_OUT_DIR, 'articleData.js')
 		: path.join(repoRoot, 'src/lib/data/articleData.js'),
+	imageDataModulePath: path.join(repoRoot, 'src/lib/data/imageData.js'),
 	skillDataPath: path.join(repoRoot, 'src/lib/data/skillData.js'),
-	imageSizes: [400, 306],
+	imageSizes: [800, 400, 306],
 	staticPages: ['/', '/skills', '/experience', '/education', '/tools', '/cats', '/blog']
 } as const;
 

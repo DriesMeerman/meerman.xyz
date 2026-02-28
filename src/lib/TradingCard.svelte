@@ -39,9 +39,18 @@
     <div class="card-image w-32 h-20 md:w-36 md:h-28 border-solid border-2 border-white/10 mx-3 mt-2 self-center p-4 rounded-lg">
       {#if pictureSources}
         <picture>
-          <source srcset={pictureSources.avif} type="image/avif" />
-          <source srcset={pictureSources.webp} type="image/webp" />
-          <img {alt} class="image object-contain h-full w-full aspect-square" src={pictureSources.fallback} loading="lazy" />
+          <source srcset={pictureSources.avifSrcset} sizes="(min-width: 768px) 9rem, 8rem" type="image/avif" />
+          <source srcset={pictureSources.webpSrcset} sizes="(min-width: 768px) 9rem, 8rem" type="image/webp" />
+          <img
+            {alt}
+            class="image object-contain h-full w-full aspect-square"
+            src={pictureSources.fallback}
+            srcset={pictureSources.fallbackSrcset}
+            sizes="(min-width: 768px) 9rem, 8rem"
+            width={pictureSources.width}
+            height={pictureSources.height}
+            loading="lazy"
+          />
         </picture>
       {:else}
         <img {alt} class="image object-contain h-full w-full aspect-square" src={image} loading="lazy" />

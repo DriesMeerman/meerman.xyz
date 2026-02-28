@@ -46,8 +46,7 @@ export async function runGenerateIndex(): Promise<CommandResult> {
 
 	const articlesJson = JSON.stringify(articles, null, 2);
 	const articleData = `// Generated at ${new Date().toISOString()}
-const articlesString = \`${articlesJson}\`;
-export const articles = JSON.parse(articlesString);
+export const articles = ${articlesJson};
 `;
 	const wroteArticleData = writeFileIfChanged(siteConfig.articleDataModulePath, articleData);
 	if (wroteArticleData) {

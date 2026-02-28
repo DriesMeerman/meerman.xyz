@@ -4,12 +4,12 @@
     let cats = [
         {
             name: 'Henrietta',
-            image: getPictureSources('cats/Fenry', 'jpeg', 400),
+            image: getPictureSources('cats/Fenry', 'jpeg', 800),
             description: 'Fenry a feral escape artist, gentle yet chaotic.'
         },
         {
             name: 'Gina',
-            image: getPictureSources('cats/Gina', 'jpeg', 400),
+            image: getPictureSources('cats/Gina', 'jpeg', 800),
             description: 'Juniper breeze, takes great care of her sister and is cuddles you when sick.'
         }
     ]
@@ -30,10 +30,14 @@
                     <!-- Circular image container -->
                     <div class="relative w-64 h-64 md:w-72 md:h-72 rounded-full overflow-hidden border-4 border-white dark:border-neutral-700 shadow-xl ring-1 ring-black/5 dark:ring-white/10">
                         <picture>
-                            <source srcset={cat.image.avif} type="image/avif" />
-                            <source srcset={cat.image.webp} type="image/webp" />
+                            <source srcset={cat.image.avifSrcset} sizes="(min-width: 768px) 18rem, 16rem" type="image/avif" />
+                            <source srcset={cat.image.webpSrcset} sizes="(min-width: 768px) 18rem, 16rem" type="image/webp" />
                             <img
                                 src={cat.image.fallback}
+                                srcset={cat.image.fallbackSrcset}
+                                sizes="(min-width: 768px) 18rem, 16rem"
+                                width={cat.image.width}
+                                height={cat.image.height}
                                 alt={cat.name}
                                 loading="lazy"
                                 class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"

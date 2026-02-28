@@ -85,10 +85,10 @@ No hard dependencies. Can start after Phase 3 (for the pipeline changes).
 
 Low priority. Pick up as time allows.
 
-- [ ] Add responsive `srcset` for different screen densities
-- [ ] Change `articleData.js` generation to export data directly instead of JSON.parse trick
+- [x] Add responsive `srcset` for different screen densities — completed 2026-02-28
+- [x] Change `articleData.js` generation to export data directly instead of JSON.parse trick — completed 2026-02-28
 - [x] Add incremental builds (content hashing) to tools pipeline — completed 2026-02-28 (`.cache/build-hashes.json` now skips unchanged article and image work)
-- [ ] Enhance image service — return structured data for `<picture>` elements (srcset, width, height)
+- [x] Enhance image service — return structured data for `<picture>` elements (srcset, width, height) — completed 2026-02-28
 
 ---
 
@@ -105,6 +105,7 @@ Tasks that came up during implementation. Add items here as they're discovered.
 | 2026-02-28 | Route homepage/cat images through the generated asset pipeline and localize skill logos | Phase 4 | Done |
 | 2026-02-28 | Add deploy health check and tagged Docker release workflow | Phase 5 | Done |
 | 2026-02-28 | Add content-hash cache for incremental article and image builds | Phase 6 | Done |
+| 2026-02-28 | Add responsive image srcsets, generated image manifest, and direct article data export | Phase 6 | Done |
 
 ---
 
@@ -120,5 +121,4 @@ Record completed phases and any notable outcomes.
 | Phase 3 | 2026-02-28 | TypeScript `tools/` pipeline replaces legacy CJS/bash build scripts; build, validation, and sitemap generation pass |
 | Phase 4 | 2026-02-28 | Cat/avatar images now use generated AVIF/WebP fallbacks, skill logos are localized, and visual regression passed |
 | Phase 5 | 2026-02-28 | Deploys now verify the live site and version tags publish both versioned and latest Docker images |
-| Phase 5 | | |
-| Phase 6 | | |
+| Phase 6 | 2026-02-28 | Responsive image metadata is now generated into `imageData.js`, picture helpers expose srcset/dimensions, and `articleData.js` exports directly |
