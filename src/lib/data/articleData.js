@@ -1,4 +1,4 @@
-// Generated at 2026-02-28T20:14:01.140Z
+// Generated at 2026-02-28T20:40:36.417Z
 const articlesString = `[
   {
     "slug": "dr-001",

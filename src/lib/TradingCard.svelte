@@ -1,4 +1,5 @@
 <script>
+  import { getPictureSourcesFromUrl } from '$lib/services/imageService.js';
   /** @typedef {'common' | 'uncommon' | 'rare' | 'epic' | 'legendary'} Rarity */
 
   /** @type {{ image: string; alt?: string; backText?: string; rarity?: Rarity; children?: import('svelte').Snippet }} */
@@ -23,6 +24,7 @@
   const fallbackRarity = colorRarity.common;
   let activeRarityClass = $derived(colorRarity[rarity] ?? fallbackRarity);
   let hasShine = $derived(rarity === 'epic' || rarity === 'legendary');
+  let pictureSources = $derived(getPictureSourcesFromUrl(image));
 
   /** @param {KeyboardEvent} event */
   function cardKeydown(event) {
@@ -35,7 +37,15 @@
   <div class={`${hasShine && hideOverflow ? 'shine' : ''} overflow-visible`}></div>
   <div class="front h-full w-full">
     <div class="card-image w-32 h-20 md:w-36 md:h-28 border-solid border-2 border-white/10 mx-3 mt-2 self-center p-4 rounded-lg">
-      <img {alt} class="image object-contain h-full w-full aspect-square" src={image} />
+      {#if pictureSources}
+        <picture>
+          <source srcset={pictureSources.avif} type="image/avif" />
+          <source srcset={pictureSources.webp} type="image/webp" />
+          <img {alt} class="image object-contain h-full w-full aspect-square" src={pictureSources.fallback} loading="lazy" />
+        </picture>
+      {:else}
+        <img {alt} class="image object-contain h-full w-full aspect-square" src={image} loading="lazy" />
+      {/if}
     </div>
     <div class="p-3 h-full">{@render children?.()}</div>
   </div>

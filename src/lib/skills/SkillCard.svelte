@@ -4,7 +4,7 @@
 </script>
 
 <div>
-  <TradingCard image={skill.image} alt={skill.altText} rarity={skill.rarity}>
+  <TradingCard image={skill.image} alt={skill.logoAlt} rarity={skill.rarity}>
     <div class="flex flex-col justify-between h-full">
       <div>
         <h2 class="skill-title">{skill.name}</h2>
@@ -24,5 +24,4 @@
   .skill-title { font-family: "Bruno Ace", cursive; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
   .skill-attribute { box-shadow: inset 1px 1px 2px 1px #0000004f; font-weight: 300; text-transform: uppercase; font-size: 8px; }
 </style>
-
 

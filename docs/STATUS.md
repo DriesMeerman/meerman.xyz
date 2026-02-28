@@ -64,11 +64,11 @@ Independent of Phase 2. Can run in parallel.
 
 Requires: Phase 1 + Phase 3 complete.
 
-- [ ] Route cat + avatar images through pipeline — serve optimized WebP/AVIF variants — D8
-- [ ] Add `loading="lazy"` to cat page, `Person.svelte`, `TradingCard.svelte`
-- [ ] Add `<picture>` elements with WebP/AVIF sources and fallbacks
-- [ ] Run `fetch-external-assets` to localize skill logos — D9
-- [ ] Run visual regression to validate all image/layout changes
+- [x] Route cat + avatar images through pipeline — serve optimized WebP/AVIF variants — D8 — completed 2026-02-28
+- [x] Add `loading="lazy"` to cat page, `Person.svelte`, `TradingCard.svelte` — completed 2026-02-28
+- [x] Add `<picture>` elements with WebP/AVIF sources and fallbacks — completed 2026-02-28
+- [x] Run `fetch-external-assets` to localize skill logos — D9 — completed 2026-02-28
+- [x] Run visual regression to validate all image/layout changes — completed 2026-02-28 (`npm run test:visual`)
 
 ---
 
@@ -102,6 +102,7 @@ Tasks that came up during implementation. Add items here as they're discovered.
 | 2026-02-28 | Regenerate baseline screenshots after bug fix | Phase 1 | Done |
 | 2026-02-28 | Replace `particles.js` with a local canvas engine and remove `particle.config.json` | Phase 2 | Done |
 | 2026-02-28 | Replace legacy blog/image build scripts with the `tools/` TypeScript pipeline | Phase 3 | Done |
+| 2026-02-28 | Route homepage/cat images through the generated asset pipeline and localize skill logos | Phase 4 | Done |
 | 2026-02-28 | Add content-hash cache for incremental article and image builds | Phase 6 | Done |
 
 ---
@@ -116,6 +117,6 @@ Record completed phases and any notable outcomes.
 | Phase 1 | | |
 | Phase 2 | 2026-02-28 | Custom canvas particle renderer replaces `particles.js`; smoke and visual regression suites passed |
 | Phase 3 | 2026-02-28 | TypeScript `tools/` pipeline replaces legacy CJS/bash build scripts; build, validation, and sitemap generation pass |
-| Phase 4 | | |
+| Phase 4 | 2026-02-28 | Cat/avatar images now use generated AVIF/WebP fallbacks, skill logos are localized, and visual regression passed |
 | Phase 5 | | |
 | Phase 6 | | |
