@@ -20,7 +20,7 @@
 </div>
 
 <style>
-  @font-face { font-family: "Bruno Ace"; src: url("/assets/BrunoAce-Regular.ttf"); }
+  @font-face { font-family: "Bruno Ace"; src: url("/assets/BrunoAce-Regular.woff2") format("woff2"); }
   .skill-title { font-family: "Bruno Ace", cursive; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
   .skill-attribute { box-shadow: inset 1px 1px 2px 1px #0000004f; font-weight: 300; text-transform: uppercase; font-size: 8px; }
 </style>

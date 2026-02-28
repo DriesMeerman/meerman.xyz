@@ -89,6 +89,9 @@ docker run -p 8080:80 meerman-xyz
 - `src/` - SvelteKit application source
 - `content/blog/` - Blog articles in folder-per-article format
 - `static/` - Static assets served directly
+- `docs/` - [Project documentation](docs/README.md) (architecture, analysis, decisions, guides)
+
+`docs/gudies/STYLE_GUIDE.md` - important to use when changing UI.
 
 ## Blog
 

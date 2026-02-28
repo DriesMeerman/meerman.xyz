@@ -1,0 +1,117 @@
+# Implementation Status
+
+Tracks the execution of the [Codebase Analysis & Improvement Plan](analysis/CODEBASE_ANALYSIS.md).
+
+> **When completing a task**, check its box (`- [x]`), add the completion date, and note any follow-ups or deviations from the plan. If a task spawns new work, add it to the appropriate phase or to **Unplanned Work** at the bottom.
+
+**Last updated:** 2026-02-28
+
+---
+
+## Phase 0: Quick Wins ✅
+
+No visual changes.
+
+- [x] Delete stale files — `static/articles/cr-008.html`, `cr-009.html`, `dr-008-research.html`, `src/lib/index.js`
+- [x] Save generated `package-lock.json` as CI artifact on main builds (retention: 90 days)
+- [x] Update `actions/checkout` to v4, remove debug steps from deployment.yml
+- [x] Simplify Skill model — removed `Skill` class, `getHash()`, `fromJSON()`; now re-exports plain objects from `skillData.js`
+- [x] Convert BrunoAce font from TTF (55 KB) to WOFF2 (20 KB), delete TTF — D10
+- [x] SKIPPED — Clean `particle.config.json` — will be removed entirely in Phase 2 (D1). Cleaned anyway as it was trivial.
+
+---
+
+## Phase 1: Visual Regression Testing (D3)
+
+Safety net before any visual changes. Blocks Phase 2 and Phase 4.
+
+- [ ] Set up Playwright — install, `playwright.config.ts`, screenshot spec for all pages × light/dark × mobile/desktop
+- [ ] Particles smoke test — canvas present, rendering, `pointer-events: none`, content clickable, dark/light color switch
+- [ ] Build report viewer — JSON report + local web viewer in `tools/report-viewer/` with side-by-side comparison
+- [ ] Capture baseline screenshots — 32 screenshots committed as reference
+
+---
+
+## Phase 2: Particles Replacement (D1 + D5)
+
+Requires: Phase 1 complete.
+
+- [ ] Migrate state to Svelte 5 runes — `writable()` → `$state`/`$derived` in `state.js` — D5
+- [ ] Write custom Canvas particle engine — `engine.ts`, `renderer.ts`, `interactions.ts`, `types.ts` — D1
+- [ ] Replace `Particles.svelte` — integrate custom renderer, wire up dark mode via runes
+- [ ] Run visual regression + particles smoke test — validate rendering matches
+- [ ] Remove `particles.js` fork — delete dependency, remove `particle.config.json`
+
+---
+
+## Phase 3: Build Tooling (D2 + D4)
+
+Independent of Phase 2. Can run in parallel.
+
+- [ ] Scaffold `tools/` directory — `tsconfig.json`, `lib/types.ts`, `lib/config.ts`, `lib/articles.ts`
+- [ ] Port validation → `commands/validate.ts`
+- [ ] Port blog index generation → `commands/generate-index.ts`
+- [ ] Port markdown conversion → `commands/convert-articles.ts` (use `cheerio` for HTML parsing)
+- [ ] Port image optimization → `commands/optimize-images.ts` (introduces `sharp`, WebP + AVIF) — D7
+- [ ] Add sitemap generation → `commands/generate-sitemap.ts` — D4
+- [ ] Add external asset fetcher → `commands/fetch-external-assets.ts` — D9
+- [ ] Add orchestrator (`build.ts`), update npm scripts, delete old CJS files + bash script
+- [ ] Update CI pipeline — remove `apt-get install imagemagick webp`, update README for macOS dev
+
+---
+
+## Phase 4: Image & Performance (D7 + D8)
+
+Requires: Phase 1 + Phase 3 complete.
+
+- [ ] Route cat + avatar images through pipeline — serve optimized WebP/AVIF variants — D8
+- [ ] Add `loading="lazy"` to cat page, `Person.svelte`, `TradingCard.svelte`
+- [ ] Add `<picture>` elements with WebP/AVIF sources and fallbacks
+- [ ] Run `fetch-external-assets` to localize skill logos — D9
+- [ ] Run visual regression to validate all image/layout changes
+
+---
+
+## Phase 5: CI/CD Improvements
+
+No hard dependencies. Can start after Phase 3 (for the pipeline changes).
+
+- [ ] Add post-deploy health check (`curl -f https://meerman.xyz/`)
+- [ ] Create tagged-release workflow — on version tag, build + push versioned Docker image
+
+---
+
+## Phase 6: Nice to Have
+
+Low priority. Pick up as time allows.
+
+- [ ] Add responsive `srcset` for different screen densities
+- [ ] Change `articleData.js` generation to export data directly instead of JSON.parse trick
+- [ ] Add incremental builds (content hashing) to tools pipeline
+- [ ] Enhance image service — return structured data for `<picture>` elements (srcset, width, height)
+
+---
+
+## Unplanned Work
+
+Tasks that came up during implementation. Add items here as they're discovered.
+
+| Date | Task | Phase | Status |
+|------|------|-------|--------|
+| | | | |
+
+---
+
+## Completion Log
+
+Record completed phases and any notable outcomes.
+
+| Phase | Completed | Notes |
+|-------|-----------|-------|
+| Phase 0 | | |
+| Phase 1 | | |
+| Phase 2 | | |
+| Phase 3 | | |
+| Phase 4 | | |
+| Phase 5 | | |
+| Phase 6 | | |

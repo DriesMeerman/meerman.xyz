@@ -15,7 +15,7 @@ jobs:
   build-website:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -49,12 +49,20 @@ jobs:
           name: meerman-xyz-website
           path: build/
 
+      - name: Save generated lockfile
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-lock
+          path: package-lock.json
+          retention-days: 90
+
   publish-container:
     runs-on: ubuntu-latest
     needs: build-website
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Login to docker registry
         env:
@@ -62,16 +70,10 @@ jobs:
           DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
         run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN
 
-      - name: debug pre downloadartifact
-        run: ls -r
-
       - uses: actions/download-artifact@v4
         with:
           name: meerman-xyz-website
           path: build
-
-      - name: Debug downloadartifact
-        run: ls -r
 
       - name: Build the Docker image
         run: docker build --file Dockerfile.artifact --tag meerman.xyz:latest .
