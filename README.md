@@ -36,6 +36,17 @@ This project is developed on macOS and built in CI on Linux. Some dependencies (
 
 For that reason, CI intentionally runs `npm install` (and regenerates `package-lock.json`) instead of `npm ci`, so dependency resolution happens in the Linux environment where the artifact is produced.
 
+## Cross-platform build requirement
+
+Local development happens on macOS, while the production artifact is built on Linux. Any new build step, transpiler, bundler plugin, shell script, or asset pipeline must work on both platforms.
+
+When changing the build:
+
+- Prefer Node-based tooling or other cross-platform dependencies over platform-specific binaries.
+- Avoid relying on GNU-only or BSD-only command behavior unless the script explicitly handles both.
+- If a tool needs native compilation or optional platform packages, verify it installs and runs on both macOS and Linux before adopting it.
+- Keep generated output and path handling portable so local builds and server builds produce equivalent artifacts.
+
 ## Generated optimized images (`/g/assets`)
 
 The site references optimized image variants under `/g/assets/*` (for example `servicenow_logo-400.png` and `realm_db_logo-306.png`).
