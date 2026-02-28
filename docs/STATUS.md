@@ -21,14 +21,14 @@ No visual changes.
 
 ---
 
-## Phase 1: Visual Regression Testing (D3)
+## Phase 1: Visual Regression Testing (D3) ✅
 
 Safety net before any visual changes. Blocks Phase 2 and Phase 4.
 
-- [ ] Set up Playwright — install, `playwright.config.ts`, screenshot spec for all pages × light/dark × mobile/desktop
-- [ ] Particles smoke test — canvas present, rendering, `pointer-events: none`, content clickable, dark/light color switch
-- [ ] Build report viewer — JSON report + local web viewer in `tools/report-viewer/` with side-by-side comparison
-- [ ] Capture baseline screenshots — 32 screenshots committed as reference
+- [x] Set up Playwright — install, `playwright.config.ts`, screenshot spec for all pages × light/dark × mobile/desktop
+- [x] Particles smoke test — canvas present, initialized, `pointer-events: none`, content clickable, dark/light mode
+- [x] Build report viewer — JSON report generator (`tools/commands/visual-report.ts`) + local web viewer in `tools/report-viewer/`
+- [x] Capture baseline screenshots — 32 screenshots committed as reference
 
 ---
 

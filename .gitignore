@@ -10,3 +10,7 @@
 /static/assets/articles/
 /.svelte-kit/
 /build/
+/e2e/screenshots/
+/e2e/report/
+/e2e/test-results/
+/playwright-report/
