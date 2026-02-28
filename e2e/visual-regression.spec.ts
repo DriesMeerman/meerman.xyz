@@ -21,6 +21,7 @@ for (const page of PAGES) {
       await setColorMode(p, mode);
       await p.goto(page.path);
       await p.waitForLoadState('networkidle');
+      await removeParticleCanvas(p);
       await p.waitForTimeout(500);
 
       await expect(p).toHaveScreenshot(`${page.name}-${mode}.png`, {
@@ -48,20 +49,27 @@ async function disableAnimations(page: import('@playwright/test').Page) {
 
 async function disableParticles(page: import('@playwright/test').Page) {
   await page.addInitScript(() => {
-    const origSet = localStorage.setItem.bind(localStorage);
-    Object.defineProperty(window, '__particlesDisabled', { value: true });
-
-    // Intercept the particles store to keep it false
-    const origDefineProperty = Object.defineProperty;
-    let intercepted = false;
-    const observer = new MutationObserver(() => {
-      const canvas = document.querySelector('#particles canvas');
-      if (canvas && !intercepted) {
-        intercepted = true;
-        (canvas as HTMLElement).style.display = 'none';
+    const style = document.createElement('style');
+    style.textContent = `
+      .particle-background, #particles, #particles canvas {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
       }
-    });
-    observer.observe(document.documentElement, { childList: true, subtree: true });
+    `;
+    if (document.head) {
+      document.head.appendChild(style);
+    } else {
+      document.addEventListener('DOMContentLoaded', () => document.head.appendChild(style));
+    }
+  });
+}
+
+async function removeParticleCanvas(page: import('@playwright/test').Page) {
+  await page.evaluate(() => {
+    document.querySelectorAll('#particles canvas').forEach((el) => el.remove());
+    const bg = document.querySelector('.particle-background');
+    if (bg instanceof HTMLElement) bg.style.display = 'none';
   });
 }
 

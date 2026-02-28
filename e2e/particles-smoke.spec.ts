@@ -7,7 +7,7 @@ test.describe('Particles smoke tests', () => {
   });
 
   test('canvas element is present with non-zero dimensions', async ({ page }) => {
-    const canvas = page.locator('#particles canvas');
+    const canvas = page.locator('#particles canvas.particles-canvas');
     await expect(canvas).toBeVisible({ timeout: 10_000 });
     const box = await canvas.boundingBox();
     expect(box).not.toBeNull();
@@ -15,17 +15,20 @@ test.describe('Particles smoke tests', () => {
     expect(box!.height).toBeGreaterThan(0);
   });
 
-  test('canvas has been initialized by particles.js', async ({ page }) => {
-    const canvas = page.locator('#particles canvas.particles-js-canvas-el');
+  test('canvas has been initialized by the custom engine', async ({ page }) => {
+    const canvas = page.locator('#particles canvas.particles-canvas');
     await expect(canvas).toBeVisible({ timeout: 10_000 });
 
-    // particles.js sets the canvas width/height attributes based on container size × pixel ratio
-    const dimensions = await canvas.evaluate((el: HTMLCanvasElement) => ({
+    const state = await canvas.evaluate((el: HTMLCanvasElement) => ({
+      engine: el.dataset.engine,
+      ready: el.dataset.ready,
       width: el.width,
       height: el.height,
     }));
-    expect(dimensions.width).toBeGreaterThan(0);
-    expect(dimensions.height).toBeGreaterThan(0);
+    expect(state.engine).toBe('custom');
+    expect(state.ready).toBe('true');
+    expect(state.width).toBeGreaterThan(0);
+    expect(state.height).toBeGreaterThan(0);
   });
 
   test('particle container has pointer-events: none', async ({ page }) => {
@@ -33,6 +36,20 @@ test.describe('Particles smoke tests', () => {
       (el) => getComputedStyle(el).pointerEvents,
     );
     expect(pointerEvents).toBe('none');
+  });
+
+  test('clicking spawns additional particles', async ({ page }) => {
+    const canvas = page.locator('#particles canvas.particles-canvas');
+    await expect(canvas).toBeVisible({ timeout: 10_000 });
+
+    const countBefore = Number(await canvas.getAttribute('data-particle-count'));
+
+    await page.mouse.click(120, 120);
+    await page.waitForTimeout(150);
+
+    const countAfter = Number(await canvas.getAttribute('data-particle-count'));
+
+    expect(countAfter).toBeGreaterThan(countBefore);
   });
 
   test('content behind particles is clickable', async ({ page }) => {
@@ -53,7 +70,7 @@ test.describe('Particles smoke tests', () => {
         await page.waitForLoadState('networkidle');
       }
 
-      const canvas = page.locator('#particles canvas.particles-js-canvas-el');
+      const canvas = page.locator('#particles canvas.particles-canvas');
       await expect(canvas).toBeVisible({ timeout: 10_000 });
 
       const dimensions = await canvas.evaluate((el: HTMLCanvasElement) => ({

@@ -36,11 +36,11 @@ Safety net before any visual changes. Blocks Phase 2 and Phase 4.
 
 Requires: Phase 1 complete.
 
-- [ ] Migrate state to Svelte 5 runes — `writable()` → `$state`/`$derived` in `state.js` — D5
-- [ ] Write custom Canvas particle engine — `engine.ts`, `renderer.ts`, `interactions.ts`, `types.ts` — D1
-- [ ] Replace `Particles.svelte` — integrate custom renderer, wire up dark mode via runes
-- [ ] Run visual regression + particles smoke test — validate rendering matches
-- [ ] Remove `particles.js` fork — delete dependency, remove `particle.config.json`
+- [x] Migrate state to Svelte 5 runes — `writable()` → `$state`/`$derived` in `state.svelte.js` — D5
+- [x] Write custom Canvas particle engine — `engine.ts`, `renderer.ts`, `interactions.ts`, `types.ts` — D1 — completed 2026-02-28
+- [x] Replace `Particles.svelte` — integrate custom renderer, wire up dark mode via runes — completed 2026-02-28
+- [x] Run visual regression + particles smoke test — validate rendering matches — completed 2026-02-28 (`npm run test:particles`, `npm run test:visual`)
+- [x] Remove `particles.js` fork — delete dependency, remove `particle.config.json` — completed 2026-02-28
 
 ---
 
@@ -98,7 +98,9 @@ Tasks that came up during implementation. Add items here as they're discovered.
 
 | Date | Task | Phase | Status |
 |------|------|-------|--------|
-| | | | |
+| 2026-02-28 | Fix flaky visual regression tests — particles canvas bled through in light-mode screenshots; replaced MutationObserver-based hiding with CSS + DOM removal of canvas after navigation | Phase 1 | Done |
+| 2026-02-28 | Regenerate baseline screenshots after bug fix | Phase 1 | Done |
+| 2026-02-28 | Replace `particles.js` with a local canvas engine and remove `particle.config.json` | Phase 2 | Done |
 
 ---
 
@@ -110,7 +112,7 @@ Record completed phases and any notable outcomes.
 |-------|-----------|-------|
 | Phase 0 | | |
 | Phase 1 | | |
-| Phase 2 | | |
+| Phase 2 | 2026-02-28 | Custom canvas particle renderer replaces `particles.js`; smoke and visual regression suites passed |
 | Phase 3 | | |
 | Phase 4 | | |
 | Phase 5 | | |

@@ -1,7 +1,7 @@
 <script>
   import { onMount, onDestroy, tick } from 'svelte';
   import { fade } from 'svelte/transition';
-  import { particlesEnabled } from '$lib/state';
+  import { particlesEnabled } from '$lib/state.svelte.js';
   export let data;
   let htmlContent = '';
   let errorMessage = '';
@@ -21,7 +21,7 @@
 
   onMount(async () => {
     // Disable particles on blog article pages for better readability
-    particlesEnabled.set(false);
+    particlesEnabled.current = false;
 
     try {
       const res = await fetch(`/articles/${data.slug}.html`, { cache: 'no-store' });
@@ -44,8 +44,7 @@
     if (documentClickHandler) document.removeEventListener('click', documentClickHandler);
     if (documentEscapeHandler) document.removeEventListener('keydown', documentEscapeHandler);
 
-    // Re-enable particles when leaving the blog article
-    particlesEnabled.set(true);
+    particlesEnabled.current = true;
   });
 
   async function activateEmbeddedScripts() {
