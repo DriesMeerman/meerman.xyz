@@ -7,9 +7,17 @@ export default {
     './src/**/*.js'
   ],
   theme: {
-    extend: {}
+    extend: {
+      spacing: {
+        30: '7.5rem'
+      },
+      colors: {
+        teal: {
+          DEFAULT: '#14b8a6'
+        }
+      }
+    }
   },
   plugins: [require('@tailwindcss/typography')]
 };
-
 

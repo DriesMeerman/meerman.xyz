@@ -3,11 +3,11 @@
   import '../app.css';
   import Menu from '$lib/Menu.svelte';
   import Particles from '$lib/Particles.svelte';
-  import { darkMode, particlesEnabled } from '$lib/state';
+  import { darkMode, particlesEnabled } from '$lib/state.svelte.js';
   let { children } = $props();
   $effect(() => {
     if (typeof document !== 'undefined') {
-      document.documentElement.classList.toggle('dark', $darkMode);
+      document.documentElement.classList.toggle('dark', darkMode.current);
     }
   });
 </script>
@@ -26,8 +26,8 @@
     <main class="p-6 pt-12 w-full sm:w-2/3 dark:text-white mx-auto">
       {@render children?.()}
     </main>
-    <div class="particle-background" class:fade-in={$particlesEnabled} class:fade-out={!$particlesEnabled}>
-      <Particles class="h-full border-1" />
+    <div class="particle-background" class:fade-in={particlesEnabled.current} class:fade-out={!particlesEnabled.current}>
+      <Particles cssClass="h-full border-1" />
     </div>
   </div>
 </div>
