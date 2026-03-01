@@ -23,8 +23,7 @@
 </Card>
 
 <style>
-  a svg { transition: transform 0.3s ease, fill 0.3s ease; }
+  a svg { transition: transform 0.3s ease; }
   a:hover svg { transform: scale(1.1); }
 </style>
-
 

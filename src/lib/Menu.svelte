@@ -65,9 +65,8 @@
 
 <style>
   .mtop-6 { margin-top: 6px; }
-  .icon-hover { transition: transform 0.3s ease, fill 0.3s ease; }
+  .icon-hover { transition: transform 0.3s ease; }
   .icon-hover:hover { transform: scale(1.1); fill: #64748b; }
   :global(.dark) .icon-hover:hover { fill: #94a3b8; }
 </style>
-
 
