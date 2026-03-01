@@ -1,4 +1,8 @@
 <script>
+  import { getPictureSourcesFromUrl } from '$lib/services/imageService.js';
+  /** @typedef {'common' | 'uncommon' | 'rare' | 'epic' | 'legendary'} Rarity */
+
+  /** @type {{ image: string; alt?: string; backText?: string; rarity?: Rarity; children?: import('svelte').Snippet }} */
   let { image, alt = 'an image', backText = '', rarity = 'common', children } = $props();
   let showBackSide = $state(false);
   let hideOverflow = $state(true);
@@ -15,19 +19,42 @@
     red: 'from-amber-500/25 to-red-500/25',
     gray: 'from-gray-500/25 to-pink-300/25'
   };
+  /** @type {Record<Rarity, string>} */
   const colorRarity = { common: colors.gray, uncommon: colors.green, rare: colors.blue, epic: colors.purple, legendary: colors.red };
-  const hasShine = rarity === 'epic' || rarity === 'legendary';
+  const fallbackRarity = colorRarity.common;
+  let activeRarityClass = $derived(colorRarity[rarity] ?? fallbackRarity);
+  let hasShine = $derived(rarity === 'epic' || rarity === 'legendary');
+  let pictureSources = $derived(getPictureSourcesFromUrl(image));
+
+  /** @param {KeyboardEvent} event */
   function cardKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') { showBackSide = !showBackSide; event.preventDefault(); }
   }
 </script>
 
-<div class={`skill-card flex flex-col h-48 w-[8.75rem] md:h-64 md:w-40 border-solid border-teal rounded-lg bg-gradient-to-r ${showBackSide ? 'show-back-side' : ''} ${hideOverflow ? 'overflow-hidden' : ''} ${colorRarity[rarity]}`}
+<div class={`skill-card flex flex-col h-48 md:h-64 border-solid border-teal rounded-lg bg-gradient-to-r ${showBackSide ? 'show-back-side' : ''} ${hideOverflow ? 'overflow-hidden' : ''} ${activeRarityClass}`}
      role="button" tabindex="0" onclick={() => (showBackSide = !showBackSide)} onkeydown={cardKeydown}>
   <div class={`${hasShine && hideOverflow ? 'shine' : ''} overflow-visible`}></div>
   <div class="front h-full w-full">
     <div class="card-image h-20 md:h-28 border-solid border-2 border-white/10 mt-2 self-center p-4 rounded-lg">
-      <img {alt} class="image object-contain h-full w-full aspect-square" src={image} />
+      {#if pictureSources}
+        <picture>
+          <source srcset={pictureSources.avifSrcset} sizes="(min-width: 768px) 9rem, 8rem" type="image/avif" />
+          <source srcset={pictureSources.webpSrcset} sizes="(min-width: 768px) 9rem, 8rem" type="image/webp" />
+          <img
+            {alt}
+            class="image object-contain h-full w-full aspect-square"
+            src={pictureSources.fallback}
+            srcset={pictureSources.fallbackSrcset}
+            sizes="(min-width: 768px) 9rem, 8rem"
+            width={pictureSources.width}
+            height={pictureSources.height}
+            loading="lazy"
+          />
+        </picture>
+      {:else}
+        <img {alt} class="image object-contain h-full w-full aspect-square" src={image} loading="lazy" />
+      {/if}
     </div>
     <div class="p-3 h-full">{@render children?.()}</div>
   </div>
@@ -44,6 +71,9 @@
   .skill-card .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; transform: rotateY(180deg); }
   .skill-card .front { transform: rotateY(0deg); backface-visibility: hidden; display: flex; flex-direction: column; }
   .card-body-text { font-size: 10px; font-family: monospace, Courier; }
+  .skill-card {
+    width: 8.75rem;
+  }
   .card-image {
     width: calc(100% - 1rem);
     max-width: 8rem;
@@ -54,10 +84,10 @@
   }
   .image { display: block; }
   @media (min-width: 768px) {
+    .skill-card { width: 10rem; }
     .card-image { max-width: 9rem; }
   }
   :global(.dark .card-image) { box-shadow: inset 1px 1px 2px 1px #0000004f; background: #77889973 !important; }
   .skill-card { transition: all ease .8s; box-shadow: 1px 1px 3px 0px rgb(23 76 76 / 70%); }
   .skill-card:hover { transition: all ease .8s; box-shadow: 0px 1px 2px 0px rgba(0,255,255,.7), 1px 2px 4px 0px rgba(0,255,255,.7), 2px 4px 12px 0px rgba(0,255,255,.7); cursor: pointer; }
 </style>
-

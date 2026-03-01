@@ -2,12 +2,12 @@
   import { browser, dev } from '$app/environment';
   import '../app.css';
   import Menu from '$lib/Menu.svelte';
-  import { darkMode } from '$lib/state';
+  import { darkMode } from '$lib/state.svelte.js';
   let { children } = $props();
 
   $effect(() => {
     if (typeof document !== 'undefined') {
-      document.documentElement.classList.toggle('dark', $darkMode);
+      document.documentElement.classList.toggle('dark', darkMode.current);
     }
   });
 

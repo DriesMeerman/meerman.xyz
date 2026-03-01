@@ -58,8 +58,7 @@
     font-size: clamp(1.2rem, 1.8vw, 1.5rem);
   }
 
-  .page-head p,
-  .section-head p {
+  .page-head p {
     margin: 0.5rem auto 0;
     max-width: 56ch;
     color: #475569;
@@ -71,8 +70,7 @@
     color: #f8fafc;
   }
 
-  :global(.dark .page-head p),
-  :global(.dark .section-head p) {
+  :global(.dark .page-head p) {
     color: #cbd5e1;
   }
 </style>

@@ -16,6 +16,8 @@ npm run dev
 
 Then open [localhost:5173](http://localhost:5173)
 
+The toolchain is fully Node-based. Local development no longer requires ImageMagick or `cwebp`.
+
 ## Building
 
 To create a production build:
@@ -36,13 +38,24 @@ This project is developed on macOS and built in CI on Linux. Some dependencies (
 
 For that reason, CI intentionally runs `npm install` (and regenerates `package-lock.json`) instead of `npm ci`, so dependency resolution happens in the Linux environment where the artifact is produced.
 
+## Cross-platform build requirement
+
+Local development happens on macOS, while the production artifact is built on Linux. Any new build step, transpiler, bundler plugin, shell script, or asset pipeline must work on both platforms.
+
+When changing the build:
+
+- Prefer Node-based tooling or other cross-platform dependencies over platform-specific binaries.
+- Avoid relying on GNU-only or BSD-only command behavior unless the script explicitly handles both.
+- If a tool needs native compilation or optional platform packages, verify it installs and runs on both macOS and Linux before adopting it.
+- Keep generated output and path handling portable so local builds and server builds produce equivalent artifacts.
+
 ## Generated optimized images (`/g/assets`)
 
-The site references optimized image variants under `/g/assets/*` (for example `servicenow_logo-400.png` and `realm_db_logo-306.png`).
+The site references optimized image variants under `/g/assets/*` (for example `servicenow_logo-400.png`, `realm_db_logo-306.png`, and AVIF/WebP companions).
 
 Those files are generated from source files in `static/assets`, and written to `static/g/assets`:
 
-- Run generation with `npm run build:images` (used in CI and Docker build)
+- Run generation with `npm run build:images` or as part of `npm run build`
 - `static/g/` remains gitignored (generated artifact, not source)
 - CI validates that `build/g/assets` exists and contains required optimized files before publishing the container
 
@@ -51,7 +64,6 @@ Those files are generated from source files in `static/assets`, and written to `
 ### Build and run with Docker
 
 The main `Dockerfile` uses a multi-stage build to compile the SvelteKit app and serve it with nginx.
-It includes Python and build tools required by the `particles.js` dependency.
 
 ```sh
 # Build the image
@@ -78,6 +90,9 @@ docker run -p 8080:80 meerman-xyz
 - `src/` - SvelteKit application source
 - `content/blog/` - Blog articles in folder-per-article format
 - `static/` - Static assets served directly
+- `docs/` - [Project documentation](docs/README.md) (architecture, analysis, decisions, guides)
+
+`docs/gudies/STYLE_GUIDE.md` - important to use when changing UI.
 
 ## Blog
 
@@ -88,9 +103,11 @@ Blog articles use this structure:
 `content/blog/<slug>/assets/*` (optional article-local assets)
 
 The build process:
-1. `generateBlogIndex.cjs` - Generates RSS feed and article data
-2. `convertMarkdown.cjs` - Converts markdown to HTML
-3. `scripts/validateBlogContent.cjs` - Validates required metadata, duplicate IDs, and duplicate slugs
+1. `npm run validate:blog` - Validates required metadata, duplicate IDs, and duplicate slugs
+2. `npm run build:index` - Generates RSS feed and article data
+3. `npm run build:articles` - Converts markdown/HTML articles into static output
+4. `npm run build:images` - Generates optimized image variants with Sharp
+5. `npm run build:sitemap` - Generates `static/sitemap.xml` and `static/robots.txt`
 
 These run automatically before dev/build via npm scripts.
 
@@ -125,7 +142,8 @@ This keeps immersive/custom article styling while avoiding Tailwind CDN runtime 
 ```sh
 npm run validate:blog
 npm run build:index
-npm run build:markdown
+npm run build:articles
+npm run build:sitemap
 ```
 
 Then run `npm run dev` and check:
