@@ -178,9 +178,23 @@ export function listFilesRecursive(rootDir: string) {
 	return filePaths.sort();
 }
 
+function normalizeGeneratedTimestamp(content: string) {
+	return content.replace(
+		/^(\/\/ Generated at |<!-- Generated at )\d{4}-\d{2}-\d{2}T[^ \n]+( -->)?$/m,
+		(_, prefix: string, suffix?: string) => `${prefix}__TIMESTAMP__${suffix ?? ''}`
+	);
+}
+
 export function writeFileIfChanged(filePath: string, content: string) {
-	if (fs.existsSync(filePath) && fs.readFileSync(filePath, 'utf8') === content) {
-		return false;
+	if (fs.existsSync(filePath)) {
+		const existingContent = fs.readFileSync(filePath, 'utf8');
+		if (existingContent === content) {
+			return false;
+		}
+
+		if (normalizeGeneratedTimestamp(existingContent) === normalizeGeneratedTimestamp(content)) {
+			return false;
+		}
 	}
 
 	ensureDir(path.dirname(filePath));
