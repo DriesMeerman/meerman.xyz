@@ -2,7 +2,7 @@
   import Particles from '$lib/Particles.svelte';
   import Person from '$lib/home/Person.svelte';
   import Socials from '$lib/home/Socials.svelte';
-  import { particlesEnabled } from '$lib/state';
+  import { particlesEnabled } from '$lib/state.svelte.js';
 </script>
 
 <Person>
@@ -30,9 +30,9 @@
   <Socials />
 </div>
 
-<div class="particle-background" class:fade-in={$particlesEnabled} class:fade-out={!$particlesEnabled}>
-  {#if $particlesEnabled}
-    <Particles class="h-full border-1" />
+<div class="particle-background" class:fade-in={particlesEnabled.current} class:fade-out={!particlesEnabled.current}>
+  {#if particlesEnabled.current}
+    <Particles cssClass="h-full border-1" />
   {/if}
 </div>
 
