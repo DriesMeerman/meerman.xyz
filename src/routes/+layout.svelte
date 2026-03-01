@@ -1,19 +1,41 @@
 <script>
-  import favicon from '$lib/assets/favicon.svg';
+  import { browser, dev } from '$app/environment';
   import '../app.css';
   import Menu from '$lib/Menu.svelte';
-  import Particles from '$lib/Particles.svelte';
-  import { darkMode, particlesEnabled } from '$lib/state';
+  import { darkMode } from '$lib/state';
   let { children } = $props();
+
   $effect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.classList.toggle('dark', $darkMode);
     }
   });
+
+  $effect(() => {
+    if (!browser || dev) return;
+
+    const loadAnalytics = () => {
+      if (document.querySelector('script[data-tinylytics]')) return;
+
+      const script = document.createElement('script');
+      script.src = 'https://tinylytics.app/embed/hGqRVSTNs4M9tmV5uNAn.js?spa';
+      script.defer = true;
+      script.dataset.tinylytics = 'true';
+      document.body.appendChild(script);
+    };
+
+    if ('requestIdleCallback' in window) {
+      const idleId = window.requestIdleCallback(loadAnalytics, { timeout: 2000 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = window.setTimeout(loadAnalytics, 1500);
+    return () => window.clearTimeout(timeoutId);
+  });
 </script>
 
 <svelte:head>
-  <link rel="icon" href={favicon} />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
   <title>Meerman</title>
   <meta name="description" content="A website showcasing Dries Meerman's skills, education, and experience he has accumulated over the years.">
   <meta name="author" content="Dries Meerman">
@@ -26,9 +48,6 @@
     <main class="p-6 pt-12 w-full sm:w-2/3 dark:text-white mx-auto">
       {@render children?.()}
     </main>
-    <div class="particle-background" class:fade-in={$particlesEnabled} class:fade-out={!$particlesEnabled}>
-      <Particles class="h-full border-1" />
-    </div>
   </div>
 </div>
 
@@ -38,13 +57,9 @@
   }
   .wrapper { position: relative; }
   .wrapper main { position: relative; z-index: 1; }
-  .wrapper .particle-background { position: fixed; z-index: 0; top: 0; right: 0; bottom: 0; left: 0; pointer-events: none; }
-  .fade-in { animation: fadeIn 3s; }
-  .fade-out { animation: fadeOut 2s; opacity: 0; }
   :global(body) {
     color: #1f2937;
     background-color: #f5f5f5;
-    transition: background-color 0.5s ease, color 0.5s ease;
   }
   :global(html.dark body) {
     color: #e5e7eb;
@@ -57,6 +72,4 @@
   :global(html.dark nav a:hover) { color: #38bdf8; }
   :global(nav a.font-semibold) { color: #1f2937; }
   :global(html.dark nav a.font-semibold) { color: #e5e7eb; }
-  @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
-  @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
 </style>

@@ -22,11 +22,11 @@
   }
 </script>
 
-<div class={`skill-card flex flex-col h-48 w-30 md:h-64 md:w-40 border-solid border-teal rounded-lg bg-gradient-to-r ${showBackSide ? 'show-back-side' : ''} ${hideOverflow ? 'overflow-hidden' : ''} ${colorRarity[rarity]}`}
+<div class={`skill-card flex flex-col h-48 w-[8.75rem] md:h-64 md:w-40 border-solid border-teal rounded-lg bg-gradient-to-r ${showBackSide ? 'show-back-side' : ''} ${hideOverflow ? 'overflow-hidden' : ''} ${colorRarity[rarity]}`}
      role="button" tabindex="0" onclick={() => (showBackSide = !showBackSide)} onkeydown={cardKeydown}>
   <div class={`${hasShine && hideOverflow ? 'shine' : ''} overflow-visible`}></div>
   <div class="front h-full w-full">
-    <div class="card-image w-32 h-20 md:w-36 md:h-28 border-solid border-2 border-white/10 mx-3 mt-2 self-center p-4 rounded-lg">
+    <div class="card-image h-20 md:h-28 border-solid border-2 border-white/10 mt-2 self-center p-4 rounded-lg">
       <img {alt} class="image object-contain h-full w-full aspect-square" src={image} />
     </div>
     <div class="p-3 h-full">{@render children?.()}</div>
@@ -44,11 +44,20 @@
   .skill-card .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; transform: rotateY(180deg); }
   .skill-card .front { transform: rotateY(0deg); backface-visibility: hidden; display: flex; flex-direction: column; }
   .card-body-text { font-size: 10px; font-family: monospace, Courier; }
-  .card-image { box-shadow: inset 1px 1px 2px 1px #0000004f; background: #e5edf473; }
+  .card-image {
+    width: calc(100% - 1rem);
+    max-width: 8rem;
+    margin-inline: 0.5rem;
+    box-sizing: border-box;
+    box-shadow: inset 1px 1px 2px 1px #0000004f;
+    background: #e5edf473;
+  }
+  .image { display: block; }
+  @media (min-width: 768px) {
+    .card-image { max-width: 9rem; }
+  }
   :global(.dark .card-image) { box-shadow: inset 1px 1px 2px 1px #0000004f; background: #77889973 !important; }
   .skill-card { transition: all ease .8s; box-shadow: 1px 1px 3px 0px rgb(23 76 76 / 70%); }
   .skill-card:hover { transition: all ease .8s; box-shadow: 0px 1px 2px 0px rgba(0,255,255,.7), 1px 2px 4px 0px rgba(0,255,255,.7), 2px 4px 12px 0px rgba(0,255,255,.7); cursor: pointer; }
 </style>
-
-
 
