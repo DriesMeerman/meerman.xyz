@@ -1,8 +1,6 @@
 <script>
-  import Particles from '$lib/Particles.svelte';
   import Person from '$lib/home/Person.svelte';
   import Socials from '$lib/home/Socials.svelte';
-  import { particlesEnabled } from '$lib/state.svelte.js';
 </script>
 
 <Person>
@@ -29,31 +27,3 @@
 <div class="mt-12">
   <Socials />
 </div>
-
-<div class="particle-background" class:fade-in={particlesEnabled.current} class:fade-out={!particlesEnabled.current}>
-  {#if particlesEnabled.current}
-    <Particles cssClass="h-full border-1" />
-  {/if}
-</div>
-
-<style>
-  .particle-background {
-    position: fixed;
-    z-index: 0;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  .fade-in { animation: fadeIn 3s; }
-  .fade-out { animation: fadeOut 2s; opacity: 0; }
-
-  @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-
-  @keyframes fadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
-  }
-</style>
