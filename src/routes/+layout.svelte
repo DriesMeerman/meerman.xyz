@@ -1,5 +1,4 @@
 <script>
-  import { browser, dev } from '$app/environment';
   import '../app.css';
   import Menu from '$lib/Menu.svelte';
   import { darkMode } from '$lib/state.svelte.js';
@@ -9,28 +8,6 @@
     if (typeof document !== 'undefined') {
       document.documentElement.classList.toggle('dark', darkMode.current);
     }
-  });
-
-  $effect(() => {
-    if (!browser || dev) return;
-
-    const loadAnalytics = () => {
-      if (document.querySelector('script[data-tinylytics]')) return;
-
-      const script = document.createElement('script');
-      script.src = 'https://tinylytics.app/embed/hGqRVSTNs4M9tmV5uNAn.js?spa';
-      script.defer = true;
-      script.dataset.tinylytics = 'true';
-      document.body.appendChild(script);
-    };
-
-    if ('requestIdleCallback' in window) {
-      const idleId = window.requestIdleCallback(loadAnalytics, { timeout: 2000 });
-      return () => window.cancelIdleCallback(idleId);
-    }
-
-    const timeoutId = window.setTimeout(loadAnalytics, 1500);
-    return () => window.clearTimeout(timeoutId);
   });
 </script>
 
