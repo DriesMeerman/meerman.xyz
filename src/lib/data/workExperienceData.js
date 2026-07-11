@@ -4,12 +4,28 @@ const app4mationLogo = getImage('app4mation');
 const plat4mationLogo = getImage('plat4mation');
 
 export const workData = [
+
+    {
+        title: 'ServiceNow',
+        subtitle: 'Engineering Manager (M3)',
+	level: 'm3',
+        description: 'In addition to the team I have been managing, I am now fully focussing on managing, getting an additional team and instead of development focusing on planning and leadership. Now managing 10 people.',
+        bullets: [
+            'Industrial Connected Workforce',
+            '10 Reports'
+        ],
+        date: '2026 May',
+        image: getImage('servicenow_logo'),
+    },
     {
         title: 'ServiceNow',
         subtitle: 'Engineering Manager (M3)',
 	level: 'm3',
         description: 'I switched to a hybrid role with 50% development and 50% management, with my official title changing to manager. Continuing my work on mobile platform releases and coordinating with product / design and business units. While helping 4 direct reports grow in their career.',
-        bullets: [],
+        bullets: [
+            'Mobile platform',
+            '5 Reports'
+        ],
         date: '2025 Jun',
         image: getImage('servicenow_logo'),
     },
