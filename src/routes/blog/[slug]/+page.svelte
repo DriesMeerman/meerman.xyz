@@ -6,10 +6,11 @@
   let htmlContent = '';
   let errorMessage = '';
   let readingMinutes = null;
+  /** @type {{ src: string, alt: string } | null} */
   let enlargedImage = null;
   let articleContainer;
-  let documentClickHandler;
-  let documentEscapeHandler;
+  /** @type {HTMLDialogElement | undefined} */
+  let imageDialog;
   const imageListeners = [];
 
   if (typeof window !== 'undefined') {
@@ -33,7 +34,6 @@
         await activateEmbeddedScripts();
       }
       addImageClickListeners();
-      addEscapeKeyListener();
     } catch (e) {
       errorMessage = e.message;
     }
@@ -41,8 +41,7 @@
 
   onDestroy(() => {
     removeImageClickListeners();
-    if (documentClickHandler) document.removeEventListener('click', documentClickHandler);
-    if (documentEscapeHandler) document.removeEventListener('keydown', documentEscapeHandler);
+    imageDialog?.close();
 
     particlesEnabled.current = true;
   });
@@ -104,6 +103,7 @@
         } else {
           enlargeImage(img);
         }
+        event.preventDefault();
         event.stopPropagation();
       };
 
@@ -111,10 +111,6 @@
       imageListeners.push({ img, onClick });
     });
 
-    documentClickHandler = () => {
-      if (enlargedImage) closeEnlargedImage();
-    };
-    document.addEventListener('click', documentClickHandler);
   }
 
   function removeImageClickListeners() {
@@ -124,22 +120,16 @@
     imageListeners.length = 0;
   }
 
-  function enlargeImage(img) {
-    img.classList.add('enlarged');
-    enlargedImage = img;
-  }
-  function closeEnlargedImage() {
-    if (enlargedImage) {
-      enlargedImage.classList.remove('enlarged');
-      enlargedImage = null;
-    }
+  /** @param {HTMLImageElement} img */
+  async function enlargeImage(img) {
+    enlargedImage = { src: img.currentSrc || img.src, alt: img.alt };
+    await tick();
+    imageDialog?.showModal();
   }
 
-  function addEscapeKeyListener() {
-    documentEscapeHandler = (event) => {
-      if (event.key === 'Escape' && enlargedImage) closeEnlargedImage();
-    };
-    document.addEventListener('keydown', documentEscapeHandler);
+  function closeEnlargedImage() {
+    imageDialog?.close();
+    enlargedImage = null;
   }
 
   function calculateReadingMinutes(html) {
@@ -171,6 +161,15 @@
     </div>
   {/if}
 </section>
+
+<dialog bind:this={imageDialog} class="image-zoom" aria-label="Enlarged image" on:close={() => enlargedImage = null}>
+  <button class="image-zoom-close" aria-label="Close enlarged image" on:click={closeEnlargedImage}>
+    {#if enlargedImage}
+      <img src={enlargedImage.src} alt={enlargedImage.alt} />
+    {/if}
+    <span class="image-zoom-hint">Close ×</span>
+  </button>
+</dialog>
 
 <svelte:head>
   {#if data?.meta}
@@ -275,8 +274,54 @@
   }
 
   @media (min-width: 768px) { .prose :global(img) { max-width: 30rem; margin: 1.5rem auto; } }
-  :global(.article-content img) { cursor: pointer; transition: all 0.3s ease; border-radius: 15px; background: #f0f0f0; box-shadow: 0 10px 25px rgba(0,0,0,.5); padding: 1px; }
-  :global(.article-content img.enlarged) { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 90vw; max-height: 90vh; z-index: 1000; background: none; padding: 0; }
+  :global(.article-content img) { cursor: zoom-in; border-radius: 15px; background: #f0f0f0; box-shadow: 0 10px 25px rgba(0,0,0,.5); padding: 1px; }
+  .image-zoom {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .image-zoom::backdrop { background: rgba(0, 0, 0, 0.82); }
+
+  .image-zoom-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 3.5rem 1rem;
+    cursor: zoom-out;
+  }
+
+  .image-zoom-close img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 0.5rem;
+  }
+
+  .image-zoom-hint {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: white;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .image-zoom[open] { animation: zoom-fade-in 160ms ease-out; }
+    @keyframes zoom-fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  }
+
   :global(.dark .prose img) { background: #2a2a2a; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }
   :global(.dark .article-content img) { background: #2a2a2a; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }
 </style>

@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import { fileURLToPath } from 'node:url';
+import hljs from 'highlight.js';
 import { load as loadHtml } from 'cheerio';
 import matter from 'gray-matter';
 import { Marked } from 'marked';
@@ -34,6 +36,14 @@ function normalizeRelativeAssetSource(src: string, slug: string) {
 
 function normalizeAssetSources(html: string, slug: string) {
 	const $ = loadHtml(html, { decodeEntities: false }, false);
+	$('pre > code').each((_, element) => {
+		const code = $(element);
+		const classes = `${code.attr('class') ?? ''} ${code.parent().attr('class') ?? ''}`;
+		const language = classes.match(/\blang(?:uage)?-([\w+-]+)/i)?.[1]?.toLowerCase();
+		if (!language || !hljs.getLanguage(language) || /\bno-highlight\b/.test(classes)) return;
+		code.html(hljs.highlight(code.text(), { language, ignoreIllegals: true }).value);
+		code.addClass('hljs');
+	});
 	$('img').each((_, element) => {
 		const src = $(element).attr('src');
 		if (src) $(element).attr('src', normalizeRelativeAssetSource(src, slug));
@@ -191,7 +201,7 @@ export async function runConvertArticles(): Promise<CommandResult> {
 			...(fs.existsSync(htmlPath) ? [htmlPath] : []),
 			...listFilesRecursive(assetsPath)
 		];
-		const sourceHash = hashFiles(sourcePaths);
+		const sourceHash = hashFiles([...sourcePaths, fileURLToPath(import.meta.url), path.join(siteConfig.repoRoot, 'package-lock.json')]);
 		const cacheEntry = commandCache[slug];
 		if (isCacheEntryValid(cacheEntry, sourceHash)) {
 			console.log(`Skipping ${slug} (unchanged)`);

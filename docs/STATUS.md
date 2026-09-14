@@ -4,7 +4,7 @@ Tracks the execution of the [Codebase Analysis & Improvement Plan](analysis/CODE
 
 > **When completing a task**, check its box (`- [x]`), add the completion date, and note any follow-ups or deviations from the plan. If a task spawns new work, add it to the appropriate phase or to **Unplanned Work** at the bottom.
 
-**Last updated:** 2026-02-28
+**Last updated:** 2026-09-14
 
 ---
 
@@ -98,6 +98,7 @@ Tasks that came up during implementation. Add items here as they're discovered.
 
 | Date | Task | Phase | Status |
 |------|------|-------|--------|
+| 2026-09-14 | Add build-time blog syntax highlighting with light/dark colors; replace image positioning zoom with a layout-preserving dialog and reduced-motion support | Unplanned | Done |
 | 2026-02-28 | Fix flaky visual regression tests — particles canvas bled through in light-mode screenshots; replaced MutationObserver-based hiding with CSS + DOM removal of canvas after navigation | Phase 1 | Done |
 | 2026-02-28 | Regenerate baseline screenshots after bug fix | Phase 1 | Done |
 | 2026-02-28 | Replace `particles.js` with a local canvas engine and remove `particle.config.json` | Phase 2 | Done |
