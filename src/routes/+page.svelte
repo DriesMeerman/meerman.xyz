@@ -1,11 +1,12 @@
 <script>
   import Person from '$lib/home/Person.svelte';
   import Socials from '$lib/home/Socials.svelte';
+  import { company } from '$lib/data/companyData.js';
 </script>
 
 <svelte:head>
   <title>Dries Meerman · Software engineer &amp; engineering manager</title>
-  <meta name="description" content="Dries Meerman — software engineer, engineering manager, technologist, and nerd based in Amsterdam. My background, interests, work, and writing." />
+  <meta name="description" content="Dries Meerman is a software engineer, engineering manager, technologist, and nerd based in Amsterdam. My background, interests, work, and writing." />
 </svelte:head>
 
 <div class="home-profile profile-theme">
@@ -22,10 +23,18 @@
     <p class="hero-intro">
       Technologist and nerd. I enjoy building flexible systems, learning how things work, and helping people grow.
     </p>
-    <div class="hero-links">
-      <a href="/experience">Explore my work <span aria-hidden="true">↗</span></a>
-      <a href="/blog">Read my writing <span aria-hidden="true">↗</span></a>
-    </div>
+    <a class="company-intro" href="/industries" aria-labelledby="home-company-name" aria-describedby="home-company-description">
+      <span class="company-symbol" aria-hidden="true">
+        <svg viewBox="40 38 142 92" fill="none">
+          <path d="M50 120V48L88 88L126 48V120M160 48V120M148 48H172M148 120H172" stroke="currentColor" stroke-width="7" stroke-linejoin="bevel" />
+        </svg>
+      </span>
+      <span class="company-copy">
+        <span id="home-company-name" class="company-name">{company.name}</span>
+        <span id="home-company-description" class="company-description">My software development company</span>
+      </span>
+      <span class="company-arrow" aria-hidden="true">↗</span>
+    </a>
   </Person>
 
   <div class="biography-grid">
@@ -33,7 +42,7 @@
       <p class="card-label" aria-hidden="true">01 / Background</p>
       <h2 id="background-title">How I got here</h2>
       <p>
-        It started with a Game Boy Color and Pokémon Gold. Minecraft—and ComputerCraft in particular—got me
+        It started with a Game Boy Color and Pokémon Gold. Minecraft, especially ComputerCraft, got me
         writing <a href="https://lua.org/">Lua</a> to automate things in-game. Programming quickly became
         the thing I wanted to get better at.
       </p>
@@ -47,7 +56,6 @@
         manage a team of 10, with a focus on helping people grow. I still care about software that's flexible
         enough to be useful in different ways.
       </p>
-      <a class="section-link" href="/skills">Explore my skills <span aria-hidden="true">↗</span></a>
     </section>
 
     <section class="bio-card personal-card profile-panel" aria-labelledby="interests-title">
@@ -62,7 +70,7 @@
       </p>
       <p>
         I share my home with <a href="/cats">two cats</a>, Henrietta and Gina. Also known as Fen Fen, Gina Beena,
-        Joony B Coots, Juniper Breeze, Foonry Winks—or just the Coots.
+        Joony B Coots, Juniper Breeze, Foonry Winks, or just the Coots.
       </p>
     </section>
   </div>
@@ -72,9 +80,6 @@
       <h2 id="connections-title" class="profile-section-title">03 / Find me elsewhere</h2>
     </div>
     <Socials />
-    <p class="company-link">
-      <a href="/industries">Meerman Industries · Company details <span aria-hidden="true">↗</span></a>
-    </p>
   </section>
 </div>
 
@@ -95,10 +100,14 @@
   .title-dot { color: var(--profile-accent); }
   .hero-role { margin: 1rem 0 0; color: var(--profile-ink); font-size: .9rem; font-weight: 500; line-height: 1.6; }
   .hero-intro { margin: 0; max-width: 45ch; color: var(--profile-muted); font-size: .95rem; line-height: 1.75; }
-  .hero-links { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; margin-top: 1.35rem; }
-  .hero-links a { display: inline-flex; align-items: center; gap: .6rem; padding: .4rem 0; border-bottom: 1px solid var(--profile-accent); color: var(--profile-ink); font-size: .78rem; font-weight: 600; line-height: 1.6; text-decoration: none; }
-  .hero-links span { color: var(--profile-accent); }
-  .hero-links a:hover { color: var(--profile-accent); }
+  .company-intro { display: flex; align-items: center; gap: .75rem; width: fit-content; max-width: 100%; margin-top: 1.35rem; padding: .65rem .85rem; border: 1px solid var(--profile-line); border-radius: .35rem; background: var(--profile-inset); color: var(--profile-ink); text-decoration: none; }
+  .company-symbol { display: flex; align-items: center; justify-content: center; flex: 0 0 2.2rem; height: 2.2rem; border: 1px solid var(--profile-line); border-radius: .2rem; color: var(--profile-accent); }
+  .company-symbol svg { width: 1.7rem; height: 1.2rem; }
+  .company-copy { display: flex; flex-direction: column; gap: .2rem; min-width: 0; }
+  .company-name { font-size: .8rem; font-weight: 600; line-height: 1.5; }
+  .company-description { color: var(--profile-muted); font-size: .68rem; line-height: 1.6; }
+  .company-arrow { margin-left: .4rem; color: var(--profile-accent); }
+  .company-intro:hover { border-color: var(--profile-accent); }
 
   .biography-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 1.2rem; }
   .bio-card { padding: 1.6rem; min-width: 0; }
@@ -109,13 +118,8 @@
   .bio-card p:last-child { margin-bottom: 0; }
   .bio-card p a { text-decoration: underline; text-decoration-color: var(--profile-accent); text-underline-offset: 3px; }
   .bio-card p a:hover { color: var(--profile-accent); }
-  .section-link { display: inline-flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; margin-top: .25rem; padding-top: .85rem; border-top: 1px solid var(--profile-line); color: var(--profile-accent); font-family: var(--profile-meta-font); font-size: .62rem; line-height: 1.6; text-decoration: none; }
-  .section-link span { font-size: .95rem; }
 
   .connections { margin-top: 2.5rem; }
-  .company-link { margin: 1.25rem 0 0; font-family: var(--profile-meta-font); font-size: .62rem; line-height: 1.8; color: var(--profile-muted); }
-  .company-link a { display: inline-flex; align-items: center; gap: .65rem; text-decoration: none; }
-  .company-link a:hover { color: var(--profile-accent); }
 
   a:focus-visible { outline: 2px solid var(--profile-accent); outline-offset: 4px; }
 
@@ -130,7 +134,6 @@
 
   @media (max-width: 640px) {
     .bio-card { padding: 1.2rem; }
-    .hero-links { gap: .65rem 1.2rem; }
   }
 
   @media (max-width: 380px) {

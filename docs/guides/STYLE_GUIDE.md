@@ -116,12 +116,12 @@ Shared shape tokens are `--profile-radius: .9rem` and `--profile-shadow: 1px 2px
 
 ### Personal homepage
 
-1. Keep the personal profile at `/`. Start with the name, current engineering/leadership role, a concise introduction, and the real portrait. The homepage also links directly to work and writing; the longer background and interests follow below.
+1. Keep the personal profile at `/`. Start with the name, current engineering/leadership role, a concise introduction, and the real portrait. Place the company link directly beneath the introduction so visitors can find it without scrolling on typical desktop and mobile screens. Leave general work and writing navigation in the header; the longer background and interests follow below.
 2. `home/Person.svelte` renders a named `heading` snippet, the introduction/actions as its `children`, and the existing responsive portrait. At desktop widths the portrait sits beside the introduction. Smaller screens use a compact portrait beside the name, with introduction text spanning the full width beneath them.
 3. Use the same inset image frame, thin border, corner mark, and technical caption as the shared design. Preserve the photograph's natural proportions and colours. Load this visible portrait eagerly with responsive AVIF/WebP/fallback sources and high fetch priority.
 4. Split the biography into Background and Off the clock cards. Use real paragraphs and clear headings; keep body copy left-aligned at `1.75` line height. Preserve the personal voice, hobbies, and playful details while making the text easy to scan.
-5. `home/Socials.svelte` uses labelled inset links with the existing social icons and destinations. Four links fit in one row from `1280px`; narrower widths use two columns, and long labels wrap. Keep a discreet company-details link beneath these links.
-6. The hero's two links and the social links have visible keyboard focus. Apply small hover motion only to interactive social links and respect reduced motion. Keep the shared navigation stable.
+5. `home/Socials.svelte` uses labelled inset links with the existing social icons and destinations. Four links fit in one row from `1280px`; narrower widths use two columns, and long labels wrap. The company link uses a compact inset panel in the introduction, the Industries monogram, the shared company name, and a plain description of its purpose.
+6. Company, social, and contextual biography links have visible keyboard focus. Apply small hover motion only to interactive social links and respect reduced motion. Keep the shared navigation stable.
 
 ## 5. Consistency Improvement Backlog
 
