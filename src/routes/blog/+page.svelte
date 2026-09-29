@@ -1,267 +1,271 @@
 <script>
   import { onMount } from 'svelte';
-  import { fade, fly } from 'svelte/transition';
-  let posts = [];
-  let error = '';
+  import ProfilePage from '$lib/ProfilePage.svelte';
 
-  onMount(async () => {
-    try {
-      const res = await fetch('/feed.json');
-      if (!res.ok) throw new Error('Failed to load posts');
-      posts = (await res.json()).sort((a, b) => new Date(b.date) - new Date(a.date));
-    } catch (e) {
-      error = e.message;
-    }
+  /**
+   * @typedef {{
+   *   ID: number | string,
+   *   slug?: string,
+   *   filename?: string,
+   *   title: string,
+   *   summary: string,
+   *   date: string,
+   *   sourceType?: string
+   * }} Post
+   */
+
+  /** @type {Post[]} */
+  let posts = $state([]);
+  let error = $state('');
+  let loading = $state(true);
+
+  const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC'
   });
 
-  function isoDate(str) {
-    return new Date(str).toISOString().split('T')[0];
+  async function loadPosts() {
+    loading = true;
+    error = '';
+    try {
+      const response = await fetch('/feed.json');
+      if (!response.ok) throw new Error('Failed to load articles');
+      posts = (await response.json()).sort(
+        /** @param {Post} left @param {Post} right */
+        (left, right) => Date.parse(right.date) - Date.parse(left.date)
+      );
+    } catch {
+      error = 'The article archive could not be loaded. Please try again.';
+    } finally {
+      loading = false;
+    }
   }
 
+  onMount(() => { void loadPosts(); });
+
+  /** @param {string} date */
+  function isoDate(date) {
+    return new Date(date).toISOString().split('T')[0];
+  }
+
+  /** @param {number | string} id */
   function formatId(id) {
     return String(id).padStart(3, '0');
   }
 
+  /** @param {Post} post */
   function postSlug(post) {
     return post.slug || post.filename?.replace(/\.md$/, '');
   }
 
+  /** @param {Post} post */
   function sourceLabel(post) {
-    return post.sourceType === 'html' ? 'IMMERSIVE' : 'NOTES';
+    return post.sourceType === 'html' ? 'Immersive' : 'Notes';
   }
 </script>
 
 <svelte:head>
-  <title>Meerman - Blog</title>
-  <meta name="description" content="Digital reflections - A collection of articles about software development, technology, and other topics." />
-  <meta name="author" content="Dries Meerman">
-  <meta name="keywords" content="Dries Meerman, Meerman, Software Engineer, Blog">
+  <title>Digital Reflections · Meerman</title>
+  <meta name="description" content="Digital reflections — experiments, engineering notes, and articles about software development and technology." />
+  <meta name="author" content="Dries Meerman" />
+  <meta name="keywords" content="Dries Meerman, Meerman, Software Engineer, Blog" />
 </svelte:head>
 
-<section class="blog-index" in:fade={{ duration: 250 }} out:fade={{ duration: 180 }}>
-  <header class="blog-hero" in:fly={{ y: 14, duration: 280 }}>
-    <p class="eyebrow">Blog</p>
-    <h1>Digital Reflections</h1>
-    <p class="dek">
-      Experiments, engineering notes, and long-form explorations. And various thoughts.
-    </p>
-    <a class="rss-pill" href="/feed.xml" aria-label="RSS feed">RSS feed</a>
-  </header>
-
-  {#if error}
-    <div class="state-panel">Error: {error}</div>
-  {:else if posts.length}
-    <div class="posts-grid">
-      {#each posts as post, index}
-        <article class="post-card" in:fly={{ y: 10, duration: 260, delay: Math.min(index * 25, 220) }}>
-          <a class="post-link" href={`/blog/${postSlug(post)}`}>
-            <div class="post-topline">
-              <span class="post-id">#{formatId(post.ID)}</span>
-              <span class="post-type">{sourceLabel(post)}</span>
-              <time class="post-date">{isoDate(post.date)}</time>
-            </div>
-            <h2 class="post-title">{post.title}</h2>
-            <p class="post-summary">{post.summary}</p>
-          </a>
-        </article>
-      {/each}
+<ProfilePage title="Digital Reflections" marker="Blog" description="Experiments, engineering notes, long-form explorations, and various thoughts.">
+  <section class="profile-section" aria-labelledby="blog-archive">
+    <div class="profile-section-head archive-head">
+      <h2 id="blog-archive" class="profile-section-title">01 / Articles</h2>
+      <div class="archive-controls">
+        {#if !loading && !error}
+          <span class="profile-section-count">{posts.length} entries</span>
+        {/if}
+        <a class="rss-link" href="/feed.xml" aria-label="RSS feed">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+            <circle cx="5" cy="19" r="1" fill="currentColor" />
+            <path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <span>RSS feed</span>
+        </a>
+      </div>
     </div>
-  {:else}
-    <div class="state-panel">Loading posts...</div>
-  {/if}
-</section>
+
+    {#if loading}
+      <div class="state-panel" role="status"><p>Loading articles…</p></div>
+    {:else if error}
+      <div class="state-panel" role="alert">
+        <p>{error}</p>
+        <button class="retry-button" type="button" onclick={loadPosts}>Try again <span aria-hidden="true">↗</span></button>
+      </div>
+    {:else if posts.length}
+      <div class="posts-grid">
+        {#each posts as post (postSlug(post))}
+          <article class="post-card">
+            <a class="post-link" href={'/blog/' + postSlug(post)} aria-labelledby={'post-title-' + postSlug(post)}>
+              <div class="post-topline">
+                <span class="post-id">#{formatId(post.ID)}</span>
+                <span class="post-type">{sourceLabel(post)}</span>
+                <time class="post-date" datetime={isoDate(post.date)}>{dateFormatter.format(new Date(post.date))}</time>
+              </div>
+              <h3 id={'post-title-' + postSlug(post)} class="post-title">{post.title}</h3>
+              <p class="post-summary">{post.summary}</p>
+              <div class="post-bottomline" aria-hidden="true">
+                <span>Read article</span><span class="read-arrow">↗</span>
+              </div>
+            </a>
+          </article>
+        {/each}
+      </div>
+    {:else}
+      <div class="state-panel" role="status"><p>No articles yet. Check back soon.</p></div>
+    {/if}
+  </section>
+</ProfilePage>
 
 <style>
-  .blog-index {
-    --blog-bg: #eef3fb;
-    --blog-panel: #ffffff;
-    --blog-panel-2: #f8fbff;
-    --blog-border: #d5deec;
-    --blog-ink: #1f2937;
-    --blog-muted: #5e6b82;
-    --blog-accent: #168fc7;
-    --blog-accent-soft: rgba(22, 143, 199, 0.1);
-    --blog-glow: rgba(56, 189, 248, 0.1);
-    min-height: 70vh;
-    padding: clamp(1rem, 1.4vw + 0.75rem, 1.65rem);
-    background:
-      radial-gradient(circle at 14% 6%, var(--blog-glow), transparent 42%),
-      radial-gradient(circle at 88% 12%, rgba(20, 184, 166, 0.09), transparent 44%),
-      linear-gradient(140deg, #f9fbff 0%, var(--blog-bg) 55%, #edf2fb 100%);
-    color: var(--blog-ink);
-    border: 1px solid var(--blog-border);
-    border-radius: 1rem;
-    box-shadow: 0 18px 38px rgba(32, 62, 101, 0.08);
-  }
+  .archive-head { align-items: center; }
+  .archive-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .75rem; }
 
-  :global(html.dark) .blog-index {
-    --blog-bg: #1f2230;
-    --blog-panel: #262a39;
-    --blog-panel-2: #282d3c;
-    --blog-border: #3d4354;
-    --blog-ink: #e7ebf3;
-    --blog-muted: #bcc4d4;
-    --blog-accent: #5cb7db;
-    --blog-accent-soft: rgba(92, 183, 219, 0.1);
-    --blog-glow: rgba(92, 183, 219, 0.08);
-    background:
-      radial-gradient(circle at 16% 8%, rgba(92, 183, 219, 0.09), transparent 45%),
-      radial-gradient(circle at 84% 10%, rgba(99, 102, 241, 0.08), transparent 46%),
-      linear-gradient(138deg, #1e2230 0%, var(--blog-bg) 60%, #232838 100%);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
-  }
-
-  .blog-hero {
-    padding: clamp(0.45rem, 0.8vw, 0.9rem) clamp(0.2rem, 0.9vw, 0.7rem) 1.1rem;
-  }
-
-  .eyebrow {
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    font-size: 0.68rem;
-    color: var(--blog-accent);
-    font-weight: 700;
-  }
-
-  .blog-hero h1 {
-    margin: 0.5rem 0 0.7rem;
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 0.98;
-    letter-spacing: -0.04em;
-    font-weight: 800;
-  }
-
-  .dek {
-    margin: 0;
-    max-width: 58ch;
-    color: var(--blog-muted);
-    line-height: 1.62;
-  }
-
-  .rss-pill {
-    display: inline-block;
-    margin-top: 1.05rem;
-    border: 1px solid var(--blog-border);
-    background: linear-gradient(140deg, rgba(14, 165, 233, 0.12), rgba(20, 184, 166, 0.04));
-    color: var(--blog-ink);
+  .rss-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .5rem .6rem;
+    border: 1px solid var(--profile-line);
+    border-radius: .3rem;
+    background: var(--profile-inset);
+    color: var(--profile-accent);
+    font-family: var(--profile-meta-font);
+    font-size: .62rem;
+    line-height: 1.5;
     text-decoration: none;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.45rem 0.7rem;
-    border-radius: 999px;
-    transition: transform 160ms ease, border-color 160ms ease;
   }
 
-  .rss-pill:hover {
-    transform: translateY(-0.5px);
-    border-color: var(--blog-accent);
-    box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.14) inset;
-  }
+  .rss-link svg { width: .9rem; height: .9rem; flex-shrink: 0; }
+  .rss-link:hover { border-color: var(--profile-accent); }
 
   .posts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-    gap: 0.95rem;
-    margin-top: 0.65rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 1.2rem;
   }
 
   .post-card {
-    border: 1px solid var(--blog-border);
-    background: linear-gradient(160deg, var(--blog-panel) 0%, var(--blog-panel-2) 100%);
-    border-radius: 0.9rem;
-    overflow: hidden;
-    transition: border-color 180ms ease, transform 180ms ease, box-shadow 220ms ease, background-color 200ms ease;
+    position: relative;
+    min-width: 0;
+    border: 1px solid var(--profile-line);
+    border-radius: var(--profile-radius);
+    background: linear-gradient(135deg, #43cbc414, transparent 55%, #8299e410), var(--profile-surface);
+    box-shadow: var(--profile-shadow);
+    transition: transform 180ms ease, border-color 180ms ease;
   }
 
-  .post-card:hover {
-    border-color: color-mix(in oklab, var(--blog-accent), var(--blog-border) 72%);
-    transform: translateY(-1px);
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.13);
+  .post-card::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 17px;
+    height: 17px;
+    border-top: 1px solid var(--profile-accent);
+    border-right: 1px solid var(--profile-accent);
+    border-radius: 0 .4rem 0 0;
+    opacity: .75;
+    pointer-events: none;
   }
+
+  .post-card:hover { transform: translateY(-1px); border-color: var(--profile-accent); }
 
   .post-link {
-    display: block;
+    display: flex;
+    flex-direction: column;
     height: 100%;
+    padding: 1.5rem;
+    border-radius: inherit;
+    color: var(--profile-ink);
     text-decoration: none;
-    color: inherit;
-    padding: 0.9rem;
-    transition: background-color 180ms ease;
-  }
-
-  .post-link:hover {
-    background: color-mix(in oklab, var(--blog-accent-soft), transparent 82%);
   }
 
   .post-topline {
-    display: grid;
-    grid-template-columns: auto auto 1fr;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.45rem;
-    font-size: 0.67rem;
-    letter-spacing: 0.1em;
+    gap: .6rem;
+    margin-bottom: 1rem;
+    padding-bottom: .85rem;
+    border-bottom: 1px solid var(--profile-line);
+    font-family: var(--profile-meta-font);
+    font-size: .65rem;
+    line-height: 1.6;
+    letter-spacing: .05em;
     text-transform: uppercase;
   }
 
-  .post-id {
-    font-weight: 800;
-    color: var(--blog-accent);
-  }
-
-  .post-type {
-    border: 1px solid var(--blog-border);
-    border-radius: 999px;
-    padding: 0.12rem 0.4rem;
-    color: var(--blog-muted);
-    font-weight: 700;
-  }
-
-  .post-date {
-    justify-self: end;
-    color: var(--blog-muted);
-  }
+  .post-id { color: var(--profile-accent); }
+  .post-type { padding: .2rem .4rem; border: 1px solid var(--profile-line); border-radius: .15rem; background: var(--profile-inset); color: var(--profile-muted); font-size: .56rem; }
+  .post-date { margin-left: auto; color: var(--profile-muted); font-size: .6rem; }
 
   .post-title {
-    margin: 0.65rem 0 0.45rem;
-    font-size: 1.1rem;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    text-wrap: balance;
+    margin: 0 0 .85rem;
+    font-family: var(--profile-display-font);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.65;
+    letter-spacing: -.015em;
+    overflow-wrap: anywhere;
   }
 
   .post-summary {
-    margin: 0;
-    font-size: 0.9rem;
-    line-height: 1.45;
-    color: var(--blog-muted);
     display: -webkit-box;
+    margin: 0 0 1.25rem;
+    color: var(--profile-muted);
+    font-size: .9rem;
+    line-height: 1.75;
+    line-clamp: 4;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    overflow-wrap: anywhere;
   }
+
+  .post-bottomline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    margin-top: auto;
+    padding-top: .8rem;
+    border-top: 1px solid var(--profile-line);
+    color: var(--profile-accent);
+    font-family: var(--profile-meta-font);
+    font-size: .62rem;
+    line-height: 1.6;
+  }
+
+  .read-arrow { font-size: .95rem; }
 
   .state-panel {
-    margin-top: 1rem;
-    border: 1px dashed var(--blog-border);
-    border-radius: 0.85rem;
-    padding: 0.8rem;
-    color: var(--blog-muted);
-    background: var(--blog-panel);
+    padding: 1.5rem;
+    border: 1px solid var(--profile-line);
+    border-radius: var(--profile-radius);
+    background: var(--profile-surface);
+    color: var(--profile-muted);
+    font-size: .9rem;
+    line-height: 1.75;
   }
 
+  .retry-button { margin-top: .85rem; color: var(--profile-accent); font-size: .8rem; font-weight: 600; }
+  .retry-button span { margin-left: .5rem; }
+  .post-link:focus-visible,
+  .rss-link:focus-visible,
+  .retry-button:focus-visible { outline: 2px solid var(--profile-accent); outline-offset: 4px; }
+
   @media (max-width: 640px) {
-    .blog-index {
-      padding: 0.85rem;
-    }
+    .post-link { padding: 1.1rem; }
+    .post-title { font-size: .95rem; }
+    .archive-controls { gap: .5rem; }
+  }
 
-    .blog-hero h1 {
-      font-size: clamp(1.75rem, 8vw, 2.2rem);
-    }
-
-    .posts-grid {
-      grid-template-columns: 1fr;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    .post-card { transition: none; }
+    .post-card:hover { transform: none; }
   }
 </style>
