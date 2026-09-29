@@ -29,6 +29,9 @@ docs/
 - [Style Guide](guides/STYLE_GUIDE.md) — visual theme, shared profile tokens, card composition, and consistency rules
 - [Leadership Card Artwork](guides/LEADERSHIP_ARTWORK.md) — asset paths, rarity choices, and image generation prompts
 
+### Reviews
+- [Company and Profile Redesign Screenshots](reviews/company-profile-redesign/README.md) — production previews of Industries, Leadership, Education, and Experience in light/dark mode on desktop/mobile
+
 ## Archiving
 
 When a document is superseded or no longer relevant, move it to `archive/` with a date prefix:
