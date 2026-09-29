@@ -5,6 +5,46 @@ import { getImage } from "../services/imageService.js";
 */
 
 export const skills = {
+    "leadership": [
+        {
+            "name": "Team Lead",
+            "description": "Managing engineering teams since June 2025, with 10 direct reports.",
+            "image": getImage("leadership/team-lead", "png", 400),
+            "artwork": true,
+            "logoAlt": "Weathered corporate rank insignia connecting three personnel emblems",
+            "attributes": ["people", "10 reports"],
+            "rarity": "rare"
+        },
+        {
+            "name": "Coaching",
+            "description": "Helping direct reports grow in their careers and develop as engineers.",
+            "image": getImage("leadership/coaching", "png", 400),
+            "artwork": true,
+            "logoAlt": "A mentor's cybernetic hand passing a data shard to another hand",
+            "attributes": ["growth"],
+            "rarity": "epic"
+        },
+        {
+            "name": "Team Growth",
+            "description": "Developing the team by helping people build on their strengths, grow their skills and take on new responsibilities.",
+            "image": getImage("leadership/team-growth", "png", 400),
+            "artwork": true,
+            "logoAlt": "Three metal personnel emblems rising together on a circuit spine",
+            "attributes": ["development"],
+            "compactTitle": true,
+            "rarity": "legendary"
+        },
+        {
+            "name": "Stakeholders",
+            "description": "Managing relationships with product, design and business stakeholders: aligning expectations, communicating context and representing the team's needs.",
+            "image": getImage("leadership/stakeholders", "png", 400),
+            "artwork": true,
+            "logoAlt": "A corporate handshake between human and cybernetic hands",
+            "attributes": ["alignment"],
+            "compactTitle": true,
+            "rarity": "uncommon"
+        }
+    ],
     "language": [
         {
             "name": "Swift",

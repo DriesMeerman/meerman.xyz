@@ -4,7 +4,7 @@ Tracks the execution of the [Codebase Analysis & Improvement Plan](analysis/CODE
 
 > **When completing a task**, check its box (`- [x]`), add the completion date, and note any follow-ups or deviations from the plan. If a task spawns new work, add it to the appropriate phase or to **Unplanned Work** at the bottom.
 
-**Last updated:** 2026-09-14
+**Last updated:** 2026-09-29
 
 ---
 
@@ -98,6 +98,9 @@ Tasks that came up during implementation. Add items here as they're discovered.
 
 | Date | Task | Phase | Status |
 |------|------|-------|--------|
+| 2026-09-29 | Replace Leadership icons with weathered corporate cyberpunk artwork, vary card rarities, and remove the management summary line | Unplanned | Done |
+| 2026-09-29 | Add Leadership skill cards for team leadership, individual coaching, team development, and stakeholder management; show descriptions on card backs | Unplanned | Done |
+| 2026-09-29 | Add `/industries` company profile with handmade card styling, cyberpunk magazine contact artwork, email reveal, sitemap entry, and discreet homepage link; document Dutch disclosures and pending VAT/contact/privacy follow-ups | Unplanned | Done |
 | 2026-09-14 | Add build-time blog syntax highlighting with light/dark colors; replace image positioning zoom with a layout-preserving dialog and reduced-motion support | Unplanned | Done |
 | 2026-02-28 | Fix flaky visual regression tests — particles canvas bled through in light-mode screenshots; replaced MutationObserver-based hiding with CSS + DOM removal of canvas after navigation | Phase 1 | Done |
 | 2026-02-28 | Regenerate baseline screenshots after bug fix | Phase 1 | Done |

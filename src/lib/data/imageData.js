@@ -1,4 +1,4 @@
-// Generated at 2026-02-28T20:52:11.286Z
+// Generated at 2026-09-29T19:35:26.716Z
 export const imageManifest = {
   "BrunoAce-Regular.woff2": {
     "extension": "woff2",
@@ -716,6 +716,176 @@ export const imageManifest = {
         "fallback": "/g/assets/hva_logo-800.png",
         "webp": "/g/assets/hva_logo-800.webp",
         "avif": "/g/assets/hva_logo-800.avif"
+      }
+    ]
+  },
+  "industries-contact.png": {
+    "extension": "png",
+    "fallback": "/g/assets/industries-contact-400.png",
+    "fallbackSrcset": "/g/assets/industries-contact-306.png 306w, /g/assets/industries-contact-400.png 400w, /g/assets/industries-contact-800.png 800w",
+    "webp": "/g/assets/industries-contact-400.webp",
+    "webpSrcset": "/g/assets/industries-contact-306.webp 306w, /g/assets/industries-contact-400.webp 400w, /g/assets/industries-contact-800.webp 800w",
+    "avif": "/g/assets/industries-contact-400.avif",
+    "avifSrcset": "/g/assets/industries-contact-306.avif 306w, /g/assets/industries-contact-400.avif 400w, /g/assets/industries-contact-800.avif 800w",
+    "width": 400,
+    "height": 179,
+    "variants": [
+      {
+        "width": 306,
+        "height": 137,
+        "fallback": "/g/assets/industries-contact-306.png",
+        "webp": "/g/assets/industries-contact-306.webp",
+        "avif": "/g/assets/industries-contact-306.avif"
+      },
+      {
+        "width": 400,
+        "height": 179,
+        "fallback": "/g/assets/industries-contact-400.png",
+        "webp": "/g/assets/industries-contact-400.webp",
+        "avif": "/g/assets/industries-contact-400.avif"
+      },
+      {
+        "width": 800,
+        "height": 357,
+        "fallback": "/g/assets/industries-contact-800.png",
+        "webp": "/g/assets/industries-contact-800.webp",
+        "avif": "/g/assets/industries-contact-800.avif"
+      }
+    ]
+  },
+  "leadership/coaching.png": {
+    "extension": "png",
+    "fallback": "/g/assets/leadership/coaching-400.png",
+    "fallbackSrcset": "/g/assets/leadership/coaching-306.png 306w, /g/assets/leadership/coaching-400.png 400w, /g/assets/leadership/coaching-800.png 800w",
+    "webp": "/g/assets/leadership/coaching-400.webp",
+    "webpSrcset": "/g/assets/leadership/coaching-306.webp 306w, /g/assets/leadership/coaching-400.webp 400w, /g/assets/leadership/coaching-800.webp 800w",
+    "avif": "/g/assets/leadership/coaching-400.avif",
+    "avifSrcset": "/g/assets/leadership/coaching-306.avif 306w, /g/assets/leadership/coaching-400.avif 400w, /g/assets/leadership/coaching-800.avif 800w",
+    "width": 400,
+    "height": 400,
+    "variants": [
+      {
+        "width": 306,
+        "height": 306,
+        "fallback": "/g/assets/leadership/coaching-306.png",
+        "webp": "/g/assets/leadership/coaching-306.webp",
+        "avif": "/g/assets/leadership/coaching-306.avif"
+      },
+      {
+        "width": 400,
+        "height": 400,
+        "fallback": "/g/assets/leadership/coaching-400.png",
+        "webp": "/g/assets/leadership/coaching-400.webp",
+        "avif": "/g/assets/leadership/coaching-400.avif"
+      },
+      {
+        "width": 800,
+        "height": 800,
+        "fallback": "/g/assets/leadership/coaching-800.png",
+        "webp": "/g/assets/leadership/coaching-800.webp",
+        "avif": "/g/assets/leadership/coaching-800.avif"
+      }
+    ]
+  },
+  "leadership/stakeholders.png": {
+    "extension": "png",
+    "fallback": "/g/assets/leadership/stakeholders-400.png",
+    "fallbackSrcset": "/g/assets/leadership/stakeholders-306.png 306w, /g/assets/leadership/stakeholders-400.png 400w, /g/assets/leadership/stakeholders-800.png 800w",
+    "webp": "/g/assets/leadership/stakeholders-400.webp",
+    "webpSrcset": "/g/assets/leadership/stakeholders-306.webp 306w, /g/assets/leadership/stakeholders-400.webp 400w, /g/assets/leadership/stakeholders-800.webp 800w",
+    "avif": "/g/assets/leadership/stakeholders-400.avif",
+    "avifSrcset": "/g/assets/leadership/stakeholders-306.avif 306w, /g/assets/leadership/stakeholders-400.avif 400w, /g/assets/leadership/stakeholders-800.avif 800w",
+    "width": 400,
+    "height": 400,
+    "variants": [
+      {
+        "width": 306,
+        "height": 306,
+        "fallback": "/g/assets/leadership/stakeholders-306.png",
+        "webp": "/g/assets/leadership/stakeholders-306.webp",
+        "avif": "/g/assets/leadership/stakeholders-306.avif"
+      },
+      {
+        "width": 400,
+        "height": 400,
+        "fallback": "/g/assets/leadership/stakeholders-400.png",
+        "webp": "/g/assets/leadership/stakeholders-400.webp",
+        "avif": "/g/assets/leadership/stakeholders-400.avif"
+      },
+      {
+        "width": 800,
+        "height": 800,
+        "fallback": "/g/assets/leadership/stakeholders-800.png",
+        "webp": "/g/assets/leadership/stakeholders-800.webp",
+        "avif": "/g/assets/leadership/stakeholders-800.avif"
+      }
+    ]
+  },
+  "leadership/team-growth.png": {
+    "extension": "png",
+    "fallback": "/g/assets/leadership/team-growth-400.png",
+    "fallbackSrcset": "/g/assets/leadership/team-growth-306.png 306w, /g/assets/leadership/team-growth-400.png 400w, /g/assets/leadership/team-growth-800.png 800w",
+    "webp": "/g/assets/leadership/team-growth-400.webp",
+    "webpSrcset": "/g/assets/leadership/team-growth-306.webp 306w, /g/assets/leadership/team-growth-400.webp 400w, /g/assets/leadership/team-growth-800.webp 800w",
+    "avif": "/g/assets/leadership/team-growth-400.avif",
+    "avifSrcset": "/g/assets/leadership/team-growth-306.avif 306w, /g/assets/leadership/team-growth-400.avif 400w, /g/assets/leadership/team-growth-800.avif 800w",
+    "width": 400,
+    "height": 400,
+    "variants": [
+      {
+        "width": 306,
+        "height": 306,
+        "fallback": "/g/assets/leadership/team-growth-306.png",
+        "webp": "/g/assets/leadership/team-growth-306.webp",
+        "avif": "/g/assets/leadership/team-growth-306.avif"
+      },
+      {
+        "width": 400,
+        "height": 400,
+        "fallback": "/g/assets/leadership/team-growth-400.png",
+        "webp": "/g/assets/leadership/team-growth-400.webp",
+        "avif": "/g/assets/leadership/team-growth-400.avif"
+      },
+      {
+        "width": 800,
+        "height": 800,
+        "fallback": "/g/assets/leadership/team-growth-800.png",
+        "webp": "/g/assets/leadership/team-growth-800.webp",
+        "avif": "/g/assets/leadership/team-growth-800.avif"
+      }
+    ]
+  },
+  "leadership/team-lead.png": {
+    "extension": "png",
+    "fallback": "/g/assets/leadership/team-lead-400.png",
+    "fallbackSrcset": "/g/assets/leadership/team-lead-306.png 306w, /g/assets/leadership/team-lead-400.png 400w, /g/assets/leadership/team-lead-800.png 800w",
+    "webp": "/g/assets/leadership/team-lead-400.webp",
+    "webpSrcset": "/g/assets/leadership/team-lead-306.webp 306w, /g/assets/leadership/team-lead-400.webp 400w, /g/assets/leadership/team-lead-800.webp 800w",
+    "avif": "/g/assets/leadership/team-lead-400.avif",
+    "avifSrcset": "/g/assets/leadership/team-lead-306.avif 306w, /g/assets/leadership/team-lead-400.avif 400w, /g/assets/leadership/team-lead-800.avif 800w",
+    "width": 400,
+    "height": 400,
+    "variants": [
+      {
+        "width": 306,
+        "height": 306,
+        "fallback": "/g/assets/leadership/team-lead-306.png",
+        "webp": "/g/assets/leadership/team-lead-306.webp",
+        "avif": "/g/assets/leadership/team-lead-306.avif"
+      },
+      {
+        "width": 400,
+        "height": 400,
+        "fallback": "/g/assets/leadership/team-lead-400.png",
+        "webp": "/g/assets/leadership/team-lead-400.webp",
+        "avif": "/g/assets/leadership/team-lead-400.avif"
+      },
+      {
+        "width": 800,
+        "height": 800,
+        "fallback": "/g/assets/leadership/team-lead-800.png",
+        "webp": "/g/assets/leadership/team-lead-800.webp",
+        "avif": "/g/assets/leadership/team-lead-800.avif"
       }
     ]
   },

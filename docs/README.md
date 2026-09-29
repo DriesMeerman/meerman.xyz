@@ -23,9 +23,11 @@ docs/
 
 ### Analysis
 - [Codebase Analysis & Improvement Plan](analysis/CODEBASE_ANALYSIS.md) — full audit with 11 confirmed decisions (D1–D11), prioritized action items across 7 phases
+- [Meerman Industries Website Requirements](analysis/INDUSTRIES_WEBSITE_REQUIREMENTS.md) — Dutch business disclosures and scope for the company profile at `/industries`
 
 ### Guides
 - [Style Guide](guides/STYLE_GUIDE.md) — code style conventions
+- [Leadership Card Artwork](guides/LEADERSHIP_ARTWORK.md) — asset paths, rarity choices, and image generation prompts
 
 ## Archiving
 
