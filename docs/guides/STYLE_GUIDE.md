@@ -65,7 +65,7 @@ The blog index uses the shared `--profile-*` tokens from `src/lib/styles/profile
 2. Page entry effects should be short and not delay readability.
 3. Respect reduced-motion preference when adding new animation.
 
-## 4.4 Shared Pages: Industries, Education, Experience, Blog Index
+## 4.4 Shared Pages: Home, Industries, Education, Experience, Blog Index
 
 These pages share the Industries design language: precise corporate panels with a restrained cyberpunk influence. Use fine borders, inset frames, compact technical labels, and a single cyan corner accent. Keep the handmade character of the skills cards; avoid adding generic glass panels or large neon glows to these pages.
 
@@ -88,10 +88,10 @@ Shared shape tokens are `--profile-radius: .9rem` and `--profile-shadow: 1px 2px
 
 ### Page and card composition
 
-1. Use `ProfilePage.svelte` for a standard header: small `MEERMAN / PAGE` marker and cross, a thin divider, a left-aligned Bruno Ace heading with an accent dot, then supporting copy. Its optional `marker` prop separates a short route label (such as `Blog`) from a longer display title (such as `Digital Reflections`). Long titles wrap on narrow screens. Industries retains its custom company header while consuming the same tokens.
+1. Use `ProfilePage.svelte` for a standard header: small `MEERMAN / PAGE` marker and cross, a thin divider, a left-aligned Bruno Ace heading with an accent dot, then supporting copy. Its optional `marker` prop separates a short route label (such as `Blog`) from a longer display title (such as `Digital Reflections`). Long titles wrap on narrow screens. Home and Industries retain custom portrait/company headers while consuming the same tokens.
 2. Keep content within `1120px`. Use `.profile-section`, `.profile-section-head`, `.profile-section-title`, and `.profile-section-count` for numbered sections with a subdued entry count. Section labels are metadata, not large display headings.
 3. Use `StyledTimeLine.svelte` for dated education, internship, or experience entries. From `1024px` upward, cards alternate right/left around a central rail, with short connectors and diamond nodes. Smaller screens use one column beside a left rail. Keep DOM order chronological at every width; the breakpoint prevents cramped columns on tablets.
-4. Main cards combine the shared surface, a faint cyan-to-blue wash, a thin border, the shared radius/shadow, and one small top-right corner mark. Use `1.25rem` padding for alternating desktop cards, `1.5rem` for wider single-column cards, and `.85rem-1.1rem` on mobile. Hover lifts at most `1px`; disable that motion when reduced motion is requested.
+4. Main cards combine the shared surface, a faint cyan-to-blue wash, a thin border, the shared radius/shadow, and one small top-right corner mark. The `.profile-panel` class provides this base surface for new panels, including the homepage portrait and biography cards; set padding locally. Use `1.25rem` padding for alternating desktop cards, `1.5rem` for wider single-column cards, and `.85rem-1.1rem` on mobile. Hover lifts at most `1px`; disable that motion when reduced motion is requested. Static biography panels need no hover effect.
 5. Frame organization logos in an inset square with `object-fit: contain`; do not stretch, recolor, or crop them. Entries without artwork still align naturally. Decorative logos use an empty `alt` when the adjacent heading already names the organization.
 6. Reserve Bruno Ace for page and card headings. Dates, section markers, and highlight chips use monospace; descriptions and roles use the normal sans-serif stack. Body copy stays around `.9rem`, with `1.75` line height for longer descriptions.
 7. Highlight chips use small rectangular corners (`.15rem`), a fine border, and a faint inset surface. Allow wrapping and keep complete text readable. Initially show three highlights; disclose the remaining count and reveal the rest when details open.
@@ -114,11 +114,20 @@ Shared shape tokens are `--profile-radius: .9rem` and `--profile-shadow: 1px 2px
 6. Loading, empty, and error states use the shared panel surface and readable text. Provide a retry control after a feed failure. Avoid entry animation that delays reading and disable card hover motion for reduced motion.
 7. Keep index CSS scoped to the index components. Applying the shared palette must not change article content, syntax highlighting, image dialogs, or immersive article layouts.
 
+### Personal homepage
+
+1. Keep the personal profile at `/`. Start with the name, current engineering/leadership role, a concise introduction, and the real portrait. The homepage also links directly to work and writing; the longer background and interests follow below.
+2. `home/Person.svelte` renders a named `heading` snippet, the introduction/actions as its `children`, and the existing responsive portrait. At desktop widths the portrait sits beside the introduction. Smaller screens use a compact portrait beside the name, with introduction text spanning the full width beneath them.
+3. Use the same inset image frame, thin border, corner mark, and technical caption as the shared design. Preserve the photograph's natural proportions and colours. Load this visible portrait eagerly with responsive AVIF/WebP/fallback sources and high fetch priority.
+4. Split the biography into Background and Off the clock cards. Use real paragraphs and clear headings; keep body copy left-aligned at `1.75` line height. Preserve the personal voice, hobbies, and playful details while making the text easy to scan.
+5. `home/Socials.svelte` uses labelled inset links with the existing social icons and destinations. Four links fit in one row from `1280px`; narrower widths use two columns, and long labels wrap. Keep a discreet company-details link beneath these links.
+6. The hero's two links and the social links have visible keyboard focus. Apply small hover motion only to interactive social links and respect reduced motion. Keep the shared navigation stable.
+
 ## 5. Consistency Improvement Backlog
 
-1. Extend the central profile tokens to other routes when those routes are redesigned; Industries, Education, Experience, and the Blog index already share them.
+1. Extend the central profile tokens to other routes when those routes are redesigned; Home, Industries, Education, Experience, and the Blog index already share them.
 2. Standardize remaining non-blog panels on the shared radius and shadow when appropriate; preserve the distinctive trading cards on Skills.
-3. Normalize heading scale between home, skills, and blog pages.
+3. Review heading scale on Skills when that page is redesigned; Home and the Blog index already use the shared display font and responsive scale.
 4. Create shared utility classes for:
    - section panels
    - subdued label text

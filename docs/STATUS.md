@@ -98,6 +98,7 @@ Tasks that came up during implementation. Add items here as they're discovered.
 
 | Date | Task | Phase | Status |
 |------|------|-------|--------|
+| 2026-09-29 | Keep the personal profile on the homepage and polish it with a concise hero, responsive inset portrait, background/interests panels, labelled social links, and shared theme tokens; document the homepage design rules | Unplanned | Done |
 | 2026-09-29 | Restyle the blog index with the shared profile header, responsive archive cards, technical metadata, cyan corner accents, and accessible loading/error states; document the blog card rules | Unplanned | Done |
 | 2026-09-29 | Restyle education and experience timelines with the Industries palette, alternating desktop cards, responsive single-column layout, inset logo frames, technical labels, and accessible disclosures; centralize profile theme tokens and document the shared design rules | Unplanned | Done |
 | 2026-09-29 | Replace Leadership icons with weathered corporate cyberpunk artwork, vary card rarities, and remove the management summary line | Unplanned | Done |

@@ -4,7 +4,7 @@
   font-display: swap;
 }
 
-/* Opt-in palette for Industries, Education, Experience, and the Blog index. */
+/* Opt-in palette for Home, Industries, Education, Experience, and the Blog index. */
 .profile-theme {
   --profile-ink: #20333f;
   --profile-muted: #526572;
@@ -30,6 +30,28 @@
   --profile-inset: #202d38;
   --profile-cyan: #91e4e1;
   --profile-pink: #e6a6c4;
+}
+
+.profile-theme .profile-panel {
+  position: relative;
+  border: 1px solid var(--profile-line);
+  border-radius: var(--profile-radius);
+  color: var(--profile-ink);
+  background: linear-gradient(135deg, #43cbc414, transparent 55%, #8299e410), var(--profile-surface);
+  box-shadow: var(--profile-shadow);
+}
+.profile-theme .profile-panel::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 17px;
+  height: 17px;
+  border-top: 1px solid var(--profile-accent);
+  border-right: 1px solid var(--profile-accent);
+  border-radius: 0 .4rem 0 0;
+  opacity: .75;
+  pointer-events: none;
 }
 
 .profile-theme .profile-section + .profile-section { margin-top: 2.5rem; }
