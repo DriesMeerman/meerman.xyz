@@ -284,6 +284,17 @@
   .md-source :global(.article-content img) { border: 1px solid var(--profile-line); border-radius: var(--profile-radius); box-shadow: var(--profile-shadow); }
   .md-source :global(.article-content table) { display: block; overflow-x: auto; }
   .md-source :global(.article-content iframe) { max-width: 100%; height: auto; aspect-ratio: 16 / 9; }
+  @media (max-width: 639px) {
+    .md-source .markdown-panel {
+      width: calc(100% + 3rem);
+      margin-inline: -1.5rem;
+      padding: 1.5rem clamp(1rem, 6vw, 1.5rem);
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    .md-source .markdown-panel::after { display: none; }
+  }
   @media (max-width: 380px) { .article-marker { gap: .5rem; font-size: .6rem; letter-spacing: .05em; } }
 
   :global(.article-page.md-source .article-content.prose a),

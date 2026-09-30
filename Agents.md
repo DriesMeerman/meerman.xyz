@@ -7,6 +7,10 @@ Project documentation lives in `docs/`. See `docs/README.md` for the full index.
 
 Never use em dashes (U+2014) in new or edited project text, including interface copy, documentation, and code comments. Use commas, colons, parentheses, or separate sentences instead.
 
+## Pull request reviews
+
+For visual changes and before/after PR reviews, use `.agents/skills/pr-visual-review/SKILL.md`. Keep screenshots, comparison reports, and capture scripts in ignored `.cache/pr-reviews/` directories or temporary storage. Publish review images and concise before/after tables in the PR description or comments; do not commit review artifacts to the repository.
+
 You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively:
 
 ## Available MCP Tools:

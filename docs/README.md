@@ -30,10 +30,9 @@ docs/
 - [Style Guide](guides/STYLE_GUIDE.md) — visual theme, shared profile tokens, card composition, and consistency rules
 - [Leadership Card Artwork](guides/LEADERSHIP_ARTWORK.md) — asset paths, rarity choices, and image generation prompts
 
-### Reviews
-- [Personal Homepage Redesign Screenshots](reviews/home-profile-redesign/README.md) — the profile hero, biography panels, and social links in light/dark mode on desktop/mobile
-- [Blog Index Redesign Screenshots](reviews/blog-index-redesign/README.md) — the shared archive design in light/dark mode on desktop/mobile
-- [Company and Profile Redesign Screenshots](reviews/company-profile-redesign/README.md) — production previews of Industries, Leadership, Education, and Experience in light/dark mode on desktop/mobile
+### Pull request reviews
+
+Visual review history belongs in pull request descriptions and comments, with clear before/after tables. Review screenshots and reports are kept locally in ignored `.cache/pr-reviews/` directories and are not tracked in Git. See the [PR visual review skill](../.agents/skills/pr-visual-review/SKILL.md) for the workflow.
 
 ## Archiving
 

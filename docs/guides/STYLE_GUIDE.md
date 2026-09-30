@@ -130,6 +130,8 @@ Use the shared page header and numbered section metadata. Software tiles use nat
 
 ### Markdown articles
 
+Below 640px, let the article panel extend to the screen edges with no border, rounded corners, shadow, or corner mark. Keep the page marker and archive link inset above it. Use 1.5rem vertical padding and 1rem to 1.5rem horizontal padding inside the panel. Desktop retains its framed panel and existing spacing.
+
 Only Markdown articles opt into `.profile-theme`. Use an archive marker and link above a shared panel, then article ID and reading time. Keep original article headings and copy. Fill the panel's inner width with restrained padding, without a separate character-width cap. Use light modern sans-serif typography within articles: Helvetica Neue with Segoe UI/system fallbacks for headings at weight 300, and the system sans-serif stack for body text at weight 350 and size 1rem. Do not use Bruno Ace inside article content. Metadata and code remain monospace. Apply theme tokens to links, quotes, inline code, and image borders. Preserve syntax token colors, native image dialogs, footnotes, and embedded scripts. Long code and tables scroll locally; embedded video frames fit narrow screens. Keep immersive artwork and typography scoped to HTML articles.
 
 ## 5. Consistency Improvement Backlog
