@@ -1,10 +1,24 @@
 <script>
+  /**
+   * @typedef {{
+   *   title: string,
+   *   subtitle?: string,
+   *   date: string,
+   *   image?: string,
+   *   description?: string,
+   *   bullets?: string[],
+   *   attachments?: { title: string, url: string, image?: string }[]
+   * }} TimelineItem
+   */
+
+  /** @type {{ timeLineItems?: TimelineItem[] }} */
   let { timeLineItems = [] } = $props();
+  /** @type {Record<number, boolean>} */
   let detailOpen = $state({});
 
-  /** @param {{ description?: string, bullets?: string[], attachments?: { title?: string, url?: string, image?: string }[] }} item */
+  /** @param {TimelineItem} item */
   function hasDetails(item) {
-    return Boolean(item.description?.trim() || item.bullets?.length || item.attachments?.length);
+    return Boolean(item.description?.trim() || (item.bullets?.length ?? 0) > 3 || item.attachments?.length);
   }
 
   /** @param {string} bullet */
@@ -13,25 +27,43 @@
     return bullet;
   }
 
+  /**
+   * @param {TimelineItem} item
+   * @param {number} index
+   */
   function visibleBullets(item, index) {
     const bullets = item.bullets ?? [];
-    if (bullets.length <= 3 || detailOpen[index]) return bullets;
-    return bullets.slice(0, 3);
+    return detailOpen[index] ? bullets : bullets.slice(0, 3);
+  }
+
+  /** @param {string} date */
+  function machineDate(date) {
+    /** @type {Record<string, string>} */
+    const months = { Jan: '01', Feb: '02', Mar: '03', Apr: '04', May: '05', Jun: '06',
+      Jul: '07', Aug: '08', Sep: '09', Oct: '10', Nov: '11', Dec: '12' };
+    const [year, month] = date.split(/\s+/);
+    const monthKey = month ? month.charAt(0).toUpperCase() + month.slice(1).toLowerCase() : '';
+    return /^\d{4}$/.test(year) && months[monthKey] ? year + '-' + months[monthKey] : undefined;
   }
 </script>
 
-<ol class="timeline-v2" style="--rail-left: 1.15rem;">
-  {#each timeLineItems as item, i}
-    <li class={`timeline-item ${i % 2 === 0 ? 'right-side' : 'left-side'}`}>
+<ol class="timeline">
+  {#each timeLineItems as item, i (item)}
+    <li class="timeline-item">
       <span class="timeline-node" aria-hidden="true"></span>
       <article class="entry-card">
-        <header class="entry-header">
+        <header>
+          <div class="entry-meta">
+            <time datetime={machineDate(item.date)}>{item.date}</time>
+            <span class="entry-index" aria-hidden="true">ENTRY / {String(i + 1).padStart(2, '0')}</span>
+          </div>
           <div class="entry-heading">
             {#if item.image}
-              <img src={item.image} alt={item.title} class="entry-logo" loading="lazy" />
+              <div class="logo-window">
+                <img src={item.image} alt="" class="entry-logo" loading="lazy" />
+              </div>
             {/if}
-            <div>
-              <p class="entry-date">{item.date}</p>
+            <div class="entry-name">
               <h3 class="entry-title">{item.title}</h3>
               {#if item.subtitle}
                 <p class="entry-subtitle">{item.subtitle}</p>
@@ -40,11 +72,11 @@
           </div>
           {#if item.bullets?.length}
             <div class="summary-chips" aria-label="Highlights">
-              {#each visibleBullets(item, i) as bullet}
-                <span class="summary-chip" title={bullet}>{summaryChipLabel(bullet)}</span>
+              {#each visibleBullets(item, i) as bullet (bullet)}
+                <span class="summary-chip">{summaryChipLabel(bullet)}</span>
               {/each}
               {#if item.bullets.length > 3 && !detailOpen[i]}
-                <span class="summary-chip more-chip">.. more</span>
+                <span class="more-chip">+{item.bullets.length - 3} in details</span>
               {/if}
             </div>
           {/if}
@@ -52,28 +84,23 @@
 
         {#if hasDetails(item)}
           <details class="entry-details" ontoggle={(event) => (detailOpen[i] = event.currentTarget.open)}>
-            <summary>Details</summary>
+            <summary>
+              <span>Details<span class="summary-context"> for {item.subtitle || item.title}, {item.date}</span></span>
+              <span class="detail-toggle" aria-hidden="true"></span>
+            </summary>
             <div class="details-body">
               {#if item.description}
                 <p class="entry-description">{item.description}</p>
               {/if}
-
               {#if item.attachments?.length}
                 <div class="attachment-list">
-                  {#each item.attachments as a}
-                    <a class="attachment-link" href={a.url} target="_blank" rel="noopener noreferrer">
-                      <span class="attachment-icon" aria-hidden="true">
-                        {#if a.image}
-                          <img src={a.image} alt="" loading="lazy" />
-                        {:else}
-                          <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="1.4" />
-                            <path d="M14 2v6h6" stroke="currentColor" stroke-width="1.4" />
-                            <path d="M12 12v5m0 0 2-2m-2 2-2-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                          </svg>
-                        {/if}
-                      </span>
-                      <span class="attachment-title">{a.title}</span>
+                  {#each item.attachments as attachment (attachment.url)}
+                    <a class="attachment-link" href={attachment.url} target="_blank" rel="noopener noreferrer">
+                      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                        <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 2v6h5M9 13h6M9 17h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <span>{attachment.title}</span>
+                      <span class="attachment-arrow" aria-hidden="true">↗</span>
                     </a>
                   {/each}
                 </div>
@@ -87,347 +114,230 @@
 </ol>
 
 <style>
-  .timeline-v2 {
-    --rail-color: linear-gradient(180deg, rgba(20, 184, 166, 0.55), rgba(59, 130, 246, 0.2));
+  .timeline {
     list-style: none;
     position: relative;
     margin: 0;
-    padding: 0 0 0 2.75rem;
+    padding: 0 0 0 2rem;
   }
 
-  .timeline-v2::before {
-    content: "";
+  .timeline::before {
+    content: '';
     position: absolute;
-    top: 0.35rem;
-    bottom: 0.35rem;
-    left: var(--rail-left);
-    width: 2px;
-    border-radius: 999px;
-    background: var(--rail-color);
+    top: 1.8rem;
+    bottom: 2rem;
+    left: .3rem;
+    width: 1px;
+    background: linear-gradient(var(--profile-accent), var(--profile-line));
+    opacity: .5;
   }
 
-  .timeline-item {
-    position: relative;
-    padding: 0 0 1.2rem;
-    opacity: 0;
-    animation: entryIn 240ms ease forwards;
-  }
-
-  .timeline-item:nth-child(2) { animation-delay: 40ms; }
-  .timeline-item:nth-child(3) { animation-delay: 80ms; }
-  .timeline-item:nth-child(4) { animation-delay: 120ms; }
+  .timeline-item { position: relative; padding-bottom: 1.2rem; }
+  .timeline-item:last-child { padding-bottom: 0; }
 
   .timeline-node {
     position: absolute;
-    top: 1rem;
-    left: calc(var(--rail-left) - 0.33rem);
-    width: 0.72rem;
-    height: 0.72rem;
-    border-radius: 999px;
-    background: rgba(250, 252, 255, 0.9);
-    border: 2px solid rgba(20, 184, 166, 0.68);
-    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.14);
-    transition: transform 180ms ease, box-shadow 180ms ease;
+    top: 1.65rem;
+    left: -1.95rem;
+    width: .55rem;
+    height: .55rem;
+    border: 1px solid var(--profile-accent);
+    background: var(--profile-inset);
+    transform: rotate(45deg);
   }
 
   .entry-card {
-    border-radius: 0.95rem;
-    border: 1px solid rgba(148, 163, 184, 0.38);
-    background:
-      linear-gradient(155deg, rgba(255, 255, 255, 0.8), rgba(241, 245, 249, 0.62)),
-      rgba(255, 255, 255, 0.46);
-    backdrop-filter: blur(9px);
-    -webkit-backdrop-filter: blur(9px);
-    padding: 1rem 1rem 0.9rem;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.09);
-    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    position: relative;
+    padding: 1.5rem;
+    border: 1px solid var(--profile-line);
+    border-radius: var(--profile-radius);
+    color: var(--profile-ink);
+    background: linear-gradient(135deg, #43cbc414, transparent 55%, #8299e410), var(--profile-surface);
+    box-shadow: var(--profile-shadow);
+    transition: transform 180ms ease, border-color 180ms ease;
   }
 
-  .timeline-item:hover .entry-card {
-    transform: translateY(-1px);
-    border-color: rgba(20, 184, 166, 0.45);
-    box-shadow: 0 10px 24px rgba(14, 116, 144, 0.14);
+  .entry-card::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 17px;
+    height: 17px;
+    border-top: 1px solid var(--profile-accent);
+    border-right: 1px solid var(--profile-accent);
+    border-radius: 0 .4rem 0 0;
+    opacity: .75;
+    pointer-events: none;
   }
 
-  .timeline-item:hover .timeline-node {
-    transform: scale(1.05);
-    box-shadow: 0 0 0 5px rgba(20, 184, 166, 0.17);
-  }
+  .entry-card:hover { border-color: var(--profile-accent); transform: translateY(-1px); }
 
-  .entry-header {
+  .entry-meta {
     display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-  }
-
-  .entry-heading {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.7rem;
-  }
-
-  .entry-logo {
-    width: 1.75rem;
-    height: 1.75rem;
-    margin-top: 0.15rem;
-    object-fit: contain;
-    opacity: 0.94;
-  }
-
-  .entry-date {
-    margin: 0;
-    font-size: 0.74rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: .85rem;
+    border-bottom: 1px solid var(--profile-line);
+    color: var(--profile-accent);
+    font-family: var(--profile-meta-font);
+    font-size: .65rem;
+    line-height: 1.6;
+    letter-spacing: .07em;
     text-transform: uppercase;
-    color: #0f766e;
   }
+
+  .entry-index { color: var(--profile-muted); font-size: .57rem; }
+  .entry-heading { display: flex; align-items: center; gap: 1rem; }
+  .entry-name { min-width: 0; }
+
+  .logo-window {
+    width: 4rem;
+    height: 4rem;
+    flex-shrink: 0;
+    padding: .6rem;
+    border: 1px solid var(--profile-line);
+    border-radius: .45rem;
+    background: var(--profile-inset);
+    box-shadow: inset 0 1px 3px #00000019;
+  }
+
+  .entry-logo { width: 100%; height: 100%; object-fit: contain; }
 
   .entry-title {
-    margin: 0.1rem 0 0;
+    margin: 0;
+    font-family: var(--profile-display-font);
     font-size: 1.05rem;
-    line-height: 1.25;
-    color: #0f172a;
-    font-weight: 700;
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
   }
 
   .entry-subtitle {
-    margin: 0.2rem 0 0;
-    color: #334155;
-    font-size: 0.9rem;
-  }
-
-  .summary-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .summary-chip {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    color: #334155;
-    border: 1px solid rgba(148, 163, 184, 0.48);
-    background: rgba(248, 250, 252, 0.76);
-    border-radius: 999px;
-    padding: 0.2rem 0.5rem;
-    max-width: min(24rem, 100%);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .entry-details {
-    margin-top: 0.75rem;
-    border-top: 1px solid rgba(148, 163, 184, 0.32);
-    padding-top: 0.55rem;
-  }
-
-  .entry-details > summary {
-    cursor: pointer;
-    list-style: none;
-    font-size: 0.8rem;
-    color: #0f766e;
-    font-weight: 600;
-    width: fit-content;
-    border-radius: 999px;
-    padding: 0.2rem 0.5rem;
-    background: rgba(240, 253, 250, 0.76);
-    transition: color 150ms ease, background-color 150ms ease;
-  }
-
-  .entry-details > summary::-webkit-details-marker { display: none; }
-
-  .entry-details > summary:hover,
-  .entry-details > summary:focus-visible {
-    color: #0c4a6e;
-    background: rgba(186, 230, 253, 0.6);
-    outline: none;
-  }
-
-  .details-body {
-    margin-top: 0.75rem;
-    display: grid;
-    gap: 0.7rem;
-  }
-
-  .entry-description {
-    margin: 0;
-    color: #334155;
-    white-space: pre-line;
+    margin: .25rem 0 0;
+    color: var(--profile-muted);
+    font-size: .9rem;
     line-height: 1.5;
   }
 
-  .attachment-list {
-    display: grid;
-    gap: 0.45rem;
+  .summary-chips { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: 1.1rem; }
+
+  .summary-chip {
+    max-width: 100%;
+    padding: .4rem .55rem;
+    border: 1px solid var(--profile-line);
+    border-radius: .15rem;
+    background: #789b9b16;
+    box-shadow: inset 1px 1px 3px #0000000a;
+    font-family: var(--profile-meta-font);
+    font-size: .61rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
   }
+
+  .more-chip { color: var(--profile-muted); font-family: var(--profile-meta-font); font-size: .61rem; }
+
+  .entry-details {
+    margin-top: 1.15rem;
+    padding-top: .8rem;
+    border-top: 1px solid var(--profile-line);
+  }
+
+  .entry-details > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .25rem 0;
+    color: var(--profile-accent);
+    font-size: .78rem;
+    font-weight: 600;
+    line-height: 1.6;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .entry-details > summary::-webkit-details-marker { display: none; }
+  .detail-toggle::before { content: '+'; font-family: var(--profile-meta-font); font-size: 1rem; font-weight: 400; }
+  .entry-details[open] .detail-toggle::before { content: '−'; }
+
+  .summary-context {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .details-body { display: grid; gap: .9rem; padding-top: .85rem; }
+  .entry-description { margin: 0; color: var(--profile-muted); font-size: .9rem; line-height: 1.75; white-space: pre-line; }
+  .attachment-list { display: flex; flex-wrap: wrap; gap: .6rem; }
 
   .attachment-link {
     display: inline-flex;
     align-items: center;
-    width: fit-content;
-    gap: 0.5rem;
-    color: #334155;
-    border-radius: 0.6rem;
-    border: 1px solid rgba(148, 163, 184, 0.35);
-    background: rgba(248, 250, 252, 0.66);
-    padding: 0.35rem 0.55rem;
+    gap: .6rem;
+    max-width: 100%;
+    padding: .6rem .7rem;
+    border: 1px solid var(--profile-line);
+    border-radius: .3rem;
+    color: var(--profile-ink);
+    background: var(--profile-inset);
+    font-size: .75rem;
+    line-height: 1.5;
     text-decoration: none;
-    transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
   }
 
-  .attachment-link:hover,
-  .attachment-link:focus-visible {
-    border-color: rgba(20, 184, 166, 0.48);
-    background: rgba(240, 253, 250, 0.8);
-    color: #0f172a;
-    outline: none;
-  }
+  .attachment-link svg { width: 1rem; height: 1rem; flex-shrink: 0; color: var(--profile-accent); }
+  .attachment-link span { overflow-wrap: anywhere; }
+  .attachment-arrow { color: var(--profile-accent); }
+  .attachment-link:hover { border-color: var(--profile-accent); }
 
-  .attachment-icon {
-    width: 1rem;
-    height: 1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.8;
-    color: #475569;
-  }
+  .entry-details > summary:focus-visible,
+  .attachment-link:focus-visible { outline: 2px solid var(--profile-accent); outline-offset: 4px; }
 
-  .attachment-icon img,
-  .attachment-icon svg {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
-  .attachment-title {
-    font-size: 0.8rem;
-    line-height: 1.2;
-  }
-
-  @media (min-width: 768px) {
-    .timeline-v2 {
-      padding-left: 0;
-    }
-
-    .timeline-v2::before {
+  @media (min-width: 1024px) {
+    .timeline { padding-left: 0; }
+    .timeline::before { left: 50%; }
+    .timeline-item { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 3rem; }
+    .timeline-item:nth-child(odd) .entry-card { grid-column: 2; }
+    .timeline-item:nth-child(even) .entry-card { grid-column: 1; }
+    .timeline-node { left: 50%; transform: translateX(-50%) rotate(45deg); }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      top: 1.9rem;
       left: 50%;
-      transform: translateX(-50%);
+      width: 1.5rem;
+      border-top: 1px solid var(--profile-line);
     }
-
-    .timeline-item {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      padding-bottom: 1.4rem;
-    }
-
-    .timeline-item.right-side .entry-card {
-      grid-column: 2;
-      margin-left: 2.2rem;
-    }
-
-    .timeline-item.left-side .entry-card {
-      grid-column: 1;
-      margin-right: 2.2rem;
-    }
-
-    .timeline-node {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .timeline-item:hover .timeline-node {
-      transform: translateX(-50%) scale(1.05);
-    }
+    .timeline-item:nth-child(even)::before { left: calc(50% - 1.5rem); }
+    .entry-card { padding: 1.25rem; }
+    .entry-heading { align-items: flex-start; gap: .75rem; }
+    .logo-window { width: 3rem; height: 3rem; padding: .45rem; }
+    .entry-title { font-size: .95rem; }
   }
 
-  :global(.dark .timeline-v2) {
-    --rail-color: linear-gradient(180deg, rgba(56, 189, 248, 0.7), rgba(2, 132, 199, 0.22));
+  @media (max-width: 640px) {
+    .timeline { padding-left: 1.2rem; }
+    .timeline::before { left: .2rem; }
+    .timeline-node { left: -1.25rem; }
+    .entry-card { padding: 1.1rem; }
+    .entry-heading { gap: .75rem; }
+    .logo-window { width: 3rem; height: 3rem; padding: .45rem; }
+    .entry-title { font-size: .85rem; line-height: 1.65; }
+    .entry-subtitle { font-size: .8rem; }
   }
 
-  :global(.dark .entry-card) {
-    border-color: rgba(148, 163, 184, 0.27);
-    background:
-      linear-gradient(155deg, rgba(39, 39, 42, 0.76), rgba(63, 63, 70, 0.54)),
-      rgba(39, 39, 42, 0.5);
-    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.26);
+  @media (max-width: 380px) {
+    .entry-card { padding: .85rem; }
+    .entry-heading { flex-direction: column; align-items: flex-start; }
   }
-
-  :global(.dark .timeline-item:hover .entry-card) {
-    border-color: rgba(56, 189, 248, 0.38);
-    box-shadow: 0 10px 24px rgba(2, 6, 23, 0.32);
-  }
-
-  :global(.dark .timeline-node) {
-    background: rgba(39, 39, 42, 0.92);
-    border-color: rgba(56, 189, 248, 0.72);
-    box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.24);
-  }
-
-  :global(.dark .entry-date) { color: #67e8f9; }
-  :global(.dark .entry-title) { color: #f8fafc; }
-  :global(.dark .entry-subtitle),
-  :global(.dark .entry-description) { color: #cbd5e1; }
-
-  :global(.dark .summary-chip) {
-    color: #e2e8f0;
-    border-color: rgba(148, 163, 184, 0.34);
-    background: rgba(63, 63, 70, 0.62);
-  }
-
-  :global(.dark .entry-details) { border-top-color: rgba(148, 163, 184, 0.25); }
-
-  :global(.dark .entry-details > summary) {
-    color: #67e8f9;
-    background: rgba(8, 47, 73, 0.45);
-  }
-
-  :global(.dark .entry-details > summary:hover),
-  :global(.dark .entry-details > summary:focus-visible) {
-    color: #bae6fd;
-    background: rgba(7, 89, 133, 0.44);
-  }
-
-  :global(.dark .attachment-link) {
-    color: #d8e0ec;
-    border-color: rgba(148, 163, 184, 0.3);
-    background: rgba(39, 39, 42, 0.66);
-  }
-
-  :global(.dark .attachment-link:hover),
-  :global(.dark .attachment-link:focus-visible) {
-    color: #f8fafc;
-    border-color: rgba(56, 189, 248, 0.48);
-    background: rgba(15, 23, 42, 0.72);
-  }
-
-  :global(.dark .attachment-icon) { color: #94a3b8; }
 
   @media (prefers-reduced-motion: reduce) {
-    .timeline-item {
-      opacity: 1;
-      animation: none;
-    }
-
-    .entry-card,
-    .timeline-node,
-    .attachment-link,
-    .entry-details > summary {
-      transition: none;
-    }
-  }
-
-  @keyframes entryIn {
-    from {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .entry-card { transition: none; }
+    .entry-card:hover { transform: none; }
   }
 </style>

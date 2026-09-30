@@ -19,7 +19,7 @@
   <meta property="og:url" content="https://meerman.xyz/industries" />
 </svelte:head>
 
-<div class="industries">
+<div class="industries profile-theme">
   <div class="page-marker">
     <span><span class="marker-cross" aria-hidden="true">+</span> MEERMAN / INDUSTRIES</span>
     <span>AMS · NL</span>
@@ -118,39 +118,28 @@
 </div>
 
 <style>
-  @font-face { font-family: 'Bruno Ace'; src: url('/assets/BrunoAce-Regular.woff2') format('woff2'); font-display: swap; }
   .industries {
-    --ink: #20333f;
-    --muted: #526572;
-    --accent: #087b83;
-    --line: #78999f66;
-    --surface: #edf4f0e8;
-    --inset: #e1eae9;
-    --cyan: #a8ede7;
-    --pink: #f0b5cd;
+    --ink: var(--profile-ink);
+    --muted: var(--profile-muted);
+    --accent: var(--profile-accent);
+    --line: var(--profile-line);
+    --surface: var(--profile-surface);
+    --inset: var(--profile-inset);
+    --cyan: var(--profile-cyan);
+    --pink: var(--profile-pink);
     color: var(--ink);
     max-width: 1120px;
     margin: 0 auto;
   }
-  :global(.dark) .industries {
-    --ink: #eef2f3;
-    --muted: #c2cdd4;
-    --accent: #82e6ed;
-    --line: #8cbac04d;
-    --surface: #303b45ec;
-    --inset: #202d38;
-    --cyan: #91e4e1;
-    --pink: #e6a6c4;
-  }
   .page-marker, .eyebrow, .card-topline, .card-bottomline, .window-coordinate, .window-caption,
   .card-tags, .section-divider, .section-label, .email-label, .page-end {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-family: var(--profile-meta-font);
   }
   .page-marker { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); font-size: .67rem; letter-spacing: .12em; color: var(--muted); }
   .marker-cross { color: var(--accent); font-size: 1rem; margin-right: .5rem; }
   .intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(230px, .68fr); gap: 2.5rem; align-items: center; padding: 3.5rem 0; }
   .eyebrow { color: var(--accent); font-size: .68rem; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1.3rem; }
-  h1 { font-family: 'Bruno Ace', sans-serif; font-size: clamp(1.55rem, 3.1vw, 3.1rem); line-height: 1.27; letter-spacing: -.045em; margin: 0; }
+  h1 { font-family: var(--profile-display-font); font-size: clamp(1.55rem, 3.1vw, 3.1rem); line-height: 1.27; letter-spacing: -.045em; margin: 0; }
   h1 > span { display: block; }
   .title-dot { color: var(--accent); }
   .intro-description { font-size: clamp(1.1rem, 1.8vw, 1.35rem); font-weight: 500; line-height: 1.5; margin: 1.5rem 0 1rem; max-width: 22rem; }
@@ -172,17 +161,17 @@
   .circuit-node { fill: var(--accent); }
   .monogram-shadow { stroke: var(--pink); stroke-width: 7; stroke-linejoin: bevel; }
   .monogram-line { stroke: var(--accent); stroke-width: 7; stroke-linejoin: bevel; }
-  .card-name { font-family: 'Bruno Ace', sans-serif; font-size: 1.3rem; line-height: 1.5; padding-bottom: .6rem; border-bottom: 1px solid var(--line); }
+  .card-name { font-family: var(--profile-display-font); font-size: 1.3rem; line-height: 1.5; padding-bottom: .6rem; border-bottom: 1px solid var(--line); }
   .card-tags { display: flex; gap: .5rem; margin: .8rem 0 1.35rem; font-size: .55rem; text-transform: uppercase; letter-spacing: .06em; }
   .card-tags span { padding: .4rem .5rem; background: #789b9b16; box-shadow: inset 1px 1px 2px #00000025; border-radius: .15rem; }
   .card-bottomline { border-top: 1px solid var(--line); padding-top: .6rem; }
   .section-divider { display: flex; justify-content: space-between; color: var(--muted); font-size: .6rem; letter-spacing: .15em; border-top: 1px solid var(--line); padding: 1rem 0; }
   .details-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 1.2rem; }
-  .detail-card { min-width: 0; padding: 1.6rem; border: 1px solid var(--line); border-radius: .9rem; background: var(--surface); box-shadow: 1px 2px 5px #174c4c22; }
+  .detail-card { min-width: 0; padding: 1.6rem; border: 1px solid var(--line); border-radius: var(--profile-radius); background: var(--surface); box-shadow: var(--profile-shadow); }
   .registry { background: linear-gradient(135deg, #43cbc411, transparent 65%), var(--surface); }
   .contact { background: linear-gradient(135deg, #679ddf12, #e29cb41a), var(--surface); scroll-margin-top: 1rem; }
   .section-label { display: flex; justify-content: space-between; color: var(--accent); font-size: .61rem; letter-spacing: .1em; margin-bottom: 1.6rem; }
-  h2 { font-family: 'Bruno Ace', sans-serif; font-size: 1rem; line-height: 1.5; margin-bottom: .65rem; }
+  h2 { font-family: var(--profile-display-font); font-size: 1rem; line-height: 1.5; margin-bottom: .65rem; }
   .section-description { color: var(--muted); font-size: .85rem; line-height: 1.65; }
   dl { margin-top: 1.5rem; }
   dl > div { display: grid; grid-template-columns: 115px minmax(0, 1fr); gap: .75rem; padding: .8rem 0; border-top: 1px solid var(--line); font-size: .78rem; line-height: 1.5; }
