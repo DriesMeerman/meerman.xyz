@@ -11,6 +11,7 @@ This guide documents the current visual system and sets rules for keeping light 
    - dark mode should feel deep and low-glare
 4. Keep nav and page structure stable across all routes.
 5. Immersive blog posts can be stylistically unique, but must not break global UI.
+6. Do not use em dashes (U+2014) in new or edited project text, including interface copy, documentation, and code comments. Use a comma, colon, parentheses, or a separate sentence instead.
 
 ## 2. Core Theme Tokens
 
@@ -65,7 +66,7 @@ The blog index uses the shared `--profile-*` tokens from `src/lib/styles/profile
 2. Page entry effects should be short and not delay readability.
 3. Respect reduced-motion preference when adding new animation.
 
-## 4.4 Shared Pages: Home, Industries, Education, Experience, Blog Index
+## 4.4 Shared Pages: Home, Industries, Education, Experience, Tools, Blog Index
 
 These pages share the Industries design language: precise corporate panels with a restrained cyberpunk influence. Use fine borders, inset frames, compact technical labels, and a single cyan corner accent. Keep the handmade character of the skills cards; avoid adding generic glass panels or large neon glows to these pages.
 
@@ -122,6 +123,10 @@ Shared shape tokens are `--profile-radius: .9rem` and `--profile-shadow: 1px 2px
 4. Split the biography into Background and Off the clock cards. Use real paragraphs and clear headings; keep body copy left-aligned at `1.75` line height. Preserve the personal voice, hobbies, and playful details while making the text easy to scan.
 5. `home/Socials.svelte` uses labelled inset links with the existing social icons and destinations. Four links fit in one row from `1280px`; narrower widths use two columns, and long labels wrap. The company link uses a compact inset panel in the introduction, the Industries monogram, the shared company name, and a plain description of its purpose.
 6. Company, social, and contextual biography links have visible keyboard focus. Apply small hover motion only to interactive social links and respect reduced motion. Keep the shared navigation stable.
+
+### Tools
+
+Use the shared page header and numbered section metadata. Software tiles use native images within inset frames and keep their original icon colors. Unix utilities use monospace command names, wrapping descriptions, and accessible external links. Use responsive grids with minimum widths capped at 100% to avoid horizontal scrolling on narrow screens.
 
 ## 5. Consistency Improvement Backlog
 
