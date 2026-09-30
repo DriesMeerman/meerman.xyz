@@ -242,7 +242,7 @@
   .marker-cross { color: var(--profile-accent); font-size: 1rem; }
   .article-marker a { margin-left: auto; color: var(--profile-accent); font-size: .62rem; letter-spacing: 0; text-decoration: none; }
   .article-marker a:focus-visible { outline: 2px solid var(--profile-accent); outline-offset: 4px; }
-  .markdown-panel { margin-top: 2rem; padding: clamp(1rem, 3vw, 2.5rem); }
+  .markdown-panel { margin-top: 2rem; padding: clamp(1rem, 1.8vw, 1.5rem); }
   .article-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--profile-line); color: var(--profile-accent); font-family: var(--profile-meta-font); font-size: .65rem; line-height: 1.6; letter-spacing: .05em; text-transform: uppercase; }
   .md-source .error-message { color: var(--profile-muted); font-size: .9rem; line-height: 1.75; }
 
@@ -260,17 +260,19 @@
     --tw-prose-code: var(--profile-ink);
     --tw-prose-th-borders: var(--profile-line);
     --tw-prose-td-borders: var(--profile-line);
-    max-width: 72ch;
-    margin-inline: auto;
-    font-size: .95rem;
-    line-height: 1.85;
+    max-width: none;
+    margin-inline: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1rem;
+    font-weight: 350;
+    line-height: 1.8;
     overflow-wrap: anywhere;
   }
 
   .md-source :global(.article-content h1),
   .md-source :global(.article-content h2),
   .md-source :global(.article-content h3),
-  .md-source :global(.article-content h4) { font-family: var(--profile-display-font); font-weight: 400; letter-spacing: -.025em; line-height: 1.55; }
+  .md-source :global(.article-content h4) { font-family: 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif; font-weight: 300; letter-spacing: -.025em; line-height: 1.55; }
   .md-source :global(.article-content h1:first-child) { font-size: clamp(1.5rem, 3vw, 2.5rem); line-height: 1.4; margin-top: 0; }
   .md-source :global(.article-content h1:not(:first-child)),
   .md-source :global(.article-content h2) { font-size: clamp(1.1rem, 2vw, 1.4rem); }

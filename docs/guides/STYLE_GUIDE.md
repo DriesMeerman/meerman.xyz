@@ -126,11 +126,11 @@ Shared shape tokens are `--profile-radius: .9rem` and `--profile-shadow: 1px 2px
 
 ### Tools
 
-Use the shared page header and numbered section metadata. Software tiles use native images within inset frames and keep their original icon colors. Unix utilities use monospace command names, wrapping descriptions, and accessible external links. Use responsive grids with minimum widths capped at 100% to avoid horizontal scrolling on narrow screens.
+Use the shared page header and numbered section metadata. Software tiles use native images within inset frames and keep their original icon colors. Unix utilities show a visible `$` prompt and monospace command inside a bordered inset terminal line, with wrapping descriptions and accessible external links. Use responsive grids with minimum widths capped at 100% to avoid horizontal scrolling on narrow screens.
 
 ### Markdown articles
 
-Only Markdown articles opt into `.profile-theme`. Use an archive marker and link above a shared panel, then article ID and reading time. Keep original article headings and copy, use the display font for headings, and cap body text at `72ch`. Apply theme tokens to links, quotes, inline code, and image borders. Preserve syntax token colors, native image dialogs, footnotes, and embedded scripts. Long code and tables scroll locally; embedded video frames fit narrow screens. Keep immersive artwork and typography scoped to HTML articles.
+Only Markdown articles opt into `.profile-theme`. Use an archive marker and link above a shared panel, then article ID and reading time. Keep original article headings and copy. Fill the panel's inner width with restrained padding, without a separate character-width cap. Use light modern sans-serif typography within articles: Helvetica Neue with Segoe UI/system fallbacks for headings at weight 300, and the system sans-serif stack for body text at weight 350 and size 1rem. Do not use Bruno Ace inside article content. Metadata and code remain monospace. Apply theme tokens to links, quotes, inline code, and image borders. Preserve syntax token colors, native image dialogs, footnotes, and embedded scripts. Long code and tables scroll locally; embedded video frames fit narrow screens. Keep immersive artwork and typography scoped to HTML articles.
 
 ## 5. Consistency Improvement Backlog
 

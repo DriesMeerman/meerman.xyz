@@ -57,9 +57,9 @@
   .unix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 1rem; }
   .unix-card { min-width: 0; padding: 1.25rem; }
   .unix-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; padding-bottom: .75rem; border-bottom: 1px solid var(--profile-line); }
-  .unix-card h3 { display: flex; gap: .6rem; min-width: 0; font-size: .85rem; line-height: 1.6; }
+  .unix-card h3 { display: flex; flex: 1; gap: .6rem; min-width: 0; padding: .55rem .7rem; border: 1px solid var(--profile-line); border-radius: .3rem; background: var(--profile-inset); font-size: .85rem; line-height: 1.6; }
   .unix-card code { font-family: var(--profile-meta-font); overflow-wrap: anywhere; }
-  .prompt { color: var(--profile-accent); font-family: var(--profile-meta-font); user-select: none; }
+  .prompt { flex-shrink: 0; color: var(--profile-accent); font-family: var(--profile-meta-font); font-weight: 600; user-select: none; }
   .unix-card a { display: grid; place-items: center; flex-shrink: 0; width: 2rem; height: 2rem; border: 1px solid var(--profile-line); border-radius: .3rem; background: var(--profile-inset); color: var(--profile-accent); text-decoration: none; }
   .unix-card a:hover { border-color: var(--profile-accent); }
   .unix-card a:focus-visible { outline: 2px solid var(--profile-accent); outline-offset: 3px; }
