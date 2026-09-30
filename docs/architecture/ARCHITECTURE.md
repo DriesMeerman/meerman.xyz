@@ -197,7 +197,13 @@ build/
 
 - **Push to `main`**: Full pipeline (build → publish → deploy)
 - **Pull request to `main`**: Build only (no deploy)
-- **Manual dispatch**: Full pipeline
+- **Manual dispatch on `main`**: Full pipeline; other branches build only.
+
+### Revision verification and recovery
+
+CI records the commit SHA in `build/deployment-revision.txt` and labels the Docker image with `org.opencontainers.image.revision`. Production pulls and runs the commit-specific `chrozera/meerman.xyz:sha-<commit>` tag. A failed pull stops deployment before the running container is touched. The public health check requires the expected SHA, rather than accepting any HTTP 200. Deployment runs for the same branch are serialized.
+
+The September 30, 2026 stale-site incident was caused by a full VPS Docker filesystem. The former script ignored the failed pull and restarted the cached image. See [Deployment and Stale-site Recovery](../guides/DEPLOYMENT.md) for the server cleanup and verification commands.
 
 ---
 
@@ -258,4 +264,3 @@ This site is a **fully static SvelteKit application**:
 - **VPS nginx** handles public traffic and TLS, proxying to the container
 
 If server-side features are needed in the future, the architecture would need to change to use `adapter-node` with a Node.js runtime instead of static file serving.
-

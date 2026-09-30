@@ -77,6 +77,7 @@ Requires: Phase 1 + Phase 3 complete.
 No hard dependencies. Can start after Phase 3 (for the pipeline changes).
 
 - [x] Add post-deploy health check (`curl -f https://meerman.xyz/`) — completed 2026-02-28
+- [x] Stop deployment on failed image pulls and verify the public commit revision; document VPS disk-space recovery — completed 2026-09-30
 - [x] Create tagged-release workflow — on version tag, build + push versioned Docker image — completed 2026-02-28
 
 ---

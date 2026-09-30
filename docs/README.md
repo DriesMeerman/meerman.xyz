@@ -26,6 +26,7 @@ docs/
 - [Meerman Industries Website Requirements](analysis/INDUSTRIES_WEBSITE_REQUIREMENTS.md) — Dutch business disclosures and scope for the company profile at `/industries`
 
 ### Guides
+- [Deployment and Stale-site Recovery](guides/DEPLOYMENT.md) — disk-space recovery, commit-specific images, and public revision verification
 - [Style Guide](guides/STYLE_GUIDE.md) — code style conventions
 - [Leadership Card Artwork](guides/LEADERSHIP_ARTWORK.md) — asset paths, rarity choices, and image generation prompts
 

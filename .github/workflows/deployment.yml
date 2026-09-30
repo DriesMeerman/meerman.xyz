@@ -11,6 +11,14 @@ on:
     branches:
       - main
 
+# Serialize production updates instead of replacing the same container concurrently.
+concurrency:
+  group: website-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  IMAGE_NAME: chrozera/meerman.xyz
+
 jobs:
   build-website:
     runs-on: ubuntu-latest
@@ -26,6 +34,9 @@ jobs:
       - name: Validate blog content
         run: npm run validate:blog
 
+      - name: Test deployment failure handling
+        run: node --test tools/deploy/deployment.test.mjs
+
       - name: Build website
         run: npm run build
 
@@ -36,6 +47,9 @@ jobs:
           test -f build/g/assets/servicenow_logo-400.png
           test -f build/g/assets/logos/realm_db_logo-306.png
           test -f build/sitemap.xml
+
+      - name: Record deployment revision
+        run: printf '%s\n' "$GITHUB_SHA" > build/deployment-revision.txt
 
       - uses: actions/upload-artifact@v4
         with:
@@ -61,46 +75,42 @@ jobs:
         env:
           DOCKER_USER: ${{secrets.DOCKER_USER}}
           DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
-        run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN
+        run: printf '%s' "$DOCKER_TOKEN" | docker login --username "$DOCKER_USER" --password-stdin
 
       - uses: actions/download-artifact@v4
         with:
           name: meerman-xyz-website
           path: build
 
-      - name: Build the Docker image
-        run: docker build --file Dockerfile.artifact --tag meerman.xyz:latest .
-
-      - name: Tag docker image
-        run: docker tag meerman.xyz:latest ${{secrets.DOCKER_USER}}/meerman.xyz:latest
-
-      - name: Publish the docker image
-        run: docker push ${{secrets.DOCKER_USER}}/meerman.xyz:latest
+      - name: Build and publish the Docker image
+        run: |
+          image="$IMAGE_NAME"
+          docker build --file Dockerfile.artifact \
+            --label "org.opencontainers.image.revision=$GITHUB_SHA" \
+            --tag "$image:sha-$GITHUB_SHA" --tag "$image:latest" .
+          docker run --rm "$image:sha-$GITHUB_SHA" nginx -t
+          test "$(docker run --rm --entrypoint cat "$image:sha-$GITHUB_SHA" /usr/share/nginx/html/deployment-revision.txt)" = "$GITHUB_SHA"
+          docker push "$image:sha-$GITHUB_SHA"
+          docker push "$image:latest"
 
   deploy:
     runs-on: ubuntu-latest
     needs: publish-container
     steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
+      - uses: actions/checkout@v4
+
+      - name: Deploy the published revision over SSH
+        uses: appleboy/ssh-action@v1.2.5
+        env:
+          IMAGE_REF: ${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
+          EXPECTED_REVISION: ${{ github.sha }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: |
-            containerName="meerman.xyz"
-            docker pull chrozera/meerman.xyz:latest
-            containerId=$(docker ps -a -q --filter="name=$containerName")
-            if [ -z "$containerId" ]
-            then
-            echo "No container running"
-            else
-            echo "Stopping container and removing old image"
-            docker rm $(docker stop $containerId)
-            fi
-            echo "Starting container"
-            docker run --name $containerName -d --restart unless-stopped -p 4337:8080 chrozera/meerman.xyz
+          envs: IMAGE_REF,EXPECTED_REVISION
+          script_path: tools/deploy/deploy-container.sh
 
-      - name: Post-deploy health check
-        run: curl --retry 5 --retry-delay 5 --retry-all-errors -f https://meerman.xyz/
+      - name: Verify the public site serves this revision
+        run: sh tools/deploy/verify-revision.sh https://meerman.xyz "$GITHUB_SHA"
