@@ -4,7 +4,7 @@
   font-display: swap;
 }
 
-/* Opt-in palette for the Industries, Education, and Experience pages. */
+/* Opt-in palette for Industries, Education, Experience, and the Blog index. */
 .profile-theme {
   --profile-ink: #20333f;
   --profile-muted: #526572;

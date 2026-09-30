@@ -33,21 +33,7 @@ Defined by current layout/menu behavior:
 
 ## 2.2 Blog Index Tokens (`/blog`)
 
-- Light mode:
-  - `--blog-bg`: `#eef3fb`
-  - `--blog-panel`: `#ffffff`
-  - `--blog-border`: `#d5deec`
-  - `--blog-ink`: `#1f2937`
-  - `--blog-muted`: `#5e6b82`
-  - `--blog-accent`: `#168fc7`
-
-- Dark mode:
-  - `--blog-bg`: `#1f2230`
-  - `--blog-panel`: `#262a39`
-  - `--blog-border`: `#3d4354`
-  - `--blog-ink`: `#e7ebf3`
-  - `--blog-muted`: `#bcc4d4`
-  - `--blog-accent`: `#5cb7db`
+The blog index uses the shared `--profile-*` tokens from `src/lib/styles/profile.css`, documented in section 4.4. It has no separate page background or palette. Article pages keep their existing scoped typography and immersive artwork.
 
 ## 3. Typography and Spacing
 
@@ -79,7 +65,7 @@ Defined by current layout/menu behavior:
 2. Page entry effects should be short and not delay readability.
 3. Respect reduced-motion preference when adding new animation.
 
-## 4.4 Profile Pages: Industries, Education, Experience
+## 4.4 Shared Pages: Industries, Education, Experience, Blog Index
 
 These pages share the Industries design language: precise corporate panels with a restrained cyberpunk influence. Use fine borders, inset frames, compact technical labels, and a single cyan corner accent. Keep the handmade character of the skills cards; avoid adding generic glass panels or large neon glows to these pages.
 
@@ -102,7 +88,7 @@ Shared shape tokens are `--profile-radius: .9rem` and `--profile-shadow: 1px 2px
 
 ### Page and card composition
 
-1. Use `ProfilePage.svelte` for a standard profile header: small `MEERMAN / PAGE` marker and cross, a thin divider, a left-aligned Bruno Ace heading with an accent dot, then supporting copy. Industries retains its custom company header while consuming the same tokens.
+1. Use `ProfilePage.svelte` for a standard header: small `MEERMAN / PAGE` marker and cross, a thin divider, a left-aligned Bruno Ace heading with an accent dot, then supporting copy. Its optional `marker` prop separates a short route label (such as `Blog`) from a longer display title (such as `Digital Reflections`). Long titles wrap on narrow screens. Industries retains its custom company header while consuming the same tokens.
 2. Keep content within `1120px`. Use `.profile-section`, `.profile-section-head`, `.profile-section-title`, and `.profile-section-count` for numbered sections with a subdued entry count. Section labels are metadata, not large display headings.
 3. Use `StyledTimeLine.svelte` for dated education, internship, or experience entries. From `1024px` upward, cards alternate right/left around a central rail, with short connectors and diamond nodes. Smaller screens use one column beside a left rail. Keep DOM order chronological at every width; the breakpoint prevents cramped columns on tablets.
 4. Main cards combine the shared surface, a faint cyan-to-blue wash, a thin border, the shared radius/shadow, and one small top-right corner mark. Use `1.25rem` padding for alternating desktop cards, `1.5rem` for wider single-column cards, and `.85rem-1.1rem` on mobile. Hover lifts at most `1px`; disable that motion when reduced motion is requested.
@@ -118,9 +104,19 @@ Shared shape tokens are `--profile-radius: .9rem` and `--profile-shadow: 1px 2px
 - Verify mouse and keyboard disclosure behavior, visible focus, expanded highlights, and document links.
 - Confirm shared token changes also work on Industries and leave the global navigation and other routes intact.
 
+### Blog index cards
+
+1. Use the shared header and numbered section heading for the article archive. Place the entry count and RSS link alongside the section label, with enough room for both at mobile widths.
+2. Article cards use the same surface wash, thin border, corner accent, radius, shadow, and restrained hover as timeline cards. Use a responsive grid with a `300px` minimum card width capped at `100%`; narrow screens use one column. Keep newest entries first.
+3. Each card starts with a monospace article ID, a small rectangular inset format badge, and a publication date. Use a semantic `time` with an ISO `datetime`; format the visible date in UTC for consistent rendering.
+4. Keep full titles readable in Bruno Ace and excerpts in the normal sans-serif stack. Titles wrap rather than truncate. Clamp excerpts consistently to four lines, with `1.75` line height, and align the bottom `Read article` row across cards.
+5. Make the whole card one link with its article title as the accessible name. Use a visible keyboard focus outline; the corner decoration must not intercept clicks. RSS remains a normal link to `/feed.xml`.
+6. Loading, empty, and error states use the shared panel surface and readable text. Provide a retry control after a feed failure. Avoid entry animation that delays reading and disable card hover motion for reduced motion.
+7. Keep index CSS scoped to the index components. Applying the shared palette must not change article content, syntax highlighting, image dialogs, or immersive article layouts.
+
 ## 5. Consistency Improvement Backlog
 
-1. Extend the central profile tokens to other routes when those routes are redesigned; Industries, Education, and Experience already share them.
+1. Extend the central profile tokens to other routes when those routes are redesigned; Industries, Education, Experience, and the Blog index already share them.
 2. Standardize remaining non-blog panels on the shared radius and shadow when appropriate; preserve the distinctive trading cards on Skills.
 3. Normalize heading scale between home, skills, and blog pages.
 4. Create shared utility classes for:
