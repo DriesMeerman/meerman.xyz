@@ -1,13 +1,16 @@
 <script>
   import { onMount, onDestroy, tick } from 'svelte';
   import { fade } from 'svelte/transition';
+  import { resolve } from '$app/paths';
   import { particlesEnabled } from '$lib/state.svelte.js';
-  export let data;
-  let htmlContent = '';
-  let errorMessage = '';
-  let readingMinutes = null;
+  let { data } = $props();
+  let htmlContent = $state('');
+  let errorMessage = $state('');
+  /** @type {number | null} */
+  let readingMinutes = $state(null);
   /** @type {{ src: string, alt: string } | null} */
-  let enlargedImage = null;
+  let enlargedImage = $state(null);
+  /** @type {HTMLDivElement | undefined} */
   let articleContainer;
   /** @type {HTMLDialogElement | undefined} */
   let imageDialog;
@@ -17,8 +20,20 @@
     window.__blogExternalScriptPromises ||= new Map();
   }
 
-  const isHtmlSource = data?.meta?.sourceType === 'html';
-  const customJsEnabled = data?.meta?.enableCustomJs !== false;
+  let isHtmlSource = $derived(data?.meta?.sourceType === 'html');
+  let customJsEnabled = $derived(data?.meta?.enableCustomJs !== false);
+
+  /** @param {HTMLDivElement} element */
+  function attachArticle(element) {
+    articleContainer = element;
+    return () => { articleContainer = undefined; };
+  }
+
+  /** @param {HTMLDialogElement} element */
+  function attachImageDialog(element) {
+    imageDialog = element;
+    return () => { imageDialog = undefined; };
+  }
 
   onMount(async () => {
     // Disable particles on blog article pages for better readability
@@ -146,24 +161,39 @@
   }
 </script>
 
-<section class={`article-page ${isHtmlSource ? 'html-source' : 'md-source'}`} in:fade={{ duration: 220 }} out:fade={{ duration: 160 }}>
+<section class={`article-page ${isHtmlSource ? 'html-source' : 'md-source profile-theme'}`} in:fade={{ duration: 220 }} out:fade={{ duration: 160 }}>
+  {#if !isHtmlSource}
+    <div class="article-marker">
+      <span class="marker-cross" aria-hidden="true">+</span>
+      <span>MEERMAN / BLOG</span>
+      <a href={resolve('/blog')}>All articles <span aria-hidden="true">↗</span></a>
+    </div>
+  {/if}
+  <div class:profile-panel={!isHtmlSource} class:markdown-panel={!isHtmlSource}>
   {#if errorMessage}
     <div class="error-message">{errorMessage}</div>
   {:else}
-    {#if readingMinutes}
+    {#if !isHtmlSource}
+      <div class="article-meta">
+        <span>{data.slug.toUpperCase()} / Notes</span>
+        {#if readingMinutes}<span>{readingMinutes} min read</span>{/if}
+      </div>
+    {:else if readingMinutes}
       <p class="reading-time">{readingMinutes} min read</p>
     {/if}
     <div
-      bind:this={articleContainer}
+      {@attach attachArticle}
       class={`article-content ${!isHtmlSource ? 'prose dark:prose-invert max-w-none list-disc dark:marker:text-white' : ''}`}
     >
+      <!-- eslint-disable-next-line svelte/no-at-html-tags -- Build-generated HTML from checked-in article sources. -->
       {@html htmlContent}
     </div>
   {/if}
+  </div>
 </section>
 
-<dialog bind:this={imageDialog} class="image-zoom" aria-label="Enlarged image" on:close={() => enlargedImage = null}>
-  <button class="image-zoom-close" aria-label="Close enlarged image" on:click={closeEnlargedImage}>
+<dialog {@attach attachImageDialog} class="image-zoom" aria-label="Enlarged image" onclose={() => enlargedImage = null}>
+  <button class="image-zoom-close" aria-label="Close enlarged image" onclick={closeEnlargedImage}>
     {#if enlargedImage}
       <img src={enlargedImage.src} alt={enlargedImage.alt} />
     {/if}
@@ -204,14 +234,55 @@
     transform: none;
     left: auto;
     margin-top: 0;
-    max-width: 100%;
-    overflow-x: hidden;
+    max-width: 1120px;
+    margin-inline: auto;
   }
 
+  .article-marker { display: flex; align-items: center; gap: .75rem; padding-bottom: 1rem; border-bottom: 1px solid var(--profile-line); color: var(--profile-muted); font-family: var(--profile-meta-font); font-size: .67rem; line-height: 1.6; letter-spacing: .12em; }
+  .marker-cross { color: var(--profile-accent); font-size: 1rem; }
+  .article-marker a { margin-left: auto; color: var(--profile-accent); font-size: .62rem; letter-spacing: 0; text-decoration: none; }
+  .article-marker a:focus-visible { outline: 2px solid var(--profile-accent); outline-offset: 4px; }
+  .markdown-panel { margin-top: 2rem; padding: clamp(1rem, 3vw, 2.5rem); }
+  .article-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--profile-line); color: var(--profile-accent); font-family: var(--profile-meta-font); font-size: .65rem; line-height: 1.6; letter-spacing: .05em; text-transform: uppercase; }
+  .md-source .error-message { color: var(--profile-muted); font-size: .9rem; line-height: 1.75; }
+
   :global(.article-page.md-source .article-content) {
-    max-width: 100%;
-    overflow-x: hidden;
+    --tw-prose-body: var(--profile-ink);
+    --tw-prose-headings: var(--profile-ink);
+    --tw-prose-lead: var(--profile-muted);
+    --tw-prose-links: var(--profile-accent);
+    --tw-prose-bold: var(--profile-ink);
+    --tw-prose-counters: var(--profile-accent);
+    --tw-prose-bullets: var(--profile-accent);
+    --tw-prose-hr: var(--profile-line);
+    --tw-prose-quotes: var(--profile-ink);
+    --tw-prose-quote-borders: var(--profile-accent);
+    --tw-prose-code: var(--profile-ink);
+    --tw-prose-th-borders: var(--profile-line);
+    --tw-prose-td-borders: var(--profile-line);
+    max-width: 72ch;
+    margin-inline: auto;
+    font-size: .95rem;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
   }
+
+  .md-source :global(.article-content h1),
+  .md-source :global(.article-content h2),
+  .md-source :global(.article-content h3),
+  .md-source :global(.article-content h4) { font-family: var(--profile-display-font); font-weight: 400; letter-spacing: -.025em; line-height: 1.55; }
+  .md-source :global(.article-content h1:first-child) { font-size: clamp(1.5rem, 3vw, 2.5rem); line-height: 1.4; margin-top: 0; }
+  .md-source :global(.article-content h1:not(:first-child)),
+  .md-source :global(.article-content h2) { font-size: clamp(1.1rem, 2vw, 1.4rem); }
+  .md-source :global(.article-content h3),
+  .md-source :global(.article-content h4) { font-size: 1rem; }
+  .md-source :global(.article-content a:focus-visible) { outline: 2px solid var(--profile-accent); outline-offset: 3px; }
+  .md-source :global(.article-content blockquote) { padding: .75rem 1rem; border-radius: .3rem; background: var(--profile-inset); font-style: normal; }
+  .md-source :global(.article-content :not(pre) > code) { padding: .1rem .25rem; border: 1px solid var(--profile-line); border-radius: .2rem; background: var(--profile-inset); font-size: .85em; }
+  .md-source :global(.article-content img) { border: 1px solid var(--profile-line); border-radius: var(--profile-radius); box-shadow: var(--profile-shadow); }
+  .md-source :global(.article-content table) { display: block; overflow-x: auto; }
+  .md-source :global(.article-content iframe) { max-width: 100%; height: auto; aspect-ratio: 16 / 9; }
+  @media (max-width: 380px) { .article-marker { gap: .5rem; font-size: .6rem; letter-spacing: .05em; } }
 
   :global(.article-page.md-source .article-content.prose a),
   :global(.article-page.md-source .article-content .footnotes a),

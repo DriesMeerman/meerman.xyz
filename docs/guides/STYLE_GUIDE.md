@@ -128,6 +128,10 @@ Shared shape tokens are `--profile-radius: .9rem` and `--profile-shadow: 1px 2px
 
 Use the shared page header and numbered section metadata. Software tiles use native images within inset frames and keep their original icon colors. Unix utilities use monospace command names, wrapping descriptions, and accessible external links. Use responsive grids with minimum widths capped at 100% to avoid horizontal scrolling on narrow screens.
 
+### Markdown articles
+
+Only Markdown articles opt into `.profile-theme`. Use an archive marker and link above a shared panel, then article ID and reading time. Keep original article headings and copy, use the display font for headings, and cap body text at `72ch`. Apply theme tokens to links, quotes, inline code, and image borders. Preserve syntax token colors, native image dialogs, footnotes, and embedded scripts. Long code and tables scroll locally; embedded video frames fit narrow screens. Keep immersive artwork and typography scoped to HTML articles.
+
 ## 5. Consistency Improvement Backlog
 
 1. Extend the central profile tokens to other routes when those routes are redesigned; Home, Industries, Education, Experience, and the Blog index already share them.
