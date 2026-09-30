@@ -5,10 +5,10 @@
   import { skills } from '$lib/model/Skill.js';
 
   let categories = $state({
-    leadership: { name: 'Leadership', selected: true, items: skills.leadership },
     lang: { name: 'Languages', selected: true, items: skills.language },
     framework: { name: 'Frameworks', selected: true, items: skills.framework },
     tooling: { name: 'Tools', selected: true, items: skills.tooling },
+    leadership: { name: 'Leadership', selected: true, items: skills.leadership },
     misc: { name: 'Miscellaneous', selected: true, items: skills.misc }
   });
 
