@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+env:
+  IMAGE_NAME: chrozera/meerman.xyz
+
 jobs:
   build-website:
     runs-on: ubuntu-latest
@@ -31,6 +34,9 @@ jobs:
           test -f build/g/assets/logos/realm_db_logo-306.png
           test -f build/sitemap.xml
 
+      - name: Record deployment revision
+        run: printf '%s\n' "$GITHUB_SHA" > build/deployment-revision.txt
+
       - uses: actions/upload-artifact@v4
         with:
           name: meerman-xyz-website
@@ -53,7 +59,7 @@ jobs:
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-        run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN
+        run: printf '%s' "$DOCKER_TOKEN" | docker login --username "$DOCKER_USER" --password-stdin
 
       - uses: actions/download-artifact@v4
         with:
@@ -61,18 +67,17 @@ jobs:
           path: build
 
       - name: Build the Docker image
-        run: docker build --file Dockerfile.artifact --tag meerman.xyz:${GITHUB_REF_NAME#v} .
+        run: |
+          docker build --file Dockerfile.artifact \
+            --label "org.opencontainers.image.revision=$GITHUB_SHA" \
+            --tag "meerman.xyz:${GITHUB_REF_NAME#v}" .
 
       - name: Tag docker image
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
         run: |
-          docker tag meerman.xyz:${GITHUB_REF_NAME#v} $DOCKER_USER/meerman.xyz:${GITHUB_REF_NAME#v}
-          docker tag meerman.xyz:${GITHUB_REF_NAME#v} $DOCKER_USER/meerman.xyz:latest
+          docker tag "meerman.xyz:${GITHUB_REF_NAME#v}" "$IMAGE_NAME:${GITHUB_REF_NAME#v}"
+          docker tag "meerman.xyz:${GITHUB_REF_NAME#v}" "$IMAGE_NAME:latest"
 
       - name: Publish docker images
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
         run: |
-          docker push $DOCKER_USER/meerman.xyz:${GITHUB_REF_NAME#v}
-          docker push $DOCKER_USER/meerman.xyz:latest
+          docker push "$IMAGE_NAME:${GITHUB_REF_NAME#v}"
+          docker push "$IMAGE_NAME:latest"
