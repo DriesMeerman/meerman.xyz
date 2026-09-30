@@ -2,8 +2,8 @@
   import { getPictureSourcesFromUrl } from '$lib/services/imageService.js';
   /** @typedef {'common' | 'uncommon' | 'rare' | 'epic' | 'legendary'} Rarity */
 
-  /** @type {{ image: string; alt?: string; backText?: string; rarity?: Rarity; children?: import('svelte').Snippet }} */
-  let { image, alt = 'an image', backText = '', rarity = 'common', children } = $props();
+  /** @type {{ image: string; alt?: string; backText?: string; rarity?: Rarity; artwork?: boolean; children?: import('svelte').Snippet }} */
+  let { image, alt = 'an image', backText = '', rarity = 'common', artwork = false, children } = $props();
   let showBackSide = $state(false);
   let hideOverflow = $state(true);
   $effect(() => {
@@ -36,7 +36,7 @@
      role="button" tabindex="0" onclick={() => (showBackSide = !showBackSide)} onkeydown={cardKeydown}>
   <div class={`${hasShine && hideOverflow ? 'shine' : ''} overflow-visible`}></div>
   <div class="front h-full w-full">
-    <div class="card-image h-20 md:h-28 border-solid border-2 border-white/10 mt-2 self-center p-4 rounded-lg">
+    <div class="card-image h-20 md:h-28 border-solid border-2 border-white/10 mt-2 self-center p-4 rounded-lg" class:artwork-image={artwork}>
       {#if pictureSources}
         <picture>
           <source srcset={pictureSources.avifSrcset} sizes="(min-width: 768px) 9rem, 8rem" type="image/avif" />
@@ -83,6 +83,7 @@
     background: #e5edf473;
   }
   .image { display: block; }
+  .card-image.artwork-image { padding: .25rem; }
   @media (min-width: 768px) {
     .skill-card { width: 10rem; }
     .card-image { max-width: 9rem; }

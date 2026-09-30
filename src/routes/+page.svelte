@@ -26,4 +26,7 @@
 
 <div class="mt-12">
   <Socials />
+  <p class="mt-4 text-center text-xs text-slate-600 dark:text-slate-200">
+    <a class="underline underline-offset-4 decoration-teal-500 dark:decoration-sky-400" href="/industries">Meerman Industries · Company details</a>
+  </p>
 </div>

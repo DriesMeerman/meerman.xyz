@@ -5,6 +5,7 @@
   import { skills } from '$lib/model/Skill.js';
 
   let categories = $state({
+    leadership: { name: 'Leadership', selected: true, items: skills.leadership },
     lang: { name: 'Languages', selected: true, items: skills.language },
     framework: { name: 'Frameworks', selected: true, items: skills.framework },
     tooling: { name: 'Tools', selected: true, items: skills.tooling },
@@ -43,9 +44,7 @@
 
 <svelte:head>
   <title>Meerman</title>
-  <meta name="description" content="A list of hard and soft skills, visualized in a trading card format.">
+  <meta name="description" content="Engineering leadership, people management, and software development skills, visualized in a trading card format.">
   <meta name="author" content="Dries Meerman">
   <meta name="keywords" content={`Dries Meerman, Meerman, Software Engineer, Software Engineering, Software Architect, Programmer, ${keywords}`}>
 </svelte:head>
-
-
