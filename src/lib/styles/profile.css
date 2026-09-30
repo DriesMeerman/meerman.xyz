@@ -1,0 +1,81 @@
+@font-face {
+  font-family: 'Bruno Ace';
+  src: url('/assets/BrunoAce-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* Opt-in palette for Home, Industries, Education, Experience, and the Blog index. */
+.profile-theme {
+  --profile-ink: #20333f;
+  --profile-muted: #526572;
+  --profile-accent: #087b83;
+  --profile-line: #78999f66;
+  --profile-surface: #edf4f0e8;
+  --profile-inset: #e1eae9;
+  --profile-cyan: #a8ede7;
+  --profile-pink: #f0b5cd;
+  --profile-display-font: 'Bruno Ace', sans-serif;
+  --profile-meta-font: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --profile-radius: .9rem;
+  --profile-shadow: 1px 2px 5px #174c4c22;
+  color: var(--profile-ink);
+}
+
+.dark .profile-theme {
+  --profile-ink: #eef2f3;
+  --profile-muted: #c2cdd4;
+  --profile-accent: #82e6ed;
+  --profile-line: #8cbac04d;
+  --profile-surface: #303b45ec;
+  --profile-inset: #202d38;
+  --profile-cyan: #91e4e1;
+  --profile-pink: #e6a6c4;
+}
+
+.profile-theme .profile-panel {
+  position: relative;
+  border: 1px solid var(--profile-line);
+  border-radius: var(--profile-radius);
+  color: var(--profile-ink);
+  background: linear-gradient(135deg, #43cbc414, transparent 55%, #8299e410), var(--profile-surface);
+  box-shadow: var(--profile-shadow);
+}
+.profile-theme .profile-panel::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 17px;
+  height: 17px;
+  border-top: 1px solid var(--profile-accent);
+  border-right: 1px solid var(--profile-accent);
+  border-radius: 0 .4rem 0 0;
+  opacity: .75;
+  pointer-events: none;
+}
+
+.profile-theme .profile-section + .profile-section { margin-top: 2.5rem; }
+.profile-theme .profile-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--profile-line);
+  padding: 1rem 0 1.35rem;
+}
+.profile-theme .profile-section-title {
+  color: var(--profile-accent);
+  font-family: var(--profile-meta-font);
+  font-size: .68rem;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.profile-theme .profile-section-count {
+  color: var(--profile-muted);
+  font-family: var(--profile-meta-font);
+  font-size: .62rem;
+  line-height: 1.6;
+  white-space: nowrap;
+}
