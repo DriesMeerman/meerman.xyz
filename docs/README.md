@@ -26,8 +26,11 @@ docs/
 - [Meerman Industries Website Requirements](analysis/INDUSTRIES_WEBSITE_REQUIREMENTS.md) — Dutch business disclosures and scope for the company profile at `/industries`
 
 ### Guides
-- [Style Guide](guides/STYLE_GUIDE.md) — code style conventions
+- [Style Guide](guides/STYLE_GUIDE.md) — visual theme, shared profile tokens, card composition, and consistency rules
 - [Leadership Card Artwork](guides/LEADERSHIP_ARTWORK.md) — asset paths, rarity choices, and image generation prompts
+
+### Reviews
+- [Company and Profile Redesign Screenshots](reviews/company-profile-redesign/README.md) — production previews of Industries, Leadership, Education, and Experience in light/dark mode on desktop/mobile
 
 ## Archiving
 
