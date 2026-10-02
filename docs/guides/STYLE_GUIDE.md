@@ -11,6 +11,7 @@ This guide documents the current visual system and sets rules for keeping light 
    - dark mode should feel deep and low-glare
 4. Keep nav and page structure stable across all routes.
 5. Immersive blog posts can be stylistically unique, but must not break global UI.
+6. Do not use em dashes (U+2014) in new or edited project text, including interface copy, documentation, and code comments. Use a comma, colon, parentheses, or a separate sentence instead.
 
 ## 2. Core Theme Tokens
 
@@ -65,7 +66,7 @@ The blog index uses the shared `--profile-*` tokens from `src/lib/styles/profile
 2. Page entry effects should be short and not delay readability.
 3. Respect reduced-motion preference when adding new animation.
 
-## 4.4 Shared Pages: Home, Industries, Education, Experience, Blog Index
+## 4.4 Shared Pages: Home, Industries, Education, Experience, Skills, Blog Index
 
 These pages share the Industries design language: precise corporate panels with a restrained cyberpunk influence. Use fine borders, inset frames, compact technical labels, and a single cyan corner accent. Keep the handmade character of the skills cards; avoid adding generic glass panels or large neon glows to these pages.
 
@@ -127,7 +128,7 @@ Shared shape tokens are `--profile-radius: .9rem` and `--profile-shadow: 1px 2px
 
 1. Extend the central profile tokens to other routes when those routes are redesigned; Home, Industries, Education, Experience, and the Blog index already share them.
 2. Standardize remaining non-blog panels on the shared radius and shadow when appropriate; preserve the distinctive trading cards on Skills.
-3. Review heading scale on Skills when that page is redesigned; Home and the Blog index already use the shared display font and responsive scale.
+3. Skills uses the shared page header, numbered section metadata, inset category filters, and panel surface. Keep its trading-card components and typography intact; category order is Languages, Frameworks, Tools, Leadership, Miscellaneous.
 4. Create shared utility classes for:
    - section panels
    - subdued label text

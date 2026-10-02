@@ -1,7 +1,11 @@
-Project documentation lives in `docs/` — see `docs/README.md` for the full index. Key files:
-- `docs/architecture/ARCHITECTURE.md` — system design, deployment, infrastructure
-- `docs/analysis/CODEBASE_ANALYSIS.md` — improvement plan with confirmed decisions (D1–D11)
-- `docs/guides/STYLE_GUIDE.md` — code style conventions
+Project documentation lives in `docs/`. See `docs/README.md` for the full index. Key files:
+- `docs/architecture/ARCHITECTURE.md`: system design, deployment, infrastructure
+- `docs/analysis/CODEBASE_ANALYSIS.md`: improvement plan with confirmed decisions (D1–D11)
+- `docs/guides/STYLE_GUIDE.md`: code style conventions
+
+## Writing
+
+Never use em dashes (U+2014) in new or edited project text, including interface copy, documentation, and code comments. Use commas, colons, parentheses, or separate sentences instead.
 
 You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively:
 
