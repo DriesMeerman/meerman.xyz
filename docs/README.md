@@ -28,6 +28,7 @@ docs/
 ### Guides
 - [Deployment and Stale-site Recovery](guides/DEPLOYMENT.md) — disk-space recovery, commit-specific images, and public revision verification
 - [Style Guide](guides/STYLE_GUIDE.md) — visual theme, shared profile tokens, card composition, and consistency rules
+- [Site History](guides/SITE_HISTORY.md): release screenshot provenance and archive maintenance
 - [Leadership Card Artwork](guides/LEADERSHIP_ARTWORK.md) — asset paths, rarity choices, and image generation prompts
 
 ### Pull request reviews
