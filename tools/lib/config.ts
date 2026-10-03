@@ -24,7 +24,7 @@ export const siteConfig = {
 	imageDataModulePath: path.join(repoRoot, 'src/lib/data/imageData.js'),
 	skillDataPath: path.join(repoRoot, 'src/lib/data/skillData.js'),
 	imageSizes: [800, 400, 306],
-	staticPages: ['/', '/skills', '/experience', '/education', '/tools', '/cats', '/blog', '/industries']
+	staticPages: ['/', '/skills', '/experience', '/education', '/tools', '/cats', '/blog', '/industries', '/site-history']
 } as const;
 
 export function isDirectExecution(moduleUrl: string) {
