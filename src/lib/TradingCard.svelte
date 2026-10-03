@@ -5,11 +5,6 @@
   /** @type {{ image: string; alt?: string; backText?: string; rarity?: Rarity; artwork?: boolean; children?: import('svelte').Snippet }} */
   let { image, alt = 'an image', backText = '', rarity = 'common', artwork = false, children } = $props();
   let showBackSide = $state(false);
-  let hideOverflow = $state(true);
-  $effect(() => {
-    if (showBackSide) hideOverflow = false;
-    else setTimeout(() => (hideOverflow = true), 600);
-  });
   const colors = {
     purple: 'from-purple-500/25 to-pink-500/25',
     green: 'from-green-500/25 to-blue-500/25',
@@ -32,10 +27,10 @@
   }
 </script>
 
-<div class={`skill-card flex flex-col h-48 md:h-64 border-solid border-teal rounded-lg bg-gradient-to-r ${showBackSide ? 'show-back-side' : ''} ${hideOverflow ? 'overflow-hidden' : ''} ${activeRarityClass}`}
+<div class={`skill-card flex flex-col h-48 md:h-64 border-solid border-teal rounded-lg bg-gradient-to-r ${showBackSide ? 'show-back-side' : ''} ${activeRarityClass}`}
      role="button" tabindex="0" onclick={() => (showBackSide = !showBackSide)} onkeydown={cardKeydown}>
-  <div class={`${hasShine && hideOverflow ? 'shine' : ''} overflow-visible`}></div>
   <div class="front h-full w-full">
+    <div class={`${hasShine ? 'shine' : ''} overflow-visible`}></div>
     <div class="card-image h-20 md:h-28 border-solid border-2 border-white/10 mt-2 self-center p-4 rounded-lg" class:artwork-image={artwork}>
       {#if pictureSources}
         <picture>
@@ -69,7 +64,8 @@
   .show-back-side { transition: all ease .8s; transform: rotateY(180deg); }
   .skill-card { position: relative; transform-style: preserve-3d; transition: transform .6s; perspective: 1000px; }
   .skill-card .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; transform: rotateY(180deg); }
-  .skill-card .front { transform: rotateY(0deg); backface-visibility: hidden; display: flex; flex-direction: column; }
+  /* Clip the shine on its face; clipping the rotating card flattens both faces. */
+  .skill-card .front { transform: rotateY(0deg); backface-visibility: hidden; overflow: hidden; border-radius: inherit; display: flex; flex-direction: column; }
   .card-body-text { font-size: 10px; font-family: monospace, Courier; }
   .skill-card {
     width: 8.75rem;
