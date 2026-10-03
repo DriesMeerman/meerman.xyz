@@ -1,6 +1,6 @@
 ---
 name: pr-visual-review
-description: Prepare visual pull request reviews for meerman.xyz with easy-to-scan before/after screenshot tables and concise explanations, while keeping review artifacts out of Git.
+description: Prepare visual pull request reviews for meerman.xyz with screenshot tables and concise explanations, while keeping review artifacts out of Git.
 ---
 
 # Visual pull request reviews
@@ -16,7 +16,8 @@ Use this workflow for visual changes in meerman.xyz when preparing or updating a
 
 ## Make the comparison clear
 
-- Capture Before from the PR's base revision and After from the final implementation. Use matching routes, viewport dimensions, themes, scroll positions, and loaded fonts/images.
+- For changes to existing pages, capture Before from the PR's base revision and After from the final implementation. Use matching routes, viewport dimensions, themes, scroll positions, and loaded fonts/images.
+- For an entirely new page or feature with no prior equivalent, include only screenshots of the final implementation. Before images are unnecessary, including screenshots of a missing route or 404 page.
 - Include the desktop/mobile and light/dark views needed to assess the change. Keep screenshot-only particle or animation suppression consistent; test actual interactions with animations enabled separately.
 - Prefer focused viewport captures for the quick overview. Include full-page captures only when they help review content order or behavior farther down the page.
 - Label every view by page, viewport, and theme. Keep filenames recognizable, such as `skills-mobile-dark-before.png` and `skills-mobile-dark-after.png`.
@@ -26,11 +27,13 @@ Use this workflow for visual changes in meerman.xyz when preparing or updating a
 
 ## Write the PR for quick review
 
-Lead with the concrete problem and resulting behavior. Follow with a short before/after table:
+Lead with the concrete problem and resulting behavior. For existing pages, follow with a short before/after table:
 
 | View | Before | After |
 |------|--------|-------|
 | Skills / mobile / dark / 390px | Uploaded Before image | Uploaded After image |
+
+For entirely new pages or features, use a two-column table with View and Screenshot.
 
 Use the returned image URLs in Markdown images or `<img width="360" ...>` cells, with useful alt text. Briefly explain what each comparison demonstrates. Keep the screenshots in the PR description or an authorized PR comment; the PR is the review history, so do not add a tracked screenshot gallery or review README.
 
