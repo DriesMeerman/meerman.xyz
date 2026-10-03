@@ -66,7 +66,7 @@ The blog index uses the shared `--profile-*` tokens from `src/lib/styles/profile
 2. Page entry effects should be short and not delay readability.
 3. Respect reduced-motion preference when adding new animation.
 
-## 4.4 Shared Pages: Home, Industries, Education, Experience, Skills, Blog Index
+## 4.4 Shared Pages: Home, Industries, Education, Experience, Skills, Tools, Blog Index
 
 These pages share the Industries design language: precise corporate panels with a restrained cyberpunk influence. Use fine borders, inset frames, compact technical labels, and a single cyan corner accent. Keep the handmade character of the skills cards; avoid adding generic glass panels or large neon glows to these pages.
 
@@ -123,6 +123,16 @@ Shared shape tokens are `--profile-radius: .9rem` and `--profile-shadow: 1px 2px
 4. Split the biography into Background and Off the clock cards. Use real paragraphs and clear headings; keep body copy left-aligned at `1.75` line height. Preserve the personal voice, hobbies, and playful details while making the text easy to scan.
 5. `home/Socials.svelte` uses labelled inset links with the existing social icons and destinations. Four links fit in one row from `1280px`; narrower widths use two columns, and long labels wrap. The company link uses a compact inset panel in the introduction, the Industries monogram, the shared company name, and a plain description of its purpose.
 6. Company, social, and contextual biography links have visible keyboard focus. Apply small hover motion only to interactive social links and respect reduced motion. Keep the shared navigation stable.
+
+### Tools
+
+Use the shared page header and numbered section metadata. Software tiles use native images within inset frames and keep their original icon colors. Unix utilities show a visible `$` prompt and monospace command inside a bordered inset terminal line, with wrapping descriptions and accessible external links. Use responsive grids with minimum widths capped at 100% to avoid horizontal scrolling on narrow screens.
+
+### Markdown articles
+
+Below 640px, let the article panel extend to the screen edges with no border, rounded corners, shadow, or corner mark. Keep the page marker and archive link inset above it. Use 1.5rem vertical padding and 1rem to 1.5rem horizontal padding inside the panel. Desktop retains its framed panel and existing spacing.
+
+Only Markdown articles opt into `.profile-theme`. Use an archive marker and link above a shared panel, then article ID and reading time. Keep original article headings and copy. Fill the panel's inner width with restrained padding, without a separate character-width cap. Use light modern sans-serif typography within articles: Helvetica Neue with Segoe UI/system fallbacks for headings at weight 300, and the system sans-serif stack for body text at weight 350 and size 1rem. Do not use Bruno Ace inside article content. Metadata and code remain monospace. Apply theme tokens to links, quotes, inline code, and image borders. Preserve syntax token colors, native image dialogs, footnotes, and embedded scripts. Long code and tables scroll locally; embedded video frames fit narrow screens. Keep immersive artwork and typography scoped to HTML articles.
 
 ## 5. Consistency Improvement Backlog
 
