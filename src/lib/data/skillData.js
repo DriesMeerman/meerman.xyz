@@ -36,7 +36,7 @@ export const skills = {
         },
         {
             "name": "Stakeholders",
-            "description": "Managing relationships with product, design and business stakeholders: aligning expectations, communicating context and representing the team's needs.",
+            "description": "I coordinate with product, design and business teams and explain what my team needs.",
             "image": getImage("leadership/stakeholders", "png", 400),
             "artwork": true,
             "logoAlt": "A corporate handshake between human and cybernetic hands",
@@ -48,7 +48,7 @@ export const skills = {
     "language": [
         {
             "name": "Swift",
-            "description": "Swift is a general-purpose, multi-paradigm, compiled programming language developed by Apple Inc. Mainly used for iOS development.",
+            "description": "Swift is Apple's programming language, used mainly for iOS apps.",
             "image": getImage("logos/732250_01", "png", 400),
             "logoAlt": "Swift logo",
             "attributes": ["mobile"],
@@ -56,7 +56,7 @@ export const skills = {
         },
         {
             "name": "HTML5",
-            "description": "HTML5 is the latest version of Hypertext Markup Language, the code that describes web pages.",
+            "description": "HTML defines the content and structure of web pages.",
             "image": getImage("logos/logo_2582748_960_720_02", "png", 400),
             "logoAlt": "HTML5 logo",
             "attributes": ["frontend"],
@@ -64,7 +64,7 @@ export const skills = {
         },
         {
             "name": "JavaScript",
-            "description": "JavaScript (JS) can be used to dynamically change the content and structure of a web page. Allowing web pages to become interactive.",
+            "description": "JavaScript adds interactive behavior to web pages.",
             "image": getImage("logos/2048px_unofficial_javascript_logo_2_svg_03", "png", 400),
             "logoAlt": "JavaScript logo",
             "attributes": [
@@ -75,7 +75,7 @@ export const skills = {
         },
         {
             "name": "CSS3",
-            "description": "CSS3 is the latest version of Cascading Style Sheets, a style sheet language used for describing the presentation of a document written in HTML.",
+            "description": "CSS defines how web pages look.",
             "image": getImage("logos/logo_2582747_960_720_04", "png", 400),
             "logoAlt": "CSS3 logo",
             "attributes": ["frontend"],
@@ -83,7 +83,7 @@ export const skills = {
         },
         {
             "name": "Python",
-            "description": "Python is a interpreted, high-level, general-purpose programming language.",
+            "description": "Python is an interpreted programming language.",
             "image": getImage("logos/2048px_python_logo_notext_svg_05", "png", 400),
             "logoAlt": "Python logo",
             "attributes": ["backend"],
@@ -91,7 +91,7 @@ export const skills = {
         },
         {
             "name": "SQL",
-            "description": "Structured Query Language (SQL) is a language used to communicate with databases in a declerative way.",
+            "description": "SQL is a language for querying and updating databases.",
             "image": getImage("logos/2383158_06", "png", 400),
             "logoAlt": "SQL logo",
             "attributes": [
@@ -101,7 +101,7 @@ export const skills = {
         },
         {
             "name": "Dart",
-            "description": "Dart is a client-optimized programming language. It is developed by Google and is used to build mobile, desktop, server, and web applications.",
+            "description": "Dart is Google's programming language for building applications.",
             "image": getImage("logos/2048px_dart_logo_07", "png", 400),
             "logoAlt": "Dart logo",
             "attributes": ["mobile"],
@@ -109,7 +109,7 @@ export const skills = {
         },
         {
             "name": "Java",
-            "description": "Java is a general-purpose, class-based, OOP language designed for portabillity.",
+            "description": "Java is an object-oriented programming language designed for portability.",
             "image": getImage("logos/181_java_logo_logos_512_08", "png", 400),
             "logoAlt": "Java logo",
             "attributes": ["backend", "mobile"],
@@ -117,7 +117,7 @@ export const skills = {
         },
         {
             "name": "Haskell",
-            "description": "Haskell is a general-purpose, statically typed, purely functional programming language with type inference and lazy evaluation.",
+            "description": "Haskell is a statically typed, purely functional programming language.",
             "image": getImage("logos/63064c5652d40eda2eb7a838_33ac2334_09", "png", 400),
             "logoAlt": "Haskell logo",
             "attributes": ["backend"],
@@ -125,7 +125,7 @@ export const skills = {
         },
         {
             "name": "C",
-            "description": "C is a general-purpose, procedural computer programming language supporting structured programming, lexical variable scope, and recursion.",
+            "description": "C is a procedural programming language.",
             "image": getImage("logos/1200px_c_programming_language_svg_10", "png", 400),
             "logoAlt": "C logo",
             "attributes": ["backend"],
@@ -137,7 +137,7 @@ export const skills = {
 
         {
             "name": "SwiftUI",
-            "description": "SwiftUI is an innovative, exceptionally simple way to build user interfaces across all Apple platforms with the power of Swift.",
+            "description": "SwiftUI is a framework for building user interfaces across Apple platforms using Swift.",
             "image": getImage("logos/swiftui_96x96_11", "png", 400),
             "logoAlt": "SwiftUI logo",
             "attributes": ["mobile"],
@@ -146,16 +146,16 @@ export const skills = {
 
         {
             "name": "Realm",
-            "description": "MongoDB Realm is a serverless platform that allows you to build modern mobile apps faster, with less code, and more confidence.",
+            "description": "I used Realm as a local database in Android and iOS apps.",
             "image": getImage("logos/realm_db_logo", "png", 306),
-            "logoAlt": "MongoDB Realm logo",
+            "logoAlt": "Realm logo",
             "attributes": ["mobile", "database"],
             "rarity": "rare"
         },
 
         {
             "name": "Flutter",
-            "description": "Flutter is an open-source UI software development kit created by Google. It is used to develop cross platform applications.",
+            "description": "Flutter is Google's toolkit for building cross-platform apps.",
             "image": getImage("logos/free_flutter_2038877_1720090_12", "png", 400),
             "logoAlt": "Flutter logo",
             "attributes": ["mobile"],
@@ -163,7 +163,7 @@ export const skills = {
         },
         {
             "name": "Node.js",
-            "description": "Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. It allows you to run JS on the server.",
+            "description": "Node.js runs JavaScript on the server.",
             "image": getImage("logos/free_node_js_1174925_13", "png", 400),
             "logoAlt": "Node.js logo",
             "attributes": ["backend"],
@@ -171,7 +171,7 @@ export const skills = {
         },
         {
             "name": "Spring",
-            "description": "Spring is a framework for building Java applications. It is used to build anything from standalone programs to microservices.",
+            "description": "Spring is a framework for building Java applications.",
             "image": getImage("logos/spring_3_logo_png_transparent_14", "png", 400),
             "logoAlt": "Spring logo",
             "attributes": ["backend"],
@@ -180,7 +180,7 @@ export const skills = {
         },
         {
             "name": "Svelte",
-            "description": "Svelte is a JS framework that approaches frontend development by using compiler optimizations to deliver fast applications.",
+            "description": "Svelte is a compiler-based framework for building web interfaces.",
             "image": getImage("logos/2048px_svelte_logo_svg_15", "png", 400),
             "logoAlt": "Svelte logo",
             "attributes": ["frontend"],
@@ -188,7 +188,7 @@ export const skills = {
         },
         {
             "name": "Tailwind CSS",
-            "description": "Tailwind CSS is a utility-first CSS framework for rapidly building custom user interfaces.",
+            "description": "Tailwind CSS provides utility classes for styling user interfaces.",
             "image": getImage("logos/2048px_tailwind_css_logo_svg_16", "png", 400),
             "logoAlt": "Tailwind CSS logo",
             "attributes": ["frontend"],
@@ -196,7 +196,7 @@ export const skills = {
         },
         {
             "name": "Vue.js",
-            "description": "Vue.js is a progressive framework for building user interfaces.",
+            "description": "Vue.js is a framework for building user interfaces.",
             "image": getImage("logos/2048px_vue_js_logo_2_svg_17", "png", 400),
             "logoAlt": "Vue.js logo",
             "attributes": ["frontend"],
@@ -205,7 +205,7 @@ export const skills = {
 
         {
             "name": "AngularJS",
-            "description": "AngularJS is a now deprecated JS framework for building web applications. Wich pioneered many of the approaches used in modern JS frameworks.",
+            "description": "AngularJS is a deprecated JavaScript framework for web applications.",
             "image": getImage("logos/angular_18", "png", 400),
             "logoAlt": "AngularJS logo",
             "attributes": ["frontend"],
@@ -215,7 +215,7 @@ export const skills = {
     "tooling": [
         {
             "name": "Git",
-            "description": "Git is a distributed version-control system for tracking changes in source code during software development.",
+            "description": "Git tracks changes in source code with distributed version control.",
             "image": getImage("logos/2048px_git_icon_svg_19", "png", 400),
             "logoAlt": "Git logo",
             "attributes": ["devops"],
@@ -223,7 +223,7 @@ export const skills = {
         },
         {
             "name": "Bash",
-            "description": "Bash is a Unix shell and command language written by Brian Fox for the GNU Project as a free software replacement for the Bourne shell.",
+            "description": "Bash is a Unix shell and scripting language.",
             "image": getImage("logos/2048px_gnu_bash_logo_svg_20", "png", 400),
             "logoAlt": "Bash logo",
             "attributes": ["scripting"],
@@ -232,7 +232,7 @@ export const skills = {
 
         {
             "name": "Docker",
-            "description": "Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers.",
+            "description": "Docker packages and runs software in containers.",
             "image": getImage("logos/moby_logo_21", "png", 400),
             "logoAlt": "Docker logo",
             "attributes": ["cloud", "devops"],
@@ -240,7 +240,7 @@ export const skills = {
         },
         {
             "name": "GitHub",
-            "description": "GitHub is a provider of Internet hosting for software development and version control using Git.",
+            "description": "GitHub hosts Git repositories.",
             "image": getImage("logos/2048px_octicons_mark_github_svg_22", "png", 400),
             "logoAlt": "GitHub logo",
             "attributes": ["devops"],
@@ -248,7 +248,7 @@ export const skills = {
         },
         {
             "name": "GitLab",
-            "description": "GitLab is a web-based DevOps lifecycle tool that provides a Git-repository manager providing wiki, issue-tracking and CI/CD pipeline features.",
+            "description": "GitLab hosts Git repositories and provides issue tracking and CI/CD pipelines.",
             "image": getImage("logos/5968853_23", "png", 400),
             "logoAlt": "GitLab logo",
             "attributes": ["devops"],
@@ -256,7 +256,7 @@ export const skills = {
         },
         {
             "name": "ServiceNow",
-            "description": "ServiceNow is a cloud-based software platform that supports enterprise service management. It offers services (SaaS) and allows customization (PaaS).",
+            "description": "ServiceNow is a customizable cloud platform for enterprise service management.",
             "image": getImage('servicenow_logo'),
             "logoAlt": "ServiceNow logo",
             "attributes": ["PaaS"],
@@ -264,7 +264,7 @@ export const skills = {
         },
         {
             "name": "MacOS",
-            "description": "macOS is a series of proprietary graphical operating systems developed and marketed by Apple Inc. since 2001.",
+            "description": "macOS is Apple's operating system for Macs.",
             "image": getImage("logos/2048px_macos_wordmark_282017_29_svg_24", "png", 400),
             "logoAlt": "MacOS logo",
             "attributes": ["OS"],
@@ -272,7 +272,7 @@ export const skills = {
         },
         {
             "name": "Linux",
-            "description": "Linux is a family of open-source Unix-like operating systems based on the Linux kernel, an operating system kernel first released on September 17, 1991, by Linus Torvalds.",
+            "description": "Linux is a family of open-source, Unix-like operating systems.",
             "image": getImage("logos/2048px_tux_svg_25", "png", 400),
             "logoAlt": "Linux logo",
             "attributes": ["OS"],
@@ -280,7 +280,7 @@ export const skills = {
         },
         {
             "name": "Windows",
-            "description": "Microsoft Windows, commonly referred to as Windows, is a group of several proprietary graphical operating system families, all of which are developed and marketed by Microsoft.",
+            "description": "Windows is Microsoft's family of operating systems.",
             "image": getImage("logos/2048px_windows_logo_2012_svg_26", "png", 400),
             "logoAlt": "Windows logo",
             "attributes": ["OS"],
@@ -288,7 +288,7 @@ export const skills = {
         },
         {
             "name": "AWS",
-            "description": "Amazon Web Services (AWS) is a subsidiary of Amazon providing on-demand cloud computing platforms and APIs to individuals, companies, and governments, on a metered pay-as-you-go basis.",
+            "description": "AWS provides cloud computing services with usage-based pricing.",
             "image": getImage("logos/2048px_amazon_web_services_logo_svg_27", "png", 400),
             "logoAlt": "AWS logo",
             "attributes": ["cloud"],
@@ -307,7 +307,7 @@ export const skills = {
         },
         {
             "name": "Kanban",
-            "description": "Kanban is a scheduling system for lean manufacturing and just-in-time manufacturing.",
+            "description": "Kanban is a scheduling system for lean manufacturing.",
             "image": getImage("logos/8746714_29", "png", 400),
             "logoAlt": "Kanban logo",
             "attributes": ["agile"],
@@ -315,7 +315,7 @@ export const skills = {
         },
         {
             "name": "UML",
-            "description": "Unified Modeling Language (UML), is a modeling language used in software engineering it provides a standard way to visualize the design of a system.",
+            "description": "UML is a language for diagramming software systems.",
             "image": getImage("logos/2048px_diagrams_net_logo_svg_30", "png", 400),
             "logoAlt": "UML logo",
             "attributes": ["architecture"],

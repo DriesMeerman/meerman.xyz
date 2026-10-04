@@ -1,4 +1,5 @@
 <script>
+  import { resolve } from '$app/paths';
   import { company, getCompanyEmail } from '$lib/data/companyData.js';
 
   let email = $state('');
@@ -29,17 +30,13 @@
     <div class="intro-copy">
       <p class="eyebrow">Independent software development</p>
       <h1 id="company-title">Meerman<span>Industries<span class="title-dot">.</span></span></h1>
-      <p class="intro-description">
-        My name on the door. My code under the hood.
-      </p>
       <p class="intro-body">
         Meerman Industries is the company behind my software development work.
-        I'm <a href="/">Dries Meerman</a>, a software engineer based in Amsterdam.
-        I like building systems that are useful, flexible, and made to last.
+        I'm <a href={resolve('/')}>Dries Meerman</a>, a software engineer based in Amsterdam.
       </p>
       <div class="intro-links">
         <a href="#contact">Business contact <span aria-hidden="true">↘</span></a>
-        <a href="/skills">Explore my skills <span aria-hidden="true">↗</span></a>
+        <a href={resolve('/skills')}>Explore my skills <span aria-hidden="true">↗</span></a>
       </div>
     </div>
 
@@ -67,7 +64,6 @@
     <section class="detail-card registry" aria-labelledby="registry-title">
       <div class="section-label"><span>01 / REGISTER</span><span aria-hidden="true">[ MI ]</span></div>
       <h2 id="registry-title">Company identity</h2>
-      <p class="section-description">The official details, in plain sight.</p>
       <dl>
         <div><dt>Trade name</dt><dd>{company.name}</dd></div>
         <div><dt>Proprietor</dt><dd>{company.proprietor}</dd></div>
@@ -114,7 +110,7 @@
     </section>
   </div>
 
-  <div class="page-end"><span>Built by the person behind the name.</span><a href="/">Back to Meerman <span aria-hidden="true">↗</span></a></div>
+  <div class="page-end"><a href={resolve('/')}>Back to Meerman <span aria-hidden="true">↗</span></a></div>
 </div>
 
 <style>
@@ -142,7 +138,6 @@
   h1 { font-family: var(--profile-display-font); font-size: clamp(1.55rem, 3.1vw, 3.1rem); line-height: 1.27; letter-spacing: -.045em; margin: 0; }
   h1 > span { display: block; }
   .title-dot { color: var(--accent); }
-  .intro-description { font-size: clamp(1.1rem, 1.8vw, 1.35rem); font-weight: 500; line-height: 1.5; margin: 1.5rem 0 1rem; max-width: 22rem; }
   .intro-body { color: var(--muted); font-size: .95rem; line-height: 1.75; max-width: 30rem; }
   .intro-body a { text-decoration: underline; text-underline-offset: 3px; }
   .intro-links { display: flex; flex-wrap: wrap; gap: 1rem 1.4rem; margin-top: 1.8rem; font-size: .8rem; font-weight: 600; }

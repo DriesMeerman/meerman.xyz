@@ -8,7 +8,7 @@ tags:
   - ide
 date: 2024-09-22
 author: Dries Meerman
-summary: The article discusses the Dries' experience with using AI-enhanced IDEs, specifically Cursor, to address issues on their website, including markdown flavour inconsistencies and large bundle sizes. Initially hesitant to fix these problems due to their complexity and existing functionality, the author explores how AI can assist in making the process faster and less tedious. They delve into the complexities of markdown variations and their desire to implement footnotes, eventually using AI to optimize the site's structure and reduce bundle sizes. While the AI helped streamline tasks, it also introduced some minor bugs, such as incorrect file capitalization, highlighting both the potential and limitations of AI-driven development. Overall, the author found AI tools useful for problem-solving and workflow improvements, despite occasional challenges.
+summary: "I used Cursor to add Markdown footnotes and move article HTML out of my JavaScript bundle. It helped with the changes, but a filename capitalization mistake broke the Linux build."
 ID: "005"
 ---
 

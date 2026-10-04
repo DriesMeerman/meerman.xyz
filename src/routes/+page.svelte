@@ -1,4 +1,5 @@
 <script>
+  import { resolve } from '$app/paths';
   import Person from '$lib/home/Person.svelte';
   import Socials from '$lib/home/Socials.svelte';
   import { company } from '$lib/data/companyData.js';
@@ -23,7 +24,7 @@
     <p class="hero-intro">
       Technologist and nerd. I enjoy building flexible systems, learning how things work, and helping people grow.
     </p>
-    <a class="company-intro" href="/industries" aria-labelledby="home-company-name" aria-describedby="home-company-description">
+    <a class="company-intro" href={resolve('/industries')} aria-labelledby="home-company-name" aria-describedby="home-company-description">
       <span class="company-symbol" aria-hidden="true">
         <svg viewBox="40 38 142 92" fill="none">
           <path d="M50 120V48L88 88L126 48V120M160 48V120M148 48H172M148 120H172" stroke="currentColor" stroke-width="7" stroke-linejoin="bevel" />
@@ -47,14 +48,12 @@
         the thing I wanted to get better at.
       </p>
       <p>
-        I <a href="/education">studied software engineering</a> and started working at Plat4mation while
-        I was still a student. Being part of a small startup gave me room to learn quickly, take responsibility,
-        and grow into building systems rather than isolated features.
+        I <a href={resolve('/education')}>studied software engineering</a> and started working at Plat4mation while
+        I was still a student. At the startup, I got to design applications as well as implement features.
       </p>
       <p>
         That path took me from development to architecture and, now, engineering management. These days I
-        manage a team of 10, with a focus on helping people grow. I still care about software that's flexible
-        enough to be useful in different ways.
+        manage a team of 10, with a focus on helping people grow.
       </p>
     </section>
 
@@ -65,11 +64,10 @@
         Desk work needs a counterbalance. I go to the gym, and in summer I like longboarding along smooth paths.
       </p>
       <p>
-        3D printing is my favourite intersection of the digital and physical. Mostly small trinkets for now;
-        my modelling skills still have room to grow.
+        I also enjoy 3D printing, mostly small trinkets for now. My modelling skills still have room to grow.
       </p>
       <p>
-        I share my home with <a href="/cats">two cats</a>, Henrietta and Gina. Also known as Fen Fen, Gina Beena,
+        I share my home with <a href={resolve('/cats')}>two cats</a>, Henrietta and Gina. Also known as Fen Fen, Gina Beena,
         Joony B Coots, Juniper Breeze, Foonry Winks, or just the Coots.
       </p>
     </section>

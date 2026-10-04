@@ -15,7 +15,7 @@
 <svelte:head>
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <title>Meerman</title>
-  <meta name="description" content="A website showcasing Dries Meerman's skills, education, and experience he has accumulated over the years.">
+  <meta name="description" content="Dries Meerman's skills, education and work experience.">
   <meta name="author" content="Dries Meerman">
   <meta name="keywords" content="Dries Meerman, Meerman, Software Engineer, Software Engineering">
 </svelte:head>

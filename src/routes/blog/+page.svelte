@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { asset, resolve } from '$app/paths';
   import ProfilePage from '$lib/ProfilePage.svelte';
 
   /**
@@ -65,12 +66,12 @@
 
 <svelte:head>
   <title>Digital Reflections · Meerman</title>
-  <meta name="description" content="Digital reflections — experiments, engineering notes, and articles about software development and technology." />
+  <meta name="description" content="Software development experiments, engineering notes and articles by Dries Meerman." />
   <meta name="author" content="Dries Meerman" />
   <meta name="keywords" content="Dries Meerman, Meerman, Software Engineer, Blog" />
 </svelte:head>
 
-<ProfilePage title="Digital Reflections" marker="Blog" description="Experiments, engineering notes, long-form explorations, and various thoughts.">
+<ProfilePage title="Digital Reflections" marker="Blog" description="Notes on software development and projects I've worked on.">
   <section class="profile-section" aria-labelledby="blog-archive">
     <div class="profile-section-head archive-head">
       <h2 id="blog-archive" class="profile-section-title">01 / Articles</h2>
@@ -78,7 +79,7 @@
         {#if !loading && !error}
           <span class="profile-section-count">{posts.length} entries</span>
         {/if}
-        <a class="rss-link" href="/feed.xml" aria-label="RSS feed">
+        <a class="rss-link" href={asset('/feed.xml')} aria-label="RSS feed">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
             <circle cx="5" cy="19" r="1" fill="currentColor" />
             <path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
@@ -99,7 +100,7 @@
       <div class="posts-grid">
         {#each posts as post (postSlug(post))}
           <article class="post-card">
-            <a class="post-link" href={'/blog/' + postSlug(post)} aria-labelledby={'post-title-' + postSlug(post)}>
+            <a class="post-link" href={resolve(`/blog/${postSlug(post)}`)} aria-labelledby={'post-title-' + postSlug(post)}>
               <div class="post-topline">
                 <span class="post-id">#{formatId(post.ID)}</span>
                 <span class="post-type">{sourceLabel(post)}</span>

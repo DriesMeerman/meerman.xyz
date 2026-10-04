@@ -5,7 +5,7 @@ tags:
   - agentic-coding
   - context-engineering
   - claude-code
-summary: "What I use to make AI coding reliable in real repos: harnesses, context shape, closed-loop validation, and practical Claude Code/CLI workflows."
+summary: "How I use project instructions, plans and validation when working with AI coding tools. Examples include Claude Code, Windsurf and shell scripts."
 date: 2026-02-26
 author: Dries Meerman
 ID: "008"

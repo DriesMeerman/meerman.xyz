@@ -5,7 +5,7 @@ tags:
 date: 2025-10-17
 author: Dries Meerman
 ID: "007"
-summary: This blog post, written upon turning 30, is a reflection on lessons learned through trial, curiosity, and self-discovery in one’s 20s. It’s not a list of rigid rules, but a collection of practical and philosophical reminders—about acting instead of overthinking, creating without fear, nurturing curiosity, building habits that last, and embracing both the weird and the ordinary. It’s about realizing that growth comes from showing up, experimenting, and engaging with life, while learning to balance reflection with action.
+summary: "Thirty things that have made my life better, published a month after turning 30. They include goofy family traditions, starting projects and doing the holiday gift shopping early."
 ---
 
 ![megaman battle network 5 old man](./megaman_battle_network_5.jpg)

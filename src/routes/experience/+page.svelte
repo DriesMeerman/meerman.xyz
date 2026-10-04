@@ -13,7 +13,7 @@
   <meta name="keywords" content={'Dries Meerman, Meerman, Software Engineer, Software Engineering, Software Architect, Programmer, ' + uniqueTitles.join(', ')} />
 </svelte:head>
 
-<ProfilePage title="Experience" description="A timeline of roles, ownership shifts, and product milestones.">
+<ProfilePage title="Experience" description="My engineering and management roles.">
   <section class="profile-section" aria-labelledby="experience-roles">
     <div class="profile-section-head">
       <h2 id="experience-roles" class="profile-section-title">01 / Roles &amp; responsibilities</h2>
