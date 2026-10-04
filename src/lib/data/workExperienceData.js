@@ -9,7 +9,7 @@ export const workData = [
         title: 'ServiceNow',
         subtitle: 'Engineering Manager (M3)',
 	level: 'm3',
-        description: 'In addition to the team I have been managing, I am now fully focussing on managing, getting an additional team and instead of development focusing on planning and leadership. Now managing 10 people.',
+        description: 'I moved into full-time management and took on an additional team. I now manage 10 people.',
         bullets: [
             'Industrial Connected Workforce',
             '10 Reports'
@@ -21,7 +21,7 @@ export const workData = [
         title: 'ServiceNow',
         subtitle: 'Engineering Manager (M3)',
 	level: 'm3',
-        description: 'I switched to a hybrid role with 50% development and 50% management, with my official title changing to manager. Continuing my work on mobile platform releases and coordinating with product / design and business units. While helping 4 direct reports grow in their career.',
+        description: 'I switched to a hybrid role with 50% development and 50% management, with my official title changing to manager. Continuing my work on mobile platform releases and coordinating with product / design and business units. While helping 5 direct reports grow in their career.',
         bullets: [
             'Mobile platform',
             '5 Reports'

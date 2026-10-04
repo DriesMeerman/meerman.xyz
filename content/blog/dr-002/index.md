@@ -2,7 +2,7 @@
 title: Finishing projects
 tags:
   - process
-summary: This article explores the common issue of unfinished side projects and suggests techniques to overcome it. The author discusses the challenge of side projects losing momentum over time due to the absence of external pressures like deadlines. They emphasize the importance of completing projects, as it hones valuable skills, allows for user feedback, and frees up mental space for creativity. The 'Cult of Done Manifesto' is referenced to underscore the significance of finishing. To prevent projects from languishing, the author recommends preparation, cheating by using existing components, setting clear goals, and collaborating with others. These strategies help maintain focus, enhance productivity, and increase the likelihood of project completion. Ultimately, the article acknowledges that there is no foolproof solution but suggests that these techniques have proven effective for the author in finishing more projects.
+summary: "I often lose interest in side projects before they're usable. Planning, reusing components, setting a smaller goal and working with someone else have helped me finish more of them."
 date: 2023-09-25
 author: Dries Meerman
 ID: 002

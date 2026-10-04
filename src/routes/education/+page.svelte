@@ -11,7 +11,7 @@
   <meta name="keywords" content="Dries Meerman, Meerman, Software Engineer, Software Engineering, Master, MSc, Bachelor, BSc, University of Amsterdam, UvA, HvA" />
 </svelte:head>
 
-<ProfilePage title="Education" description="Formal education and focused learning tracks that shaped my engineering path.">
+<ProfilePage title="Education" description="My software engineering studies and internships.">
   <section class="profile-section" aria-labelledby="education-studies">
     <div class="profile-section-head">
       <h2 id="education-studies" class="profile-section-title">01 / Formal education</h2>

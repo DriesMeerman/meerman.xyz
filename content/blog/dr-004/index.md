@@ -4,7 +4,7 @@ tags:
     - Swift
 date: 2024-01-13
 author: Dries Meerman
-summary: Swift 5.9, released with Xcode 15.2, introduces significant language improvements, including bi-directional C++ compatibility, macros, and the use of 'if' and 'switch' as expressions for more readable code. Debugging sees a speed boost, particularly in 'p' and 'po' commands, and there are notable enhancements to the Swift Package Manager and the Swift-syntax project. The author is particularly excited about the potential for cleaner code with 'if' expressions and the anticipated improvements in code analysis tools. This update also brings advancements for Swift on Windows platforms.
+summary: "My notes on Swift 5.9, including macros, C++ interoperability, parameter packs and if/switch expressions. I'm most interested in if expressions and faster debugging."
 ID: 004
 ---
 

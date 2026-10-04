@@ -10,7 +10,7 @@
         {
             name: 'Gina',
             image: getPictureSources('cats/Gina', 'jpeg', 800),
-            description: 'Juniper breeze, takes great care of her sister and is cuddles you when sick.'
+            description: 'Juniper breeze, takes great care of her sister and cuddles you when sick.'
         }
     ]
 </script>
@@ -21,7 +21,7 @@
     </h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start justify-items-center">
-        {#each cats as cat}
+        {#each cats as cat (cat.name)}
             <div class="group flex flex-col items-center">
                 <div class="relative mb-6 transform transition-all duration-500 hover:scale-105">
                     <!-- Glow effect -->

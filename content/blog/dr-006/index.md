@@ -7,7 +7,7 @@ tags:
   - MCP
 author: Dries Meerman
 ID: "006"
-summary: Inspired by recent advancements in agentic AI like VS Code's agent mode and Google's Agent2Agent protocol, the author explores the Model Context Protocol (MCP), an open standard allowing Large Language Models (LLMs) to request external context and utilize tools for more accurate, less hallucinatory results. Motivated to apply this to their ServiceNow expertise, the author developed a custom MCP server (available on GitHub) to retrieve table schemas, detailing the building process using official guides and the MCP Inspector tool for local testing. The article concludes by demonstrating the successful integration of this server into the Cursor editor, where an LLM agent uses the custom tool to fetch live ServiceNow data and generate code based on it, showcasing MCP's potential to enhance AI coding assistants with reliable, real-world context and actions.
+summary: "I built an MCP server that retrieves ServiceNow table schemas, tested it with the MCP Inspector and connected it to Cursor. Here's the setup and a demo of the agent using it."
 ---
 
 # Exploring the Model Context Protocol
