@@ -1,0 +1,42 @@
+{
+  "spring": [
+    "Cycle the tulip fields between Lisse and Noordwijk",
+    "Hear the first cuckoo of the year",
+    "Plant something you can eat by summer",
+    "Catch a sunrise from a dike with coffee in a thermos",
+    "Solder a soil moisture sensor for the balcony plants",
+    "Spot a stork on its nest",
+    "Walk the Keukenhof edge before the tour buses arrive",
+    "Build a bird box and log who moves in"
+  ],
+  "summer": [
+    "Swim in open water: lake, canal or North Sea",
+    "Watch the Perseids from a dark sky park",
+    "Cycle a full Elfstedentocht route in stages",
+    "Eat a raw herring on a market, with or without onions",
+    "Sleep one night outside",
+    "Build a solar powered thing that does something useless",
+    "Sail or sup on the IJsselmeer",
+    "Catch the sunset at 22:00 from a dune top"
+  ],
+  "autumn": [
+    "Storm walk on the beach in full wind gear",
+    "Find ten kinds of mushroom in the Veluwe",
+    "Hear the red deer rut at dawn",
+    "Make stamppot from scratch for friends",
+    "Ship a side project before the clocks go back",
+    "Collect chestnuts and roast them",
+    "Visit a windmill on National Mill Day",
+    "Map the first frost night with a cheap sensor"
+  ],
+  "winter": [
+    "Ice skate on natural ice",
+    "Go for a New Year's dive in the sea",
+    "Bake oliebollen and share them with the neighbours",
+    "Follow the Advent of Code to day 25",
+    "Spot Orion and the Pleiades from a dark field",
+    "Walk a frozen polder at sunrise",
+    "Build a tiny e-ink weather display",
+    "Drink erwtensoep after a long cold cycle"
+  ]
+}
