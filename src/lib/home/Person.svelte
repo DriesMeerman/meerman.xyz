@@ -1,16 +1,40 @@
 <script>
+  import { goto } from '$app/navigation';
+  import { resolve } from '$app/paths';
   import { getPictureSources } from '$lib/services/imageService.js';
 
   /** @type {{ heading: import('svelte').Snippet; children?: import('svelte').Snippet }} */
   let { heading, children } = $props();
 
   const avatar = getPictureSources('avatar', 'jpg', 400);
+
+  /** @type {HTMLElement | undefined} */
+  let portrait = $state();
+
+  // Hidden door to the lab: five quick taps on the portrait.
+  $effect(() => {
+    const element = portrait;
+    if (!element) return;
+    let taps = 0;
+    let last = 0;
+    const onTap = () => {
+      const now = performance.now();
+      taps = now - last < 800 ? taps + 1 : 1;
+      last = now;
+      if (taps >= 5) {
+        taps = 0;
+        goto(resolve('/lab'));
+      }
+    };
+    element.addEventListener('click', onTap);
+    return () => element.removeEventListener('click', onTap);
+  });
 </script>
 
 <section class="profile-hero" aria-labelledby="person-title">
   <header class="hero-heading">{@render heading()}</header>
   <div class="hero-body">{@render children?.()}</div>
-  <figure class="portrait-card profile-panel">
+  <figure class="portrait-card profile-panel" bind:this={portrait}>
     <div class="portrait-topline" aria-hidden="true"><span>PROFILE / 01</span><span>[ DM ]</span></div>
     <div class="portrait-window">
       <picture>
@@ -43,7 +67,7 @@
 
   .hero-heading { grid-column: 1; grid-row: 1; min-width: 0; }
   .hero-body { grid-column: 1 / -1; grid-row: 2; min-width: 0; }
-  .portrait-card { grid-column: 2; grid-row: 1; margin: 0; padding: .55rem; width: 100%; }
+  .portrait-card { grid-column: 2; grid-row: 1; margin: 0; padding: .55rem; width: 100%; touch-action: manipulation; }
   .portrait-topline { display: none; }
   .portrait-window { padding: .25rem; border: 1px solid var(--profile-line); border-radius: .35rem; background: var(--profile-inset); box-shadow: inset 1px 1px 3px #00000019; }
   picture { display: block; }

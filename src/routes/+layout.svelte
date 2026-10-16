@@ -2,8 +2,13 @@
   import '../app.css';
   import Menu from '$lib/Menu.svelte';
   import Particles from '$lib/Particles.svelte';
+  import { page } from '$app/state';
   import { darkMode, particlesEnabled } from '$lib/state.svelte.js';
   let { children } = $props();
+
+  // The lab is a dashboard: it gets the full width, and `?w=` embeds render without any site chrome.
+  const isLab = $derived(page.url.pathname.replace(/\/$/, '') === '/lab');
+  const bare = $derived(isLab && page.url.searchParams.has('w'));
 
   $effect(() => {
     if (typeof document !== 'undefined') {
@@ -20,10 +25,13 @@
   <meta name="keywords" content="Dries Meerman, Meerman, Software Engineer, Software Engineering">
 </svelte:head>
 
+{#if bare}
+  {@render children?.()}
+{:else}
 <div class="flex flex-col h-full">
   <Menu />
   <div class="wrapper flex flex-col flex-grow items-center">
-    <main class="p-6 pt-12 w-full sm:w-2/3 dark:text-white mx-auto">
+    <main class="p-6 pt-12 w-full dark:text-white mx-auto {isLab ? '' : 'sm:w-2/3'}">
       {@render children?.()}
     </main>
     <div class="particle-background" class:fade-in={particlesEnabled.current} class:fade-out={!particlesEnabled.current}>
@@ -33,6 +41,7 @@
     </div>
   </div>
 </div>
+{/if}
 
 <style>
   @media (min-width: 640px) {
