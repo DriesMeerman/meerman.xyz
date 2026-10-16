@@ -5,6 +5,11 @@ import { SHELL_VERTEX, RING_VERTEX, BRIDGE_VERTEX, POINT_FRAGMENT, CORE_VERTEX, 
 
 const FOV = 30;
 const FIT_RADIUS = 1.52; // world units that must fit in the shorter canvas side
+const TEMPO = 1.5; // global animation speed; every window scales wall-clock time the same way, so links stay in sync
+const PEER_SHARE = 0.35; // particle share for peer orbs, which mostly sit outside this window
+const MAX_DPR = 1.75; // additive points are fill-rate bound, full retina costs a lot for little gain
+const MIN_DPR = 1;
+const ENERGY_RANGE = 5; // gap between shells (world units) at which the link starts to wake up
 const BASE_COUNTS = { low: 18000, medium: 40000, high: 72000 };
 
 /**
@@ -201,6 +206,8 @@ function buildOrb(spec) {
     uHaze: { value: 0.1 },
     uPointer: { value: new THREE.Vector3(0, 0, 1) },
     uPointerStrength: { value: 0 },
+    uTide: { value: new THREE.Vector3(1, 0, 0) },
+    uTideStrength: { value: 0 },
     uColorA: { value: colour(palette.shell[0]) },
     uColorB: { value: colour(palette.shell[1]) },
     uColorHot: { value: colour(palette.hot) }
@@ -222,6 +229,8 @@ function buildOrb(spec) {
     uHaze: { value: 0.1 },
     uPointer: { value: new THREE.Vector3(0, 0, 1) },
     uPointerStrength: { value: 0 },
+    uTide: { value: new THREE.Vector3(1, 0, 0) },
+    uTideStrength: { value: 0 },
     uColorA: { value: colour(palette.core).multiplyScalar(0.5) },
     uColorB: { value: colour(palette.hot) },
     uColorHot: { value: colour('#ffffff') }
@@ -337,6 +346,10 @@ export function createOrbScene(canvas, settings) {
   let width = 1;
   let height = 1;
   let dpr = 1;
+  let ratioCap = MAX_DPR;
+  let deviceRatio = 1;
+  let frameAvg = 1 / 60;
+  let slowFor = 0;
   let camDist = 8;
   let ppu = 100; // CSS px per world unit at the orb's depth
   let pointSize = 3;
@@ -354,7 +367,7 @@ export function createOrbScene(canvas, settings) {
   let orb = null;
   /** @type {Map<string, { orb: ReturnType<typeof buildOrb>, bridge: THREE.Points, bridgeUniforms: Record<string, { value: any }>, peer: Peer }>} */
   const peers = new Map();
-  const bridgeGeometry = bridgePositions(3000);
+  const bridgeGeometry = bridgePositions(6000);
 
   const pointer = { target: new THREE.Vector3(0, 0, 1), current: new THREE.Vector3(0, 0, 1), strength: 0, targetStrength: 0 };
   /** @type {[number, number]} */
@@ -399,7 +412,7 @@ export function createOrbScene(canvas, settings) {
   /** @param {Peer} peer */
   function addPeer(peer) {
     const c = counts();
-    const peerOrb = buildOrb({ palette: peer.palette, shellCount: Math.round(c.shell * 0.6), coreCount: Math.round(c.inner * 0.6), ringCount: Math.round(c.ring * 0.6), dayPhase: state.dayPhase, pointSize, camDist, halo });
+    const peerOrb = buildOrb({ palette: peer.palette, shellCount: Math.round(c.shell * PEER_SHARE), coreCount: Math.round(c.inner * PEER_SHARE), ringCount: Math.round(c.ring * PEER_SHARE), dayPhase: state.dayPhase, pointSize, camDist, halo });
     scene.add(peerOrb.group);
     const own = PALETTES[state.palette];
     const theirs = PALETTES[paletteNamed(peer.palette)];
@@ -412,6 +425,7 @@ export function createOrbScene(canvas, settings) {
       uA: { value: new THREE.Vector3() },
       uB: { value: new THREE.Vector3() },
       uWidth: { value: 0.12 },
+      uEnergy: { value: 0 },
       uColorA: { value: colour(own.shell[1]) },
       uColorB: { value: colour(theirs.shell[1]) },
       uColorHot: { value: colour(theirs.shell[1]) }
@@ -437,12 +451,52 @@ export function createOrbScene(canvas, settings) {
 
   const tmpA = new THREE.Vector3();
   const tmpB = new THREE.Vector3();
+  const tmpC = new THREE.Vector3();
   const tmpQ = new THREE.Quaternion();
   const raycaster = new THREE.Raycaster();
   const ndc = new THREE.Vector2();
   const sphere = new THREE.Sphere(new THREE.Vector3(), 1);
 
   let lastTime = 0;
+  const tideLocal = new THREE.Vector3();
+  const tideQ = new THREE.Quaternion();
+
+  /**
+   * Bulges an orb's shell toward a point, like the tidal pull in Staal's linked windows.
+   * @param {ReturnType<typeof buildOrb>} target
+   * @param {THREE.Vector3} towardWorld direction in world space (normalised)
+   * @param {number} strength 0 to 1
+   */
+  function setTide(target, towardWorld, strength) {
+    tideQ.copy(target.group.quaternion).invert();
+    tideLocal.copy(towardWorld).applyQuaternion(tideQ).normalize();
+    target.shellUniforms.uTide.value.copy(tideLocal);
+    target.shellUniforms.uTideStrength.value = strength;
+  }
+
+  function applySize() {
+    dpr = Math.max(MIN_DPR, Math.min(deviceRatio, ratioCap));
+    renderer.setPixelRatio(dpr);
+    renderer.setSize(width, height, false);
+    fitCamera();
+    rebuild();
+    for (const entry of peers.values()) entry.orb.setPointSize(pointSize, camDist);
+  }
+
+  /**
+   * Drops the pixel ratio a step when frames stay slow, for example with several linked windows open.
+   * @param {number} dt seconds since the previous frame
+   */
+  function adaptQuality(dt) {
+    frameAvg += (dt - frameAvg) * 0.05;
+    slowFor = frameAvg > 1 / 45 ? slowFor + dt : 0;
+    if (slowFor > 1.5 && dpr > MIN_DPR) {
+      ratioCap = Math.max(MIN_DPR, dpr - 0.25);
+      slowFor = 0;
+      frameAvg = 1 / 60;
+      applySize();
+    }
+  }
 
   return {
     get particles() {
@@ -465,12 +519,8 @@ export function createOrbScene(canvas, settings) {
     resize(w, h, ratio) {
       width = Math.max(1, Math.floor(w));
       height = Math.max(1, Math.floor(h));
-      dpr = Math.min(ratio, 2);
-      renderer.setPixelRatio(dpr);
-      renderer.setSize(width, height, false);
-      fitCamera();
-      rebuild();
-      for (const entry of peers.values()) entry.orb.setPointSize(pointSize, camDist);
+      deviceRatio = ratio;
+      applySize();
     },
     /** @param {Partial<OrbSettings>} next */
     configure(next) {
@@ -541,6 +591,8 @@ export function createOrbScene(canvas, settings) {
       if (!orb) return;
       const dt = lastTime ? Math.min(time - lastTime, 0.1) : 0.016;
       lastTime = time;
+      adaptQuality(dt);
+      time *= TEMPO;
       const motion = state.reducedMotion ? 0.12 : 1;
 
       // ease pointer
@@ -565,27 +617,47 @@ export function createOrbScene(canvas, settings) {
 
       orb.update(time, motion, state.spin, rot);
 
+      const halfTan = Math.tan(THREE.MathUtils.degToRad(FOV / 2));
+      const viewH = camDist * halfTan;
+      const viewW = viewH * camera.aspect;
+      let strongest = 0;
       for (const entry of peers.values()) {
         const { peer } = entry;
         const scale = peer.ppu / ppu;
         entry.orb.group.position.set(peer.dx / ppu, -peer.dy / ppu, 0);
         entry.orb.group.scale.setScalar(scale);
-        entry.orb.update(time, motion, peer.spin, peer.rot);
-        // bridge from our shell to theirs
-        tmpB.copy(entry.orb.group.position);
+
+        // Skip drawing peer orbs that sit entirely outside this window.
+        const reach = FIT_RADIUS * scale;
+        const pos = entry.orb.group.position;
+        entry.orb.group.visible = Math.abs(pos.x) - reach < viewW && Math.abs(pos.y) - reach < viewH;
+        if (entry.orb.group.visible) entry.orb.update(time, motion, peer.spin, peer.rot);
+
+        // Bridge from our shell to theirs. Energy rises as the shells approach each other.
+        tmpB.copy(pos);
         const len = tmpB.length();
+        const gap = Math.max(0, len - 1 - scale);
+        const raw = Math.min(1, Math.max(0, 1 - gap / ENERGY_RANGE));
+        const energy = raw * raw * (3 - 2 * raw);
         if (len > 1e-3) {
           tmpA.copy(tmpB).multiplyScalar(1 / len);
           entry.bridgeUniforms.uA.value.copy(tmpA).multiplyScalar(1.0);
           entry.bridgeUniforms.uB.value.copy(tmpB).addScaledVector(tmpA, -1.0 * scale);
-          entry.bridgeUniforms.uWidth.value = 0.05 + Math.min(len, 12) * 0.012;
+          entry.bridgeUniforms.uWidth.value = 0.05 + Math.min(len, 12) * 0.012 + energy * 0.1;
+          if (entry.orb.group.visible) setTide(entry.orb, tmpC.copy(tmpA).negate(), energy);
+          if (energy >= strongest) {
+            strongest = energy;
+            setTide(orb, tmpA, energy);
+          }
         }
+        entry.bridgeUniforms.uEnergy.value = energy;
         entry.bridgeUniforms.uTime.value = time;
         entry.bridgeUniforms.uSpeed.value = motion;
         entry.bridgeUniforms.uSize.value = pointSize * 0.9;
         entry.bridgeUniforms.uCamDist.value = camDist;
         entry.bridge.visible = len > 1.2;
       }
+      if (peers.size === 0) orb.shellUniforms.uTideStrength.value = 0;
 
       renderer.render(scene, camera);
     },
