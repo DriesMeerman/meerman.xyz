@@ -87,6 +87,8 @@ uniform float uBands;
 uniform float uHaze;
 uniform vec3 uPointer;
 uniform float uPointerStrength;
+uniform vec3 uTide;
+uniform float uTideStrength;
 attribute float aSeed;
 attribute float aSize;
 varying float vIntensity;
@@ -141,6 +143,17 @@ void main() {
     r *= 1.0 + inf * 0.16;
     intensity += inf * 0.9;
     hot = inf;
+  }
+
+  if (uTideStrength > 0.001) {
+    // Pull the shell toward a linked orb: a funnel that stretches out and brightens as they approach.
+    float facing = max(dot(p, uTide), 0.0);
+    float tide = pow(facing, 7.0) * uTideStrength;
+    float flicker = 0.75 + 0.25 * sin(t * 9.0 + aSeed * 40.0);
+    r *= 1.0 + tide * (0.55 + 0.25 * flicker);
+    p = normalize(p + uTide * tide * 0.35);
+    intensity += tide * 1.4 * flicker;
+    hot = max(hot, tide * 0.8);
   }
 
   vec4 mv = modelViewMatrix * vec4(p * r, 1.0);
@@ -201,7 +214,9 @@ void main() {
 }
 `;
 
-// A twisted strand of particles between two orbs in different windows.
+// A twisted strand of particles between two orbs in different windows. `uEnergy` (0 to 1) rises as the
+// orbs approach: more particles wake up, the strand flows and pulses faster, flares into funnels at
+// both shells, and crackles with short arcs.
 export const BRIDGE_VERTEX = /* glsl */ `
 precision highp float;
 uniform float uTime;
@@ -211,6 +226,7 @@ uniform float uCamDist;
 uniform vec3 uA;
 uniform vec3 uB;
 uniform float uWidth;
+uniform float uEnergy;
 attribute float aT;
 attribute float aSeed;
 attribute vec3 aRand;
@@ -219,28 +235,57 @@ varying float vHot;
 ${NOISE}
 
 void main() {
+  // Calm links use a third of the particles; the rest switch on with energy.
+  if (aRand.z > 0.33 + 0.67 * uEnergy) {
+    gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+    gl_PointSize = 0.0;
+    vIntensity = 0.0;
+    vHot = 0.0;
+    return;
+  }
+
+  float e = uEnergy;
   float t0 = uTime * uSpeed;
-  float t = fract(aT + t0 * 0.04 * (0.5 + aRand.z));
+  float flow = 0.04 + 0.22 * e;
+  float t = fract(aT + t0 * flow * (0.5 + aRand.z));
   vec3 dir = uB - uA;
   float len = max(length(dir), 0.001);
   vec3 d = dir / len;
   vec3 up = abs(d.y) < 0.9 ? vec3(0.0, 1.0, 0.0) : vec3(1.0, 0.0, 0.0);
   vec3 n1 = normalize(cross(d, up));
   vec3 n2 = cross(d, n1);
-  float env = sin(t * 3.14159);
-  float strand = t * (6.0 + 4.0 * aRand.y) * 3.14159 + aSeed * 6.2831 + t0 * 0.9;
-  float spiral = uWidth * (0.25 + 0.75 * aRand.x) * env;
-  vec2 wob = vec2(
-    snoise(vec3(t * 3.0 + aSeed * 7.0, t0 * 0.35, 2.0)),
-    snoise(vec3(t * 3.0 + aSeed * 7.0, t0 * 0.35 + 9.0, 5.0)));
-  vec3 p = uA + dir * t + (n1 * cos(strand) + n2 * sin(strand)) * spiral + (n1 * wob.x + n2 * wob.y) * uWidth * 1.6 * env;
 
-  float pulse = pow(0.5 + 0.5 * sin(t * 28.0 - t0 * 5.0 + aSeed * 3.0), 10.0);
+  // Thin in the middle, flaring into funnels where the strand leaves each shell.
+  float env = sin(t * 3.14159);
+  float funnel = pow(abs(2.0 * t - 1.0), 4.0);
+  float profile = env * (1.0 - 0.45 * e) + funnel * (0.25 + 2.2 * e);
+
+  float strand = t * (6.0 + 4.0 * aRand.y + 8.0 * e) * 3.14159 + aSeed * 6.2831 + t0 * (0.9 + 3.5 * e);
+  float spiral = uWidth * (0.25 + 0.75 * aRand.x) * profile;
+  vec2 wob = vec2(
+    snoise(vec3(t * 3.0 + aSeed * 7.0, t0 * (0.35 + 0.9 * e), 2.0)),
+    snoise(vec3(t * 3.0 + aSeed * 7.0, t0 * (0.35 + 0.9 * e) + 9.0, 5.0)));
+  vec3 p = uA + dir * t + (n1 * cos(strand) + n2 * sin(strand)) * spiral + (n1 * wob.x + n2 * wob.y) * uWidth * 1.6 * profile;
+
+  // Crackle: a few particles jump between stepped noise positions, which reads as short arcs.
+  float arc = step(0.8, aRand.y) * e;
+  if (arc > 0.0) {
+    float tick = floor(t0 * 14.0 + aSeed * 5.0);
+    vec2 jump = vec2(snoise(vec3(t * 9.0, tick, aSeed * 13.0)), snoise(vec3(t * 9.0, tick + 4.1, aSeed * 7.0)));
+    p += (n1 * jump.x + n2 * jump.y) * uWidth * 2.2 * env * arc;
+  }
+
+  float pulse = pow(0.5 + 0.5 * sin(t * (28.0 + 26.0 * e) - t0 * (5.0 + 12.0 * e) + aSeed * 3.0), 10.0 - 5.0 * e);
+  float surge = 0.5 + 0.5 * sin(t0 * 6.0 - t * 12.0);
   float intensity = (0.25 + 0.3 * env + 1.6 * pulse) * (0.7 + 0.3 * aRand.y);
+  intensity *= 1.0 + e * (0.9 + 0.7 * surge);
+  intensity += arc * 1.1;
+  // Short strands pack every particle into a small area; dim them so additive blending does not burn out.
+  intensity *= clamp(len / 4.0, 0.22, 1.0);
 
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
   gl_Position = projectionMatrix * mv;
-  gl_PointSize = uSize * (0.5 + 0.7 * aRand.x + pulse * 0.9) * (uCamDist / -mv.z);
+  gl_PointSize = uSize * (0.5 + 0.7 * aRand.x + pulse * (0.9 + 0.8 * e) + arc * 0.6) * (uCamDist / -mv.z);
   vIntensity = intensity;
   vHot = t;
 }
