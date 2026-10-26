@@ -1,12 +1,19 @@
 <script>
+  import MatrixRain from '$lib/effects/matrix-rain/MatrixRain.svelte';
+  import { getRainControl } from './rain.svelte.js';
+
   /**
    * Shared frame for lab widgets: corner brackets, a technical label row, and a faint grid.
    * @type {{ label?: string, code?: string, status?: string, frame?: boolean, class?: string, children: import('svelte').Snippet }}
    */
   let { label = '', code = '', status = '', frame = true, class: className = '', children } = $props();
+
+  const rain = getRainControl();
 </script>
 
 <section class="hud {className}" class:frameless={!frame}>
+  <!-- Frameless panels have no background of their own, so the rain stays out of them. -->
+  {#if rain && frame}<MatrixRain field={rain.field} />{/if}
   {#if frame}
     <span class="corner tl" aria-hidden="true"></span>
     <span class="corner tr" aria-hidden="true"></span>
@@ -52,6 +59,8 @@
   .br { bottom: 6px; right: 6px; border-bottom-width: 1px; border-right-width: 1px; border-bottom-right-radius: 4px; }
 
   .hud-head {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     gap: .6rem;
@@ -67,7 +76,7 @@
   .hud-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .hud-status { display: inline-flex; align-items: center; gap: .4rem; margin-left: auto; white-space: nowrap; }
   .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--lab-accent); box-shadow: 0 0 8px var(--lab-accent); animation: pulse 2.4s ease-in-out infinite; }
-  .hud-body { position: relative; flex: 1; min-height: 0; container-type: inline-size; }
+  .hud-body { position: relative; z-index: 1; flex: 1; min-height: 0; container-type: inline-size; }
 
   @keyframes pulse { 50% { opacity: .35; } }
   @media (prefers-reduced-motion: reduce) { .pulse { animation: none; } }
