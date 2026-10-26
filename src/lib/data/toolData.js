@@ -48,12 +48,10 @@ const toolDataBySection = {
 
 export const tools = toolDataBySection.largerCliTools
                         // .concat(toolDataBySection.unixUtilities)
-                        // .concat(toolDataBySection.macosSpecific)
                         .concat(toolDataBySection.devTools)
                         // .sort((a, b) => a.name.localeCompare(b.name));
 
 
 export const software = toolDataBySection.largerCliTools;
 export const unixTools = toolDataBySection.unixUtilities;
-export const macosSpecific = toolDataBySection.macosSpecific;
 export const devTools = toolDataBySection.devTools;
