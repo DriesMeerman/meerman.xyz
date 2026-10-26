@@ -10,6 +10,7 @@
   ];
   let darkModeIconFill = $derived(darkMode.current ? 'white' : 'black');
   let particleText = $derived(particlesEnabled.current ? 'Disable particles' : 'Enable particles');
+  /** @param {boolean} isDarkMode */
   function getIconClass(isDarkMode) {
     return `icon-hover ${isDarkMode ? 'dark:fill-white' : 'fill-black'}`;
   }

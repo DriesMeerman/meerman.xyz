@@ -11,6 +11,13 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	interface Window {
+		/** Tinylytics analytics embed loaded from app.html. */
+		tinylytics?: { triggerUpdate(): void };
+		/** External article scripts already requested, keyed by src, so each loads once. */
+		__blogExternalScriptPromises?: Map<string, Promise<void>>;
+	}
 }
 
 export {};
