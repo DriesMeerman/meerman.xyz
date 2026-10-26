@@ -1,14 +1,42 @@
 import { imageManifest } from '$lib/data/imageData.js';
 
+/**
+ * @typedef {{ width: number, height: number, fallback: string, webp: string, avif: string }} ImageVariant
+ * @typedef {{
+ *   extension: string,
+ *   fallback: string,
+ *   fallbackSrcset: string,
+ *   webp: string,
+ *   webpSrcset: string,
+ *   avif: string,
+ *   avifSrcset: string,
+ *   width: number | null,
+ *   height: number | null,
+ *   variants: ImageVariant[]
+ * }} ImageManifestEntry
+ */
+
+/** @type {Record<string, ImageManifestEntry | undefined>} */
+const manifest = imageManifest;
+
+/**
+ * @param {string} name
+ * @param {string} [ext]
+ */
 function getImageKey(name, ext) {
     const extension = ext || 'png';
     return `${name}.${extension}`;
 }
 
+/** @param {ImageManifestEntry | undefined} entry */
 function getSortedVariants(entry) {
     return [...(entry?.variants || [])].sort((left, right) => left.width - right.width);
 }
 
+/**
+ * @param {ImageManifestEntry | undefined} entry
+ * @param {number} requestedWidth
+ */
 function pickVariant(entry, requestedWidth) {
     const variants = getSortedVariants(entry);
     if (variants.length === 0) return null;
@@ -19,14 +47,14 @@ function pickVariant(entry, requestedWidth) {
 /**
  *
  * @param {string} name - image filename
- * @param {string} ext - file extension, (png, jpg, etc)
- * @param {number} size - target width
+ * @param {string} [ext] - file extension, (png, jpg, etc)
+ * @param {number} [size] - target width
  * @returns {string}
  */
 export function getImage(name, ext, size) {
     const extension = ext || 'png';
     const imageSize = size || 400;
-    const entry = imageManifest[getImageKey(name, extension)];
+    const entry = manifest[getImageKey(name, extension)];
     const variant = pickVariant(entry, imageSize);
 
     if (variant) {
@@ -39,13 +67,13 @@ export function getImage(name, ext, size) {
 /**
  *
  * @param {string} name
- * @param {string} ext
- * @param {number} size
+ * @param {string} [ext]
+ * @param {number} [size]
  */
 export function getPictureSources(name, ext, size) {
     const extension = ext || 'png';
     const imageSize = size || 400;
-    const entry = imageManifest[getImageKey(name, extension)];
+    const entry = manifest[getImageKey(name, extension)];
 
     if (!entry) {
         const base = `/g/assets/${name}-${imageSize}`;
