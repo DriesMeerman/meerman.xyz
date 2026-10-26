@@ -1,12 +1,16 @@
 <script>
   import '$lib/lab/lab.css';
+  import { untrack } from 'svelte';
   import { page } from '$app/state';
-  import { darkMode } from '$lib/state.svelte.js';
+  import { replaceState } from '$app/navigation';
+  import { darkMode, particlesEnabled } from '$lib/state.svelte.js';
   import { widgets, findWidget, globalOptions, resolveOptions } from '$lib/lab/registry.js';
   import { LabClock, parseDateOverride } from '$lib/lab/clock.svelte.js';
   import { dayOfYear, isoWeek } from '$lib/lab/time.js';
+  import { RainControl, isRainParam, setRainControl } from '$lib/lab/rain.svelte.js';
   import WidgetHost from '$lib/lab/WidgetHost.svelte';
   import EmbedBuilder from '$lib/lab/builder/EmbedBuilder.svelte';
+  import RainSettings from '$lib/lab/RainSettings.svelte';
 
   const params = $derived(page.url.searchParams);
   const requested = $derived((params.get('w') ?? '').split(',').map((id) => id.trim()).filter(Boolean));
@@ -23,6 +27,31 @@
   const optionsFor = (widget) => resolveOptions(widget.options, params);
 
   $effect(() => clock.start());
+
+  // `rain` and `rain-*` parameters set the starting state. The settings tab writes changes back to the URL.
+  const rain = setRainControl(new RainControl(page.url.searchParams));
+  $effect(() => () => rain.field.destroy());
+
+  let firstSync = true;
+  $effect(() => {
+    const entries = rain.params;
+    if (firstSync) return void (firstSync = false);
+    const url = new URL(window.location.href);
+    for (const name of [...url.searchParams.keys()]) if (isRainParam(name)) url.searchParams.delete(name);
+    for (const [name, value] of entries) url.searchParams.set(name, value);
+    untrack(() => replaceState(url, page.state));
+  });
+
+  // The particles button in the menu doubles as a rain trigger, in both directions.
+  let particlesSeen = particlesEnabled.current;
+  $effect(() => {
+    if (particlesEnabled.current === particlesSeen) return;
+    particlesSeen = particlesEnabled.current;
+    untrack(() => rain.rainNow());
+  });
+
+  let settingsOpen = $state(false);
+  let settingsTab = $state('embed');
 
   // Embeds pick their theme from the URL or the system, without touching the saved site preference.
   $effect(() => {
@@ -81,7 +110,6 @@
 
     <header class="lab-intro">
       <h1>Lab<span aria-hidden="true">.</span></h1>
-      <p>Small instruments for my Obsidian canvases, and a place to play. Every panel can be embedded on its own.</p>
     </header>
 
     <div class="dashboard">
@@ -92,13 +120,27 @@
       {/each}
     </div>
 
-    <section class="builder-section" aria-labelledby="builder-title">
-      <div class="lab-section-head">
-        <h2 id="builder-title">06 / Embed builder</h2>
-        <span>Configure a widget, copy the link, paste it into a canvas</span>
+    <details class="settings" bind:open={settingsOpen}>
+      <summary class="lab-section-head">
+        <h2><span class="chevron" aria-hidden="true">›</span>06 / Settings</h2>
+        <span>Embed links for canvases, and the matrix rain playground</span>
+      </summary>
+      <div class="tabs" role="tablist" aria-label="Settings">
+        {#each [['embed', 'Embed builder'], ['rain', 'Matrix rain']] as [id, label] (id)}
+          <button
+            type="button"
+            role="tab"
+            id="tab-{id}"
+            aria-controls="panel-{id}"
+            aria-selected={settingsTab === id}
+            onclick={() => (settingsTab = id)}
+          >{label}</button>
+        {/each}
       </div>
-      <EmbedBuilder />
-    </section>
+      <!-- Both tabs stay mounted so switching keeps the builder's choices. -->
+      <div id="panel-embed" role="tabpanel" aria-labelledby="tab-embed" hidden={settingsTab !== 'embed'}><EmbedBuilder /></div>
+      <div id="panel-rain" role="tabpanel" aria-labelledby="tab-rain" hidden={settingsTab !== 'rain'}><RainSettings active={settingsOpen && settingsTab === 'rain'} /></div>
+    </details>
   </div>
 {/if}
 
@@ -137,7 +179,7 @@
   .lab-intro { padding: 2rem 0 1.75rem; }
   h1 { color: var(--lab-ink); font-family: var(--lab-display-font); font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1; letter-spacing: -.02em; }
   h1 span { color: var(--lab-accent); text-shadow: var(--lab-text-glow); }
-  .lab-intro p { max-width: 38rem; margin-top: .9rem; color: var(--lab-muted); line-height: 1.6; }
+
 
   .dashboard {
     display: grid;
@@ -162,7 +204,32 @@
     .slot-orb { grid-area: orb; min-height: 420px; }
   }
 
-  .builder-section { margin-top: 3rem; }
+  .settings { margin-top: 3rem; }
+  .settings summary { cursor: pointer; list-style: none; }
+  .settings summary::-webkit-details-marker { display: none; }
+  .settings summary:hover h2, .settings summary:focus-visible h2 { text-shadow: var(--lab-text-glow); }
+  .settings summary:focus-visible { outline: 1px solid var(--lab-accent); outline-offset: 2px; }
+  .chevron { display: inline-block; margin-right: .5rem; transition: transform .2s; }
+  .settings[open] .chevron { transform: rotate(90deg); }
+  @media (prefers-reduced-motion: reduce) { .chevron { transition: none; } }
+
+  .tabs { display: flex; gap: .4rem; margin-bottom: 1rem; }
+  .tabs button {
+    padding: .45rem .8rem;
+    border: 1px solid var(--lab-line);
+    border-radius: .35rem;
+    color: var(--lab-muted);
+    background: var(--lab-inset);
+    font-family: var(--lab-meta-font);
+    font-size: .65rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color .15s, border-color .15s, box-shadow .15s;
+  }
+  .tabs button:hover { color: var(--lab-ink); border-color: var(--lab-line-strong); }
+  .tabs button[aria-selected='true'] { color: var(--lab-accent); border-color: var(--lab-accent); box-shadow: 0 0 0 1px var(--lab-accent-soft), var(--lab-glow); }
+  .tabs button:focus-visible { outline: 1px solid var(--lab-accent); outline-offset: 2px; }
   .lab-section-head {
     display: flex;
     flex-wrap: wrap;

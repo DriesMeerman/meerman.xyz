@@ -4,6 +4,9 @@
   import { darkMode } from '$lib/state.svelte.js';
   import { widgets, globalOptions } from '../registry.js';
   import HudPanel from '../HudPanel.svelte';
+  import { getRainControl } from '../rain.svelte.js';
+
+  const rain = getRainControl();
 
   let selectedId = $state(widgets[0].id);
   /** @type {Record<string, Record<string, string>>} */
@@ -30,6 +33,8 @@
       const value = valueOf(field.key).trim();
       if (value !== '' && value !== (field.default ?? '')) params.set(field.key, value);
     }
+    // Embeds carry the matrix rain settings from the other tab.
+    for (const [name, value] of rain?.params ?? []) params.set(name, value);
     return `${page.url.origin}/lab?${params.toString().replaceAll('%2C', ',')}`;
   });
 
@@ -119,6 +124,7 @@
       <li>In an Obsidian canvas, right-click and choose <em>Add web page</em>, or drop the canvas link onto the board.</li>
       <li>Resize the card to about {widget.size.width} × {widget.size.height}. Widgets scale down to small cards.</li>
       <li>Set <code>frame=off</code> if the card border is enough, and <code>theme</code> to match your vault.</li>
+      <li>Links include any matrix rain settings you changed in the Matrix rain tab.</li>
     </ol>
   </HudPanel>
 

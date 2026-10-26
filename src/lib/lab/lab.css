@@ -1,15 +1,15 @@
 /* Lab palette: the profile tokens pushed toward a holographic control-room look. Scoped to `.lab-theme`. */
 .lab-theme {
   --lab-ink: #17303b;
-  --lab-muted: #4f6873;
+  --lab-muted: #3e5662;
   --lab-accent: #087b83;
   --lab-accent-soft: #087b8326;
   --lab-hot: #c2417a;
-  --lab-line: #5f8f9866;
+  --lab-line: #4f828c8c;
   --lab-line-strong: #2d7d86b3;
-  --lab-surface: linear-gradient(160deg, #f4fbfaf2, #e3eff0e6);
-  --lab-inset: #dce9eacc;
-  --lab-grid: #2d7d8614;
+  --lab-surface: linear-gradient(160deg, #eef7f6f2, #dae8eae6);
+  --lab-inset: #d2e2e4d9;
+  --lab-grid: #2d7d8621;
   --lab-glow: 0 0 0 transparent;
   --lab-text-glow: none;
   --lab-season-spring: #4fa36c;
@@ -19,6 +19,8 @@
   --lab-display-font: 'Bruno Ace', sans-serif;
   --lab-meta-font: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --lab-radius: .9rem;
+  --matrix-rain-color: #04636b;
+  --matrix-rain-opacity: .42;
   color: var(--lab-ink);
 }
 
@@ -39,6 +41,8 @@
   --lab-season-summer: #ffd166;
   --lab-season-autumn: #ff8a5b;
   --lab-season-winter: #79c4ff;
+  --matrix-rain-color: var(--lab-accent);
+  --matrix-rain-opacity: .22;
 }
 
 /* Embeds sit on whatever the canvas draws behind them. */
