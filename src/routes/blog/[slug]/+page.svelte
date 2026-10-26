@@ -27,7 +27,7 @@
   let customJsEnabled = $derived(data?.meta?.enableCustomJs !== false);
 
   // Markdown articles open with one quick, even burst of rain behind the text, and no random bursts after.
-  const flash = new RainField({ length: 1, speed: 1.5, curve: RAIN_CURVES.steady });
+  const flash = new RainField({ length: 2, speed: 1.5, curve: RAIN_CURVES.steady });
   flash.auto = false;
   let flashedSlug = '';
   $effect(() => {

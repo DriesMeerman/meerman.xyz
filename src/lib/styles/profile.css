@@ -19,7 +19,7 @@
   --profile-radius: .9rem;
   --profile-shadow: 1px 2px 5px #174c4c22;
   --matrix-rain-color: #04636b;
-  --matrix-rain-opacity: .34;
+  --matrix-rain-opacity: .45;
   color: var(--profile-ink);
 }
 

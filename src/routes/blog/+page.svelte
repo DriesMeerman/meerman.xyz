@@ -45,9 +45,15 @@
 
   onMount(() => { void loadPosts(); });
 
-  // Every card is a window onto one rain that falls behind the archive now and then.
+  // Every card is a window onto one rain that falls behind the archive now and then,
+  // starting with a burst shortly after the cards appear.
   const rain = new RainField();
   $effect(() => () => rain.destroy());
+  $effect(() => {
+    if (posts.length === 0 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = setTimeout(() => rain.burst(), 1200);
+    return () => clearTimeout(timer);
+  });
 
   /** @param {string} date */
   function isoDate(date) {
