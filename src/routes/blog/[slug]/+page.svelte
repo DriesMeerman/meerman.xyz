@@ -3,6 +3,8 @@
   import { fade } from 'svelte/transition';
   import { resolve } from '$app/paths';
   import { particlesEnabled } from '$lib/state.svelte.js';
+  import MatrixRain from '$lib/effects/matrix-rain/MatrixRain.svelte';
+  import { RAIN_CURVES, RainField } from '$lib/effects/matrix-rain/field.js';
   let { data } = $props();
   let htmlContent = $state('');
   let errorMessage = $state('');
@@ -23,6 +25,17 @@
 
   let isHtmlSource = $derived(data?.meta?.sourceType === 'html');
   let customJsEnabled = $derived(data?.meta?.enableCustomJs !== false);
+
+  // Markdown articles open with one quick, even burst of rain behind the text, and no random bursts after.
+  const flash = new RainField({ length: 1, speed: 1.5, curve: RAIN_CURVES.steady });
+  flash.auto = false;
+  let flashedSlug = '';
+  $effect(() => {
+    if (isHtmlSource || !htmlContent || flashedSlug === data.slug) return;
+    flashedSlug = data.slug;
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) flash.burst();
+  });
+  $effect(() => () => flash.destroy());
 
   /** @param {HTMLDivElement} element */
   function attachArticle(element) {
@@ -179,6 +192,7 @@
     </div>
   {/if}
   <div class:profile-panel={!isHtmlSource} class:markdown-panel={!isHtmlSource}>
+  {#if !isHtmlSource}<MatrixRain field={flash} sticky />{/if}
   {#if errorMessage}
     <div class="error-message">{errorMessage}</div>
   {:else}
@@ -252,6 +266,7 @@
   .article-marker a { margin-left: auto; color: var(--profile-accent); font-size: .62rem; letter-spacing: 0; text-decoration: none; }
   .article-marker a:focus-visible { outline: 2px solid var(--profile-accent); outline-offset: 4px; }
   .markdown-panel { margin-top: 2rem; padding: clamp(1rem, 1.8vw, 1.5rem); }
+  .markdown-panel > :not(:global(.matrix-rain-layer)) { position: relative; }
   .article-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--profile-line); color: var(--profile-accent); font-family: var(--profile-meta-font); font-size: .65rem; line-height: 1.6; letter-spacing: .05em; text-transform: uppercase; }
   .md-source .error-message { color: var(--profile-muted); font-size: .9rem; line-height: 1.75; }
 

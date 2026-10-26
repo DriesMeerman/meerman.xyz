@@ -18,6 +18,8 @@
   --profile-meta-font: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --profile-radius: .9rem;
   --profile-shadow: 1px 2px 5px #174c4c22;
+  --matrix-rain-color: #04636b;
+  --matrix-rain-opacity: .34;
   color: var(--profile-ink);
 }
 
@@ -30,6 +32,8 @@
   --profile-inset: #202d38;
   --profile-cyan: #91e4e1;
   --profile-pink: #e6a6c4;
+  --matrix-rain-color: var(--profile-accent);
+  --matrix-rain-opacity: .2;
 }
 
 .profile-theme .profile-panel {
