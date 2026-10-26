@@ -14,6 +14,7 @@
   let articleContainer;
   /** @type {HTMLDialogElement | undefined} */
   let imageDialog;
+  /** @type {{ img: HTMLImageElement, onClick: (event: MouseEvent) => void }[]} */
   const imageListeners = [];
 
   if (typeof window !== 'undefined') {
@@ -50,7 +51,7 @@
       }
       addImageClickListeners();
     } catch (e) {
-      errorMessage = e.message;
+      errorMessage = e instanceof Error ? e.message : String(e);
     }
   });
 
@@ -81,6 +82,11 @@
     }
   }
 
+  /**
+   * @param {string} src
+   * @param {HTMLScriptElement} oldScript
+   * @returns {Promise<void>}
+   */
   function loadExternalScript(src, oldScript) {
     if (typeof window === 'undefined') return Promise.resolve();
 
@@ -97,6 +103,7 @@
       script.setAttribute(name, value);
     }
 
+    /** @type {Promise<void>} */
     const promise = new Promise((resolve, reject) => {
       script.onload = () => resolve();
       script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
@@ -112,6 +119,7 @@
 
     const images = articleContainer.querySelectorAll('img');
     images.forEach((img) => {
+      /** @param {MouseEvent} event */
       const onClick = (event) => {
         if (enlargedImage) {
           closeEnlargedImage();
@@ -147,6 +155,7 @@
     enlargedImage = null;
   }
 
+  /** @param {string} html */
   function calculateReadingMinutes(html) {
     const text = html
       .replace(/<style[\s\S]*?<\/style>/gi, ' ')
