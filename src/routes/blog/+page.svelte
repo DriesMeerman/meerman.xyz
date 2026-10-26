@@ -2,6 +2,8 @@
   import { onMount } from 'svelte';
   import { asset, resolve } from '$app/paths';
   import ProfilePage from '$lib/ProfilePage.svelte';
+  import MatrixRain from '$lib/effects/matrix-rain/MatrixRain.svelte';
+  import { RainField } from '$lib/effects/matrix-rain/field.js';
 
   /**
    * @typedef {{
@@ -42,6 +44,16 @@
   }
 
   onMount(() => { void loadPosts(); });
+
+  // Every card is a window onto one rain that falls behind the archive now and then,
+  // starting with a burst shortly after the cards appear.
+  const rain = new RainField();
+  $effect(() => () => rain.destroy());
+  $effect(() => {
+    if (posts.length === 0 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = setTimeout(() => rain.burst(), 1200);
+    return () => clearTimeout(timer);
+  });
 
   /** @param {string} date */
   function isoDate(date) {
@@ -100,6 +112,7 @@
       <div class="posts-grid">
         {#each posts as post (postSlug(post))}
           <article class="post-card">
+            <MatrixRain field={rain} />
             <a class="post-link" href={resolve(`/blog/${postSlug(post)}`)} aria-labelledby={'post-title-' + postSlug(post)}>
               <div class="post-topline">
                 <span class="post-id">#{formatId(post.ID)}</span>
@@ -176,6 +189,7 @@
   .post-card:hover { transform: translateY(-1px); border-color: var(--profile-accent); }
 
   .post-link {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
