@@ -8,7 +8,8 @@
 
   // The lab is a dashboard: it gets the full width, and `?w=` embeds render without any site chrome.
   const isLab = $derived(page.url.pathname.replace(/\/$/, '') === '/lab');
-  const bare = $derived(isLab && page.url.searchParams.has('w'));
+  // A page can also opt out of the menu and particles by returning `{ chrome: false }` from its load.
+  const bare = $derived((isLab && page.url.searchParams.has('w')) || page.data.chrome === false);
 
   $effect(() => {
     if (typeof document !== 'undefined') {
