@@ -1,6 +1,6 @@
 Project documentation lives in `docs/`. See `docs/README.md` for the full index. Key files:
 - `docs/architecture/ARCHITECTURE.md`: system design, deployment, infrastructure
-- `docs/analysis/CODEBASE_ANALYSIS.md`: improvement plan with confirmed decisions (D1–D11)
+- `docs/analysis/CODEBASE_ANALYSIS.md`: improvement plan with confirmed decisions (D1–D13)
 - `docs/guides/STYLE_GUIDE.md`: code style conventions
 
 ## Writing

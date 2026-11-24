@@ -113,6 +113,26 @@ Confirmed decisions that guide the implementation work.
 
 **Decision:** Keep thesis PDFs in the repo and Docker image. They're intentional downloads and the simplicity is worth the 5.4 MB.
 
+### D12: Unit tests with `node --test` ✅
+
+**Decision (2026-11-24):** Unit tests for DOM free logic run on Node's built-in test runner, with no new dependency. Specs sit next to the modules they cover as `*.test.mjs` files and run with `npm run test:unit`.
+
+**Rationale:**
+- Hexfall's rules (`src/lib/thingies/hexfall/`) are plain modules that Node can import, so a browser or a bundler adds nothing to these tests
+- The repo had no unit test runner, and Playwright is too slow for thousands of simulation steps
+- The specs use the `.mjs` extension because `@types/node` is not installed and `svelte-check` would otherwise fail on the `node:test` imports. The modules under test stay type checked.
+
+**Open:** `test:unit` is not part of the deployment workflow yet.
+
+### D13: Layout `chrome` flag for full screen pages ✅
+
+**Decision (2026-11-24):** A page that should render without the site menu and the particle background returns `{ chrome: false }` from its `load`. The root layout treats `page.data.chrome === false` the same as its existing bare mode for `/lab?w=` embeds.
+
+**Rationale:**
+- The site has no layout groups, and moving every existing route into one for a single full screen page would touch all of them
+- The flag lives with the page that needs it, so the layout does not grow a list of paths
+- The `/lab?w=` check stays as it was, because that mode depends on the query string and not on the route
+
 ---
 
 ## Resolved Questions
@@ -134,7 +154,7 @@ All open questions have been answered. Kept here for reference.
 
 ## Executive Summary
 
-The meerman.xyz codebase is a SvelteKit 2 static site with a blog system, portfolio sections, and a particle background effect. It's well-structured overall, but has accumulated technical debt in its build pipeline, image handling, and dependency management. All open questions have been resolved into 11 confirmed decisions (D1–D11). Key work:
+The meerman.xyz codebase is a SvelteKit 2 static site with a blog system, portfolio sections, and a particle background effect. It's well-structured overall, but has accumulated technical debt in its build pipeline, image handling, and dependency management. All open questions have been resolved into 11 confirmed decisions (D1–D11). D12 and D13 were added later for the Hexfall game. Key work:
 
 - **D1: Custom particle renderer** — replace the unmaintained particles.js fork with a ~250-line Canvas-based TypeScript implementation (~2-3 KB gzipped vs ~15 KB current)
 - **D2: Unified build tooling** — consolidate 4 build scripts (3 CJS + 1 Bash) into a TypeScript `tools/` directory with shared modules, replacing ImageMagick/cwebp with `sharp`

@@ -23,7 +23,7 @@ docs/
 
 ### Analysis
 - [Writing review](analysis/UNSLOP_REVIEW.md): approved copy edits and passages kept after the Unslop review
-- [Codebase Analysis & Improvement Plan](analysis/CODEBASE_ANALYSIS.md) — full audit with 11 confirmed decisions (D1–D11), prioritized action items across 7 phases
+- [Codebase Analysis & Improvement Plan](analysis/CODEBASE_ANALYSIS.md): full audit with 13 confirmed decisions (D1–D13), prioritized action items across 7 phases
 - [Meerman Industries Website Requirements](analysis/INDUSTRIES_WEBSITE_REQUIREMENTS.md) — Dutch business disclosures and scope for the company profile at `/industries`
 
 ### Guides
@@ -31,6 +31,7 @@ docs/
 - [Style Guide](guides/STYLE_GUIDE.md) — visual theme, shared profile tokens, card composition, and consistency rules
 - [Site History](guides/SITE_HISTORY.md): release screenshot provenance and archive maintenance
 - [Lab](guides/LAB.md): hidden widget page for Obsidian Canvas embeds, URL parameters, and widget structure
+- [Hexfall](guides/HEXFALL.md): the hex tower defense at `/thingies/hexfall`, its rules and numbers, URL parameters, tests, and the weapon data phase two reads
 - [Leadership Card Artwork](guides/LEADERSHIP_ARTWORK.md) — asset paths, rarity choices, and image generation prompts
 
 ### Pull request reviews

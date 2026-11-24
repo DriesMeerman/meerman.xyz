@@ -35,7 +35,7 @@ test('a sensible first build wins level one with the core intact', () => {
   const list = results('generalist', 0);
   assert.equal(wins(list), SEEDS.length);
   assert.ok(mean(list, (r) => r.coreHp) >= 0.9, `core ${mean(list, (r) => r.coreHp)}`);
-  assert.ok(mean(list, (r) => r.landLeft) >= 18, `land ${mean(list, (r) => r.landLeft)}`);
+  assert.ok(mean(list, (r) => r.landLeft) >= 24, `land ${mean(list, (r) => r.landLeft)}`);
 });
 
 test('the same build order still wins level two most of the time', () => {

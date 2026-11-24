@@ -4,7 +4,7 @@ Tracks the execution of the [Codebase Analysis & Improvement Plan](analysis/CODE
 
 > **When completing a task**, check its box (`- [x]`), add the completion date, and note any follow-ups or deviations from the plan. If a task spawns new work, add it to the appropriate phase or to **Unplanned Work** at the bottom.
 
-**Last updated:** 2026-10-04
+**Last updated:** 2026-11-24
 
 ---
 
@@ -99,6 +99,7 @@ Tasks that came up during implementation. Add items here as they're discovered.
 
 | Date | Task | Phase | Status |
 |------|------|-------|--------|
+| 2026-11-24 | Add Hexfall phase one at `/thingies/hexfall`: three building levels on a hex island, five module types, four rock types, a forge that turns each won level into a weapon, a three.js scene with a DOM HUD, `node --test` unit specs with a scripted balance check (`npm run test:unit`), a Playwright spec, and a layout `chrome` flag for full screen pages. Phase two (the finale) and wiring `test:unit` into CI are open | Unplanned | Done |
 | 2026-10-04 | Preserve the live v0 single-page site from `old.meerman.xyz` in the history archive, with its original theme, honest date/source metadata, and a full-page viewer | Unplanned | Done |
 | 2026-10-04 | Add unlinked `/site-history` with four tagged releases, 24 desktop pages in light and dark mode, theme-aware carousels, keyboard controls, full-page viewers, and a sitemap entry; document capture provenance | Unplanned | Done |
 | 2026-09-29 | Keep the personal profile on the homepage and polish it with a concise hero, responsive inset portrait, background/interests panels, labelled social links, and shared theme tokens; document the homepage design rules | Unplanned | Done |
