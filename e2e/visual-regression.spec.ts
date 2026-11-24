@@ -9,6 +9,7 @@ const PAGES = [
   { name: 'cats', path: '/cats' },
   { name: 'blog', path: '/blog' },
   { name: 'blog-dr-001', path: '/blog/dr-001' },
+  { name: 'thingies', path: '/thingies' },
 ];
 
 const MODES = ['light', 'dark'] as const;
