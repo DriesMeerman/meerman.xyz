@@ -1,6 +1,6 @@
 # Lab
 
-`/lab` is an unlinked page of small widgets meant for Obsidian Canvas embeds, plus an artsy playground. It is not in the menu or the sitemap and is marked `noindex`. The hidden way in is five quick taps on the portrait on the home page.
+`/lab` is a page of small widgets meant for Obsidian Canvas embeds, plus an artsy playground. It has no menu item of its own and is not in the sitemap, and it is marked `noindex`. Visitors reach it through its entry on `/thingies`. The hidden way in is five quick taps on the portrait on the home page.
 
 ## Modes
 
