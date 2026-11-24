@@ -67,7 +67,8 @@ import { mixSeed, random } from './rng.js';
  *   | { kind: 'built' | 'sold' | 'moduleLost' | 'landLost', q: number, r: number, type?: ModuleType }
  *   | { kind: 'impact', q: number, r: number, x: number, y: number, on: 'module' | 'land', amount: number }
  *   | { kind: 'beam', x1: number, y1: number, x2: number, y2: number }
- *   | { kind: 'rockHit' | 'rockDead' | 'rockSpent', x: number, y: number, rock: RockType }
+ *   | { kind: 'rockHit', id: number, x: number, y: number, rock: RockType }
+ *   | { kind: 'rockDead' | 'rockSpent', x: number, y: number, rock: RockType }
  *   | { kind: 'waveStarted' | 'waveCleared' | 'won' | 'lost', wave: number }
  * )} SimEvent
  */
@@ -298,7 +299,7 @@ function damageRock(state, rock, amount) {
   if (rock.dead) return;
   rock.hp -= amount;
   if (rock.hp > 0) {
-    state.events.push({ kind: 'rockHit', x: rock.x, y: rock.y, rock: rock.type });
+    state.events.push({ kind: 'rockHit', id: rock.id, x: rock.x, y: rock.y, rock: rock.type });
     return;
   }
   rock.dead = true;

@@ -45,7 +45,7 @@ export const FIXED_DT = 1 / 60;
 /** @type {Record<ModuleType, ModuleDef>} */
 export const MODULES = {
   core: { id: 'core', name: 'Core', role: 'Lose it and the level ends', cost: 0, hp: 200, source: true },
-  rivet: { id: 'rivet', name: 'Rivet', role: 'Gun', cost: 40, hp: 60, range: 2.6, damage: 8, cooldown: 0.4, shotSpeed: 16 },
+  rivet: { id: 'rivet', name: 'Rivet', role: 'Gun', cost: 40, hp: 60, range: 2.9, damage: 8, cooldown: 0.4, shotSpeed: 16 },
   lance: { id: 'lance', name: 'Lance', role: 'Beam', cost: 90, hp: 50, range: 4.5, damage: 60, cooldown: 2.4, pierce: true },
   mire: { id: 'mire', name: 'Mire', role: 'Slow field', cost: 60, hp: 60, range: 2.2, slow: 0.45 },
   dynamo: { id: 'dynamo', name: 'Dynamo', role: 'Power', cost: 50, hp: 80, source: true },

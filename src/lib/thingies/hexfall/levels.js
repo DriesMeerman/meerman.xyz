@@ -29,14 +29,14 @@ export const LEVELS = [
     leansOn: 'grit',
     startCredits: 160,
     waves: [
-      { groups: [{ type: 'grit', count: 14, start: 0, interval: 1.6 }] },
-      { groups: [{ type: 'grit', count: 22, start: 0, interval: 1.2 }, { type: 'dart', count: 3, start: 14, interval: 3 }] },
-      { groups: [{ type: 'grit', count: 16, start: 0, interval: 0.5, arc: 1.2 }, { type: 'grit', count: 18, start: 10, interval: 1.1 }] },
+      { groups: [{ type: 'grit', count: 14, start: 0, interval: 1.7 }] },
+      { groups: [{ type: 'grit', count: 18, start: 0, interval: 1.5 }, { type: 'dart', count: 2, start: 16, interval: 4 }] },
+      { groups: [{ type: 'grit', count: 12, start: 0, interval: 0.6, arc: 1.2 }, { type: 'grit', count: 16, start: 10, interval: 1.2 }] },
       {
         groups: [
-          { type: 'grit', count: 34, start: 0, interval: 0.8 },
-          { type: 'dart', count: 5, start: 8, interval: 3.2 },
-          { type: 'monolith', count: 1, start: 12, interval: 1 }
+          { type: 'grit', count: 30, start: 0, interval: 0.9 },
+          { type: 'dart', count: 4, start: 8, interval: 4 },
+          { type: 'monolith', count: 1, start: 10, interval: 1 }
         ]
       }
     ]
