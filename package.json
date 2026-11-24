@@ -23,7 +23,9 @@
 		"test:visual": "playwright test e2e/visual-regression.spec.ts",
 		"test:visual:update": "playwright test e2e/visual-regression.spec.ts --update-snapshots",
 		"test:visual:report": "node --import tsx/esm tools/commands/visual-report.ts",
-		"test:particles": "playwright test e2e/particles-smoke.spec.ts"
+		"test:particles": "playwright test e2e/particles-smoke.spec.ts",
+		"test:unit": "node --test \"src/lib/**/*.test.mjs\"",
+		"test:hexfall": "playwright test e2e/hexfall.spec.ts"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.58.2",
