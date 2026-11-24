@@ -139,6 +139,7 @@
     selected = null;
     paused = false;
     notice = '';
+    scene?.setCursor(null);
     syncHud();
     screen = 'play';
     wake();
@@ -303,7 +304,8 @@
         if (steps === MAX_STEPS_PER_FRAME) backlog = 0; // too far behind: drop the debt instead of spiralling
       }
 
-      scene.render(sim, dt, screen === 'play' && !paused ? backlog : 0);
+      // The unspent remainder also applies while paused, so pausing does not nudge the rocks back.
+      scene.render(sim, dt, backlog);
       sim.events.length = 0;
       syncHud();
       watchEnd(dt);
