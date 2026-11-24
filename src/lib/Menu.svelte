@@ -6,7 +6,8 @@
     { href: '/experience', text: 'Experience' },
     { href: '/education', text: 'Education' },
     { href: '/tools', text: 'Tools' },
-    { href: '/blog', text: 'Blog' }
+    { href: '/blog', text: 'Blog' },
+    { href: '/thingies', text: 'Thingies' }
   ];
   let darkModeIconFill = $derived(darkMode.current ? 'white' : 'black');
   let particleText = $derived(particlesEnabled.current ? 'Disable particles' : 'Enable particles');

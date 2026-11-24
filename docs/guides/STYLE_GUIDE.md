@@ -66,7 +66,7 @@ The blog index uses the shared `--profile-*` tokens from `src/lib/styles/profile
 2. Page entry effects should be short and not delay readability.
 3. Respect reduced-motion preference when adding new animation.
 
-## 4.4 Shared Pages: Home, Industries, Education, Experience, Skills, Tools, Blog Index
+## 4.4 Shared Pages: Home, Industries, Education, Experience, Skills, Tools, Blog Index, Thingies
 
 These pages share the Industries design language: precise corporate panels with a restrained cyberpunk influence. Use fine borders, inset frames, compact technical labels, and a single cyan corner accent. Keep the handmade character of the skills cards; avoid adding generic glass panels or large neon glows to these pages.
 
@@ -127,6 +127,10 @@ Shared shape tokens are `--profile-radius: .9rem` and `--profile-shadow: 1px 2px
 ### Tools
 
 Use the shared page header and numbered section metadata. Software tiles use native images within inset frames and keep their original icon colors. Unix utilities show a visible `$` prompt and monospace command inside a bordered inset terminal line, with wrapping descriptions and accessible external links. Use responsive grids with minimum widths capped at 100% to avoid horizontal scrolling on narrow screens.
+
+### Thingies
+
+`/thingies` lists games, tools and other odd projects from `src/lib/data/thingiesData.js`. It uses the shared page header and one numbered section. A monospace search field and tag toggles (the Skills filter style, with `aria-pressed`) sit above a card grid that follows the blog index cards: tag chips in the top line, a Bruno Ace title, and a bottom row. An entry with an `href` is one link with its title as the accessible name. An entry without one shows `In the works`, has no link and does not lift on hover. `src/lib/thingies/filter.js` holds the search and tag logic.
 
 ### Markdown articles
 
